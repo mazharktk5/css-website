@@ -1,13 +1,28 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const fadeUp = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0 },
+};
 
 export default function Hero() {
     return (
         <section className="relative bg-gradient-to-br from-white via-blue-50 to-blue-100 text-gray-900 overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:grid lg:grid-cols-2 items-center gap-12 w-full py-16 lg:min-h-[90vh]">
+            <div className="max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 items-center gap-12 w-full py-16 lg:min-h-[90vh]">
 
                 {/* Left text */}
-                <div className="space-y-6 z-10 text-center lg:text-left">
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    variants={fadeUp}
+                    className="space-y-6 z-10 text-center lg:text-left flex flex-col justify-center h-full"
+                >
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight text-blue-900">
                         Empowering Students Through Technology
                     </h1>
@@ -30,10 +45,17 @@ export default function Hero() {
                             Join Us
                         </Link>
                     </div>
-                </div>
+                </motion.div>
 
-                {/* Right side styled image */}
-                <div className="relative w-full h-[40vh] sm:h-[50vh] lg:h-[80vh] flex justify-center">
+                {/* Right image */}
+                <motion.div
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+                    variants={fadeUp}
+                    className="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] flex justify-center"
+                >
                     <div className="relative w-full h-full max-w-lg">
                         <Image
                             src="/images/gallery/hero.jpg"
@@ -42,8 +64,10 @@ export default function Hero() {
                             priority
                             className="object-cover object-center rounded-2xl shadow-2xl"
                         />
+                        {/* Gradient overlay */}
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-tr from-blue-900/10 via-transparent to-blue-500/10"></div>
                     </div>
-                </div>
+                </motion.div>
             </div>
         </section>
     );
