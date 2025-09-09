@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Hero from "../components/Home/Hero";
-// import AboutPreview from "@/components/AboutPreview";
+import AboutPreview from "../components/Home/AboutPreview";
 // import Highlights from "@/components/Highlights";
 // import EventsPreview from "@/components/EventsPreview";
 // import GalleryPreview from "@/components/GalleryPreview";
@@ -26,8 +26,8 @@ export default function Home() {
 
       <main className="pt-16">
         <Hero />
-        {/* <AboutPreview />
-        <Highlights />
+        <AboutPreview />
+        {/* <Highlights />
         <EventsPreview />
         <GalleryPreview />
         <FooterCTA /> */}
