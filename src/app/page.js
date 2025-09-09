@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Hero from "../components/Home/Hero";
 import AboutPreview from "../components/Home/AboutPreview";
-// import Highlights from "@/components/Highlights";
+import Highlights from "../components/Home/EventsPreview";
 // import EventsPreview from "@/components/EventsPreview";
 // import GalleryPreview from "@/components/GalleryPreview";
 // import FooterCTA from "@/components/FooterCTA";
@@ -27,8 +27,8 @@ export default function Home() {
       <main className="pt-16">
         <Hero />
         <AboutPreview />
-        {/* <Highlights />
-        <EventsPreview />
+        <Highlights />
+        {/* <EventsPreview />
         <GalleryPreview />
         <FooterCTA /> */}
       </main>
