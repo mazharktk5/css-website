@@ -1,18 +1,18 @@
 import Head from "next/head";
 import Hero from "../components/Home/Hero";
 import AboutPreview from "../components/Home/AboutPreview";
-import Highlights from "../components/Home/EventsPreview";
+import EventsPreview from "../components/Home/EventsPreview";
 import GalleryPreview from "../components/Home/GalleryPreview";
-import DevelopersPreview from "@/components/Home/DevelopersPreview";
-// import EventsPreview from "@/components/EventsPreview";
-// import GalleryPreview from "@/components/GalleryPreview";
-// import FooterCTA from "@/components/FooterCTA";
+import DevelopersPreview from "../components/Home/DevelopersPreview";
+import Footer from "../components/Footer";
 
 export default function Home() {
   return (
     <>
       <Head>
-        <title>Computing Students Society | Empowering Students Through Technology</title>
+        <title>
+          Computing Students Society | Empowering Students Through Technology
+        </title>
         <meta
           name="description"
           content="Official website of the Computing Students Society. Explore our workshops, hackathons, community events, and gallery."
@@ -29,12 +29,12 @@ export default function Home() {
       <main className="pt-16">
         <Hero />
         <AboutPreview />
-        <Highlights />
-        {/* <EventsPreview /> */}
+        <EventsPreview />
         <GalleryPreview />
         <DevelopersPreview />
-        {/* <FooterCTA /> */}
       </main>
+
+      <Footer />
     </>
   );
 }
