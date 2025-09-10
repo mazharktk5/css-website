@@ -2,6 +2,8 @@ import Head from "next/head";
 import Hero from "../components/Home/Hero";
 import AboutPreview from "../components/Home/AboutPreview";
 import Highlights from "../components/Home/EventsPreview";
+import GalleryPreview from "../components/Home/GalleryPreview";
+import DevelopersPreview from "@/components/Home/DevelopersPreview";
 // import EventsPreview from "@/components/EventsPreview";
 // import GalleryPreview from "@/components/GalleryPreview";
 // import FooterCTA from "@/components/FooterCTA";
@@ -28,9 +30,10 @@ export default function Home() {
         <Hero />
         <AboutPreview />
         <Highlights />
-        {/* <EventsPreview />
+        {/* <EventsPreview /> */}
         <GalleryPreview />
-        <FooterCTA /> */}
+        <DevelopersPreview />
+        {/* <FooterCTA /> */}
       </main>
     </>
   );
