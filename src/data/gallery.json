@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "eventName": "Tech Workshop 2024",
+    "category": "Workshop",
+    "image": "/images/gallery/hero.jpg",
+    "description": "Hands-on coding workshop for students"
+  },
+  {
+    "id": 2,
+    "eventName": "Annual Hackathon",
+    "category": "Competition",
+    "image": "/images/gallery/hero.jpg",
+    "description": "24-hour coding competition"
+  },
+  {
+    "id": 3,
+    "eventName": "AI Conference",
+    "category": "Conference",
+    "image": "/images/gallery/hero.jpg",
+    "description": "Latest trends in artificial intelligence"
+  },
+  {
+    "id": 4,
+    "eventName": "Code Review Session",
+    "category": "Workshop",
+    "image": "/images/gallery/hero.jpg",
+    "description": "Best practices in code development"
+  },
+  {
+    "id": 5,
+    "eventName": "Career Fair",
+    "category": "Networking",
+    "image": "/images/gallery/hero.jpg",
+    "description": "Connect with industry professionals"
+  },
+  {
+    "id": 6,
+    "eventName": "Web Development Bootcamp",
+    "category": "Workshop",
+    "image": "/images/gallery/hero.jpg",
+    "description": "Learn modern web technologies"
+  }
+]
