@@ -4,7 +4,7 @@ import AboutPreview from "../components/Home/AboutPreview";
 import Highlights from "../components/Home/EventsPreview";
 // import EventsPreview from "@/components/EventsPreview";
 // import GalleryPreview from "@/components/GalleryPreview";
-// import FooterCTA from "@/components/FooterCTA";
+// import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
@@ -29,8 +29,8 @@ export default function Home() {
         <AboutPreview />
         <Highlights />
         {/* <EventsPreview />
-        <GalleryPreview />
-        <FooterCTA /> */}
+        <GalleryPreview /> */}
+        {/* <Footer /> */}
       </main>
     </>
   );
