@@ -29,11 +29,11 @@ const team = {
         { name: "Atiq Ullah Khan", role: "Media Secretary", image: "/images/team/media-secretary.jpg" },
     ],
     clubs: [
-        { name: "Muhammad Mamoon Khan", role: "Software Engineering Club Lead", image: "/images/team/default.jpg" },
+        { name: "Fatima Ijaz", role: "Management Head", image: "/images/team/management-lead.jpg" },
+        { name: "Muhammad Mamoon Khan", role: "Software Engineering Club Lead", image: "/images/developers/mamoon.jpg" },
         { name: "Jafar Ali", role: "Cyber Security Club Lead", image: "/images/team/default.jpg" },
         { name: "Muhammad Ilyas", role: "AI & DS Club Lead", image: "/images/team/ai-lead.jpg" },
         { name: "Hamza Ahmed Khan", role: "App Development Club Lead", image: "/images/team/default.jpg" },
-        { name: "Fatima Ijaz", role: "Management Head", image: "/images/team/management-lead.jpg" },
         { name: "Shahab Saqib", role: "PR Head", image: "/images/team/default.jpg" },
         { name: "Iqra Noor", role: "Content & Graphics Head", image: "/images/team/default.jpg" },
     ],
