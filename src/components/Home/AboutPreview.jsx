@@ -21,7 +21,7 @@ const item = {
 
 export default function AboutPreview() {
     return (
-        <section className="py-16 bg-white text-gray-900 overflow-hidden">
+        <section id="about" className="py-16 bg-white text-gray-900 overflow-hidden">
             <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 md:grid-cols-2 items-center gap-12">
 
                 {/* Left image with smooth animation */}
