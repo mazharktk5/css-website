@@ -1,89 +1,73 @@
 "use client";
 
-import Link from "next/link";
+import React from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import galleryData from "../../data/gallery";
+import Link from "next/link";
+import galleryData from "../../data/gallery.json";
 
-
-const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    visible: { opacity: 1, y: 0 },
-};
-
-export default function GalleryPreview() {
+const GalleryPreview = () => {
     return (
-        <section id="gallery" className="py-20 bg-white">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
-                {/* Heading */}
-                <motion.h2
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: false, amount: 0.2 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                    variants={fadeUp}
-                    className="text-3xl md:text-4xl font-bold text-blue-900"
-                >
-                    Our Gallery
-                </motion.h2>
-                <motion.p
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: false, amount: 0.2 }}
-                    transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                    variants={fadeUp}
-                    className="mt-4 text-gray-700 max-w-2xl mx-auto"
-                >
-                    A glimpse into our events, meetups, and the vibrant student
-                    community of CSS.
-                </motion.p>
+        <section className="bg-gray-100 py-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {/* Header Section */}
+                <div className="text-center mb-12">
+                    <h2 className="text-3xl md:text-4xl font-bold text-blue-900 mb-4">
+                        Our Gallery
+                    </h2>
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        A glimpse into our events, meetups, and the vibrant student
+                        community of CSS.
+                    </p>
+                </div>
 
-                {/* Gallery Grid */}
-                <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                    {galleryData.slice(0, 6).map((item, index) => (
-                        <motion.div
-                            key={index}
-                            initial="hidden"
-                            whileInView="visible"
-                            viewport={{ once: false, amount: 0.2 }}
-                            transition={{ duration: 0.6, delay: index * 0.15 }}
-                            variants={fadeUp}
-                            className="relative group overflow-hidden rounded-2xl shadow-md cursor-pointer"
+                {/* Gallery Grid (6 items only) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {galleryData.slice(0, 3).map((item) => (
+                        <div
+                            key={item.id}
+                            className="group relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
                         >
-                            <Image
-                                src={item.src}
-                                alt={item.alt}
-                                width={500}
-                                height={350}
-                                className="object-cover w-full h-64 transform group-hover:scale-110 transition duration-500"
-                            />
-                            {/* Overlay */}
-                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
-                                <p className="text-white text-lg font-medium">
-                                    {item.caption}
+                            {/* Image Container */}
+                            <div className="relative h-64 overflow-hidden">
+                                <Image
+                                    src={item.image}
+                                    alt={item.eventName}
+                                    fill
+                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                                {/* Category Badge */}
+                                <div className="absolute top-4 left-4">
+                                    <span className="bg-blue-900 text-white px-3 py-1 rounded-full text-sm font-medium">
+                                        {item.category}
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Caption Section */}
+                            <div className="p-6">
+                                <h3 className="text-xl font-bold text-blue-900 mb-2">
+                                    {item.eventName}
+                                </h3>
+                                <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                                    {item.description}
                                 </p>
                             </div>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
 
                 {/* CTA */}
-                <motion.div
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: false, amount: 0.2 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
-                    variants={fadeUp}
-                    className="mt-12"
-                >
+                <div className="text-center mt-12">
                     <Link
                         href="/gallery"
-                        className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-500 transition shadow-md"
+                        className="inline-block px-8 py-3 bg-blue-900 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors duration-300"
                     >
                         View Full Gallery
                     </Link>
-                </motion.div>
+                </div>
             </div>
         </section>
     );
-}
+};
+
+export default GalleryPreview;

@@ -1,10 +1,9 @@
 "use client";
-
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Linkedin, Mail } from "lucide-react";
 import React from "react";
 
+// 🧑‍🤝‍🧑 Team Data
 const team = {
     patron: [
         {
@@ -12,8 +11,6 @@ const team = {
             role: "Patron-in-Chief",
             subRole: "Chairman, Dept. of Computer Science",
             image: "/images/team/chairman.jpg",
-            linkedin: "https://linkedin.com",
-            email: "patron@university.edu",
         },
     ],
     chief: [
@@ -22,185 +19,147 @@ const team = {
             role: "Chief Organizer",
             subRole: "Coordinator, Dept. of Computer Science",
             image: "/images/team/coordinator.jpg",
-            linkedin: "https://linkedin.com",
-            email: "waheed@university.edu",
         },
     ],
-    core: [
-        {
-            name: "Abubakar Sadiq",
-            role: "President",
-            image: "/images/team/president.jpg",
-            linkedin: "https://linkedin.com",
-            email: "abu@university.edu",
-        },
-        {
-            name: "Muhammad Jawad",
-            role: "Vice President",
-            image: "/images/developers/mazhar.jpg",
-            linkedin: "https://linkedin.com",
-            email: "jawad@university.edu",
-        },
+    cabinet: [
+        { name: "Abubakar Sadiq", role: "President", image: "/images/team/president.jpg" },
+        { name: "Muhammad Jawad", role: "Vice President", image: "/images/team/vp.jpg" },
+        { name: "Abdullah Ahmed", role: "Chief Secretary", image: "/images/team/default.jpg" },
+        { name: "Hashir Ahmed", role: "Information Secretary", image: "/images/team/information-secretary.jpg" },
+        { name: "Atiq Ullah Khan", role: "Media Secretary", image: "/images/team/media-secretary.jpg" },
     ],
-    leads: [
-        {
-            name: "Mamoon khan",
-            role: "Lead –  Software",
-            image: "/images/developers/ali.jpg",
-            image: "/images/developers/mazhar.jpg",
-            email: "ali@university.edu",
-        },
-        {
-            name: "Muhammad Ilyas",
-            role: "Lead – AI/DS",
-            image: "/images/team/ai-lead.jpg",
-            linkedin: "https://linkedin.com",
-            email: "fatima@university.edu",
-        },
-        {
-            name: "Jafar Ali",
-            role: "Lead – Cyber Security",
-            image: "/images/developers/mazhar.jpg",
-            linkedin: "https://linkedin.com",
-            email: "mazhar@university.edu",
-        },
-        {
-            name: "Fatima",
-            role: "Lead – Management",
-            image: "/images/developers/mazhar.jpg",
-            linkedin: "https://linkedin.com",
-            email: "fatima@university.edu",
-        },
-        {
-            name: "Zohaib",
-            role: "Lead – Events",
-            image: "/images/developers/mazhar.jpg",
-            linkedin: "https://linkedin.com",
-            email: "mazhar@university.edu",
-        },
+    clubs: [
+        { name: "Muhammad Mamoon Khan", role: "Software Engineering Club Lead", image: "/images/team/default.jpg" },
+        { name: "Jafar Ali", role: "Cyber Security Club Lead", image: "/images/team/default.jpg" },
+        { name: "Muhammad Ilyas", role: "AI & DS Club Lead", image: "/images/team/ai-lead.jpg" },
+        { name: "Hamza Ahmed Khan", role: "App Development Club Lead", image: "/images/team/default.jpg" },
+        { name: "Fatima Ijaz", role: "Management Head", image: "/images/team/management-lead.jpg" },
+        { name: "Shahab Saqib", role: "PR Head", image: "/images/team/default.jpg" },
+        { name: "Iqra Noor", role: "Content & Graphics Head", image: "/images/team/default.jpg" },
     ],
 };
 
-function MemberCard({ member, highlight = false, delay = 0 }) {
+// 🎴 Member Card
+function MemberCard({ member, delay = 0 }) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6, delay }}
-            className={`group relative rounded-2xl p-6 flex flex-col items-center text-center 
-                bg-gradient-to-br from-white to-blue-50 border border-blue-100 
-                shadow-md hover:shadow-2xl hover:scale-[1.03] transition-all duration-500 
-                w-full max-w-xs ${highlight ? "ring-4 ring-blue-300" : ""}`}
+            className="group relative rounded-2xl p-6 flex flex-col items-center text-center
+        bg-white backdrop-blur-sm border border-gray-100 shadow-lg hover:shadow-xl
+        hover:-translate-y-2 transition-all duration-300 w-full max-w-xs mx-auto
+        overflow-hidden h-full"
         >
+            {/* Background Decoration */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
             {/* Avatar */}
-            <div className="relative w-36 h-36">
-                <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    className="rounded-full object-cover border-4 border-white 
-                    shadow-md group-hover:shadow-lg group-hover:border-blue-300 transition-all duration-300"
-                />
+            <div className="relative w-28 h-28 mb-5 z-10 flex-shrink-0">
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg">
+                    <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                </div>
             </div>
 
             {/* Info */}
-            <div className="flex flex-col items-center mt-6">
-                <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-700 transition">
+            <div className="flex flex-col items-center z-10 flex-grow justify-start w-full">
+                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-indigo-700 transition-colors min-h-[56px] flex items-center justify-center w-full px-1">
                     {member.name}
                 </h3>
-                <p className="text-sm text-blue-700 mt-1 font-medium">{member.role}</p>
+                <p className="text-sm font-medium text-indigo-600 mt-1 min-h-[40px] flex items-center justify-center w-full px-1">
+                    {member.role}
+                </p>
                 {member.subRole && (
-                    <p className="text-xs text-gray-500 mt-0.5">{member.subRole}</p>
+                    <p className="text-xs text-gray-500 mt-2 bg-gray-100 px-2 py-1 rounded-full w-full">
+                        {member.subRole}
+                    </p>
                 )}
-            </div>
-
-            {/* Social Links */}
-            <div className="flex gap-3 mt-5">
-                <a
-                    href={member.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`LinkedIn profile of ${member.name}`}
-                    className="w-9 h-9 flex items-center justify-center rounded-full 
-                    bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white 
-                    shadow-sm transition-colors duration-300"
-                >
-                    <Linkedin size={16} />
-                </a>
-                <a
-                    href={`mailto:${member.email}`}
-                    aria-label={`Email ${member.name}`}
-                    className="w-9 h-9 flex items-center justify-center rounded-full 
-                    bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white 
-                    shadow-sm transition-colors duration-300"
-                >
-                    <Mail size={16} />
-                </a>
             </div>
         </motion.div>
     );
 }
 
+// 📌 Section Wrapper
+function Section({ title, members, colorClass }) {
+    return (
+        <div className="mt-16 md:mt-24">
+            <motion.h3
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                viewport={{ once: true }}
+                className={`text-3xl font-bold text-center mb-10 ${colorClass} relative pb-3`}
+            >
+                {title}
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full"></span>
+            </motion.h3>
+            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 max-w-7xl mx-auto justify-items-center">
+                {members.map((m, i) => (
+                    <div key={i} className="w-full flex justify-center">
+                        <MemberCard member={m} delay={i * 0.1} />
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 export default function OurTeam() {
     return (
-        <section className="py-24 bg-gradient-to-br from-white via-blue-50 to-blue-100 text-gray-900 relative overflow-hidden">
-            <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10">
+        <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 text-gray-800 min-h-screen">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Heading */}
-                <motion.h2
+                <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
                     transition={{ duration: 0.6 }}
-                    className="text-4xl md:text-5xl font-extrabold text-center text-blue-900"
+                    viewport={{ once: true }}
+                    className="text-center mb-16"
                 >
-                    Meet Our Team
-                </motion.h2>
-                <motion.p
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
+                    <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-4">
+                        Meet Our Team
+                    </h2>
+                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                        The passionate people driving our mission forward with dedication and expertise.
+                    </p>
+                </motion.div>
+
+                {/* Patron & Chief */}
+                <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
-                    className="mt-4 text-lg text-gray-700 text-center max-w-2xl mx-auto"
+                    viewport={{ once: true }}
+                    className="flex flex-col md:flex-row justify-center gap-10 md:gap-16 mb-20"
                 >
-                    The passionate people driving our mission forward.
-                </motion.p>
-
-                {/* Patron & Chief Organizer */}
-                <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-12 justify-items-center">
-                    <div className="w-full max-w-sm">
-                        <h3 className="text-2xl font-bold text-center mb-6 text-blue-800">
-                            Patron-in-Chief
-                        </h3>
-                        <MemberCard member={team.patron[0]} highlight />
+                    <div className="text-center w-full max-w-xs mx-auto">
+                        <h3 className="text-xl font-semibold mb-6 text-blue-700">Patron-in-Chief</h3>
+                        <MemberCard member={team.patron[0]} />
                     </div>
-                    <div className="w-full max-w-sm">
-                        <h3 className="text-2xl font-bold text-center mb-6 text-blue-800">
-                            Chief Organizer
-                        </h3>
-                        <MemberCard member={team.chief[0]} highlight />
+                    <div className="text-center w-full max-w-xs mx-auto">
+                        <h3 className="text-xl font-semibold mb-6 text-blue-700">Chief Organizer</h3>
+                        <MemberCard member={team.chief[0]} />
                     </div>
-                </div>
+                </motion.div>
 
-                {/* Core Leadership */}
-                <h3 className="mt-20 text-2xl font-bold text-center text-blue-800">
-                    Core Leadership
-                </h3>
-                <div className="mt-8 grid gap-10 sm:grid-cols-2 justify-items-center max-w-3xl mx-auto">
-                    {team.core.map((m, i) => (
-                        <MemberCard key={i} member={m} delay={i * 0.15} />
-                    ))}
-                </div>
-
-                {/* Team Leads */}
-                <h3 className="mt-20 text-2xl font-bold text-center text-blue-800">
-                    Team Leads
-                </h3>
-                <div className="mt-8 grid gap-10 sm:grid-cols-2 md:grid-cols-3 justify-items-center max-w-5xl mx-auto">
-                    {team.leads.map((m, i) => (
-                        <MemberCard key={i} member={m} delay={i * 0.15} />
-                    ))}
-                </div>
+                {/* Sections */}
+                <Section
+                    title="Cabinet Members"
+                    members={team.cabinet}
+                    colorClass="text-indigo-700"
+                />
+                <Section
+                    title="Club Leads & Heads"
+                    members={team.clubs}
+                    colorClass="text-purple-700"
+                />
             </div>
         </section>
     );
