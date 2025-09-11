@@ -104,7 +104,7 @@ const Gallery = () => {
                             {galleryData.length}
                         </div>
                         <div className="text-gray-600">
-                            Total Events
+                            Total Images
                         </div>
                     </div>
                     <div className="bg-white rounded-xl p-6 shadow-lg">
