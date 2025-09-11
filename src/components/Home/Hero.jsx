@@ -33,13 +33,13 @@ export default function Hero() {
                     </p>
                     <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                         <Link
-                            href="/events"
+                            href="#event"
                             className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-500 transition shadow-md"
                         >
                             Explore Events
                         </Link>
                         <Link
-                            href="/join"
+                            href="/contact"
                             className="px-6 py-3 border border-blue-600 text-blue-700 rounded-xl font-medium hover:bg-blue-50 transition"
                         >
                             Join Us

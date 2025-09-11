@@ -7,7 +7,7 @@ import galleryData from "../../data/gallery.json";
 
 const GalleryPreview = () => {
     return (
-        <section className="bg-gray-100 py-20">
+        <section id="gallery" className="bg-gray-100 py-20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Header Section */}
                 <div className="text-center mb-12">

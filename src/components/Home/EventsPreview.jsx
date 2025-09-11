@@ -22,7 +22,7 @@ const EventsPreview = () => {
     };
 
     return (
-        <section className="py-20 bg-gray-50">
+        <section id="events" className="py-20 bg-gray-50">
             <div className="max-w-7xl mx-auto px-6 lg:px-12 text-center">
                 {/* Heading */}
                 <h2 className="text-3xl md:text-4xl font-bold text-blue-900">

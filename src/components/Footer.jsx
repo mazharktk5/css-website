@@ -36,7 +36,7 @@ export default function Footer() {
                         <li><Link href="/about" className="hover:text-white transition">About Us</Link></li>
                         <li><Link href="/events" className="hover:text-white transition">Events</Link></li>
                         <li><Link href="/gallery" className="hover:text-white transition">Gallery</Link></li>
-                        <li><Link href="/join" className="hover:text-white transition">Join Us</Link></li>
+                        <li><Link href="/contact" className="hover:text-white transition">Join Us</Link></li>
                     </ul>
                 </div>
 
@@ -67,7 +67,7 @@ export default function Footer() {
                     </ul>
                     <div className="flex gap-4 mt-4">
                         <a
-                            href="https://linkedin.com"
+                            href="https://www.linkedin.com/company/computing-students-society/posts/?feedView=all"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-white transition transform hover:scale-110"

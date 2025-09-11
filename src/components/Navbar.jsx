@@ -66,7 +66,7 @@ export default function Navbar() {
                     {/* CTA (desktop) */}
                     <div className="hidden md:flex">
                         <Link
-                            href="/join"
+                            href="/contact"
                             className="ml-4 px-4 py-2 bg-blue-900 text-white rounded-lg font-medium hover:bg-blue-700 transition"
                         >
                             Join Us
@@ -125,7 +125,7 @@ export default function Navbar() {
                             Contact
                         </Link>
                         <Link
-                            href="/join"
+                            href="/contact"
                             className="mt-2 px-4 py-2 bg-blue-900 text-white rounded-lg font-medium hover:bg-blue-700 transition text-center"
                             onClick={() => setOpen(false)}
                         >
