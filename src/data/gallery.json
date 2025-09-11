@@ -1,31 +1,31 @@
 [
   {
     "id": 1,
-    "eventName": "Tech Workshop 2024",
+    "eventName": "Github and LinkedIn Session",
     "category": "Workshop",
-    "image": "/images/gallery/hero.jpg",
-    "description": "Hands-on coding workshop for students"
+    "image": "/images/gallery/github1.jpg",
+    "description": "LinkedIn and Github learning session."
   },
   {
     "id": 2,
-    "eventName": "Annual Hackathon",
-    "category": "Competition",
-    "image": "/images/gallery/hero.jpg",
-    "description": "24-hour coding competition"
+    "eventName": "MoU Signing",
+    "category": "Signing Ceremony",
+    "image": "/images/gallery/MOU2.JPG",
+    "description": "MoU Signing Ceremony."
   },
   {
     "id": 3,
-    "eventName": "AI Conference",
-    "category": "Conference",
-    "image": "/images/gallery/hero.jpg",
-    "description": "Latest trends in artificial intelligence"
+    "eventName": "Sports Week",
+    "category": "Games",
+    "image": "/images/gallery/sportsweek1.JPG",
+    "description": "Staff at Department's Sports Week."
   },
   {
     "id": 4,
-    "eventName": "Code Review Session",
-    "category": "Workshop",
-    "image": "/images/gallery/hero.jpg",
-    "description": "Best practices in code development"
+    "eventName": "Web Development Bootcamp",
+    "category": "Bootcamp",
+    "image": "/images/gallery/webdev1.PNG",
+    "description": "Best practices in Web development"
   },
   {
     "id": 5,

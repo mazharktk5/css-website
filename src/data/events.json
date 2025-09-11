@@ -1,0 +1,84 @@
+{
+  "upcoming": [
+    {
+      "id": 1,
+      "title": "Web Development Masterclass",
+      "date": "2025-09-25",
+      "time": "2:00 PM - 5:00 PM",
+      "location": "Computer Lab A",
+      "image": "/images/gallery/hero.jpg",
+      "description": "Learn modern web development with React, Next.js, and Tailwind CSS. Perfect for beginners and intermediate students.",
+      "tags": ["Workshop", "Web Development"],
+      "registrationLink": "#"
+    },
+    {
+      "id": 2,
+      "title": "AI & Machine Learning Symposium",
+      "date": "2025-10-15",
+      "time": "10:00 AM - 4:00 PM",
+      "location": "Main Auditorium",
+      "image": "/images/gallery/hero.jpg",
+      "description": "Industry experts will share insights on the latest AI trends and machine learning applications.",
+      "tags": ["Conference", "AI/ML"],
+      "registrationLink": "#"
+    },
+    {
+      "id": 3,
+      "title": "Hackathon 2025",
+      "date": "2025-11-20",
+      "time": "24 Hours",
+      "location": "Engineering Building",
+      "image": "/images/gallery/hero.jpg",
+      "description": "48-hour coding competition with amazing prizes. Form teams and build innovative solutions!",
+      "tags": ["Competition", "Hackathon"],
+      "registrationLink": "#"
+    }
+  ],
+  "past": [
+    {
+      "id": 4,
+      "title": "Coding Bootcamp 2025",
+      "date": "2025-08-15",
+      "description": "A hands-on workshop introducing 50+ students to web development fundamentals including HTML, CSS, JavaScript, and React.",
+      "participants": "50+ students",
+      "image": "/images/gallery/hero.jpg",
+      "tags": ["Workshop", "Web Development"]
+    },
+    {
+      "id": 5,
+      "title": "Hackathon 2024",
+      "date": "2024-11-22",
+      "description": "24-hour competition with 12 teams building innovative solutions for real-world problems. Winners received internship opportunities.",
+      "participants": "12 teams",
+      "image": "/images/gallery/hero.jpg",
+      "tags": ["Competition", "Hackathon"]
+    },
+    {
+      "id": 6,
+      "title": "Tech Career Fair 2024",
+      "date": "2024-10-10",
+      "description": "Connected students with 15+ tech companies for internships and full-time positions. Over 100 students participated.",
+      "participants": "100+ students",
+      "image": "/images/gallery/hero.jpg",
+      "tags": ["Networking", "Career"]
+    },
+    {
+      "id": 7,
+      "title": "Python Programming Workshop",
+      "date": "2024-09-20",
+      "description": "Comprehensive Python workshop covering basics to advanced topics including data structures and algorithms.",
+      "participants": "35 students",
+      "image": "/images/gallery/hero.jpg",
+      "tags": ["Workshop", "Programming"]
+    },
+    {
+      "id": 8,
+      "title": "Cybersecurity Seminar",
+      "date": "2024-08-05",
+      "description": "Industry professionals shared insights on cybersecurity best practices and emerging threats in the digital world.",
+      "participants": "80+ attendees",
+      "image": "/images/gallery/hero.jpg",
+      "tags": ["Seminar", "Cybersecurity"]
+    }
+  ]
+}
