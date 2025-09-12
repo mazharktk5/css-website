@@ -33,7 +33,7 @@ export default function Hero() {
                     </p>
                     <div className="flex flex-wrap justify-center lg:justify-start gap-4">
                         <Link
-                            href="#event"
+                            href="#events"
                             className="px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-500 transition shadow-md"
                         >
                             Explore Events
