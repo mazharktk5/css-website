@@ -1,6 +1,6 @@
 const developers = [
     {
-        name: "Mamoon Khan",
+        name: "Muhammad Mamoon Khan",
         role: "Lead / Supervisor",
         image: "/images/developers/mamoon.jpg",
         linkedin: "https://www.linkedin.com/in/muhammadmamoonkhan/",
