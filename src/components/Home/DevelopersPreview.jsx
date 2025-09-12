@@ -46,26 +46,46 @@ export default function DevelopersPreview() {
                             viewport={{ once: false, amount: 0.2 }}
                             transition={{ duration: 0.6, delay: index * 0.15 }}
                             variants={fadeUp}
-                            className="bg-white rounded-2xl shadow-md hover:shadow-xl transition p-6 flex flex-col items-center"
+                            className="group relative rounded-2xl p-6 flex flex-col items-center text-center
+                            bg-white backdrop-blur-sm border border-gray-100 shadow-md hover:shadow-xl
+                            hover:-translate-y-2 transition-all duration-300 w-full max-w-xs mx-auto
+                            overflow-hidden h-full"
                         >
-                            <div className="relative w-28 h-28 mb-4">
-                                <Image
-                                    src={dev.image}
-                                    alt={dev.name}
-                                    fill
-                                    className="rounded-full object-cover"
-                                />
+                            {/* Background Decoration */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                            {/* Avatar */}
+                            <div className="relative w-28 h-28 mb-5 z-10 flex-shrink-0">
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg">
+                                    <Image
+                                        src={dev.image}
+                                        alt={dev.name}
+                                        fill
+                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                    />
+                                </div>
                             </div>
-                            <h3 className="text-lg font-semibold text-blue-800">{dev.name}</h3>
-                            <p className="text-gray-600 text-sm">{dev.role}</p>
-                            <a
-                                href={dev.linkedin}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="mt-3 inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
-                            >
-                                <Linkedin className="w-5 h-5" /> LinkedIn
-                            </a>
+
+                            {/* Info */}
+                            <div className="flex flex-col items-center z-10 flex-grow justify-start w-full">
+                                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-indigo-700 transition-colors min-h-[56px] flex items-center justify-center w-full px-1">
+                                    {dev.name}
+                                </h3>
+                                <p className="text-gray-600 text-sm mt-1 min-h-[40px] flex items-center justify-center w-full px-1">
+                                    {dev.role}
+                                </p>
+                                <div className="mt-auto">
+                                    <a
+                                        href={dev.linkedin}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mt-3 inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 transition"
+                                    >
+                                        <Linkedin className="w-5 h-5" /> LinkedIn
+                                    </a>
+                                </div>
+                            </div>
                         </motion.div>
                     ))}
                 </div>
