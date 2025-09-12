@@ -1,44 +1,128 @@
 [
   {
     "id": 1,
-    "eventName": "Github and LinkedIn Session",
-    "category": "Workshop",
-    "image": "/images/gallery/github1.jpg",
-    "description": "LinkedIn and Github learning session."
-  },
-  {
-    "id": 2,
     "eventName": "MoU Signing",
     "category": "Signing Ceremony",
     "image": "/images/gallery/MOU2.JPG",
     "description": "MoU Signing Ceremony."
   },
   {
-    "id": 3,
-    "eventName": "Sports Week",
-    "category": "Games",
-    "image": "/images/gallery/sportsweek1.JPG",
-    "description": "Staff at Department's Sports Week."
+    "id": 2,
+    "eventName": "MoU Signing",
+    "category": "Signing Ceremony",
+    "image": "/images/gallery/MOU1.JPG",
+    "description": "MoU Signing Ceremony."
   },
   {
-    "id": 4,
+    "id": 3,
     "eventName": "Web Development Bootcamp",
     "category": "Bootcamp",
     "image": "/images/gallery/webdev1.PNG",
     "description": "Best practices in Web development"
   },
   {
+    "id": 4,
+    "eventName": "AI Bootcamp",
+    "category": "Bootcamp",
+    "image": "/images/gallery/Ai1.jpg",
+    "description": "Best practices in Artificial Intelligence"
+  },
+  {
     "id": 5,
-    "eventName": "Career Fair",
-    "category": "Networking",
-    "image": "/images/gallery/hero.jpg",
-    "description": "Connect with industry professionals"
+    "eventName": "CyberSecurity BootCamp",
+    "category": "Bootcamp",
+    "image": "/images/gallery/Cyber1.jpg",
+    "description": "Learn the basics of CyberSecurity"
   },
   {
     "id": 6,
-    "eventName": "Web Development Bootcamp",
+    "eventName": "Github and LinkedIn Workshop",
     "category": "Workshop",
+    "image": "/images/gallery/github2.jpg",
+    "description": "Mastering GitHub and LinkedIn for Career Growth"
+  },
+  {
+    "id": 7,
+    "eventName": "Github and LinkedIn Workshop",
+    "category": "Workshop",
+    "image": "/images/gallery/github3.jpg",
+    "description": "Our guest speaker explaining the importance of GitHub and LinkedIn"
+  },
+  {
+    "id": 8,
+    "eventName": "Github and LinkedIn Workshop",
+    "category": "Workshop",
+    "image": "/images/gallery/github5.jpg",
+    "description": "Our Society's President giving a token of appreciation to our guest speaker"
+  },
+  {
+    "id": 9,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
     "image": "/images/gallery/hero.jpg",
-    "description": "Learn modern web technologies"
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 10,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/sportsweek2.JPG",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 11,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/sportsweek4.JPG",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 12,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/sportsweek5.JPG",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 13,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/sportsweek6.JPG",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 14,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/chess1.jpg",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 15,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/chess5.jpg",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 16,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/chess6.jpg",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 17,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/chess4.jpg",
+    "description": "Exciting moments from Sports Fest 2025."
+  },
+  {
+    "id": 18,
+    "eventName": "Sports Fest 2025",
+    "category": "Games",
+    "image": "/images/gallery/chess2.jpg",
+    "description": "Exciting moments from Sports Fest 2025."
   }
 ]
