@@ -1,7 +1,7 @@
 // components/Footer.jsx
 import Link from "next/link";
 import Image from "next/image";
-import { Linkedin, Mail } from "lucide-react";
+import { Mail, Linkedin, Facebook, Instagram } from "lucide-react"; // ✅ removed duplicate Linkedin
 import logo from "../../public/images/logo/css-logo.jpg";
 
 export default function Footer() {
@@ -65,14 +65,39 @@ export default function Footer() {
                             </a>
                         </li>
                     </ul>
-                    <div className="flex gap-4 mt-4">
+
+                    <div className="flex flex-col gap-2 mt-4 text-sm">
+                        {/* LinkedIn */}
                         <a
                             href="https://www.linkedin.com/company/computing-students-society/posts/?feedView=all"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hover:text-white transition transform hover:scale-110"
+                            className="flex items-center gap-2 hover:text-white transition transform hover:scale-105"
                         >
                             <Linkedin size={20} />
+                            <span>LinkedIn</span>
+                        </a>
+
+                        {/* Facebook */}
+                        <a
+                            href="https://www.facebook.com/your-page"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 hover:text-white transition transform hover:scale-105"
+                        >
+                            <Facebook size={20} />
+                            <span>Facebook</span>
+                        </a>
+
+                        {/* Instagram */}
+                        <a
+                            href="https://www.instagram.com/your-handle"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 hover:text-white transition transform hover:scale-105"
+                        >
+                            <Instagram size={20} />
+                            <span>Instagram</span>
                         </a>
                     </div>
                 </div>
