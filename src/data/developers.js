@@ -11,12 +11,12 @@ const developers = [
         image: "/images/developers/mazhar.jpg",
         linkedin: "www.linkedin.com/in/mazhar-ahmad78",
     },
-    {
-        name: "Hanzalah Khan",
-        role: "MERN Developer",
-        image: "/images/developers/mazhar.jpg",
-        linkedin: "https://www.linkedin.com/in/mhk47/",
-    },
+    // {
+    //     name: "Hanzalah Khan",
+    //     role: "MERN Developer",
+    //     image: "/images/developers/mazhar.jpg",
+    //     linkedin: "https://www.linkedin.com/in/mhk47/",
+    // },
     {
         name: "Safia Zulfiqar",
         role: "Frontend Developer",

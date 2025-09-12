@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
 
-// 🧑‍🤝‍🧑 Team Data
+//  Team Data
 const team = {
     patron: [
         {
@@ -24,22 +24,22 @@ const team = {
     cabinet: [
         { name: "Abubakar Sadiq", role: "President", image: "/images/team/president.jpg" },
         { name: "Muhammad Jawad", role: "Vice President", image: "/images/team/vp.jpg" },
-        { name: "Abdullah Ahmed", role: "Chief Secretary", image: "/images/team/default.jpg" },
+        { name: "Abdullah Ahmed", role: "Chief Secretary", image: "/images/team/cheif-secretary.jpg" },
         { name: "Hashir Ahmed", role: "Information Secretary", image: "/images/team/information-secretary.jpg" },
         { name: "Atiq Ullah Khan", role: "Media Secretary", image: "/images/team/media-secretary.jpg" },
     ],
     clubs: [
         { name: "Fatima Ijaz", role: "Management Head", image: "/images/team/management-lead.jpg" },
         { name: "Muhammad Mamoon Khan", role: "Software Engineering Club Lead", image: "/images/developers/mamoon.jpg" },
-        { name: "Jafar Ali", role: "Cyber Security Club Lead", image: "/images/team/default.jpg" },
+        { name: "Jafar Ali", role: "Cyber Security Club Lead", image: "/images/team/cyber-lead.jpg" },
         { name: "Muhammad Ilyas", role: "AI & DS Club Lead", image: "/images/team/ai-lead.jpg" },
-        { name: "Hamza Ahmed Khan", role: "App Development Club Lead", image: "/images/team/default.jpg" },
-        { name: "Shahab Saqib", role: "PR Head", image: "/images/team/default.jpg" },
-        { name: "Iqra Noor", role: "Content & Graphics Head", image: "/images/team/default.jpg" },
+        // { name: "Hamza Ahmed Khan", role: "App Development Club Lead", image: "/images/team/default.jpg" },
+        // { name: "Shahab Saqib", role: "PR Head", image: "/images/team/default.jpg" },
+        // { name: "Iqra Noor", role: "Content & Graphics Head", image: "/images/team/default.jpg" },
     ],
 };
 
-// 🎴 Member Card
+// Member Card
 function MemberCard({ member, delay = 0 }) {
     return (
         <motion.div
@@ -86,7 +86,7 @@ function MemberCard({ member, delay = 0 }) {
     );
 }
 
-// 📌 Section Wrapper
+//  Section Wrapper
 function Section({ title, members, colorClass }) {
     return (
         <div className="mt-16 md:mt-24">
