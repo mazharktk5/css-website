@@ -80,7 +80,7 @@ export default function Footer() {
 
                         {/* Facebook */}
                         <a
-                            href="https://www.facebook.com/your-page"
+                            href="https://www.facebook.com/share/1GSrotfswb/"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 hover:text-white transition transform hover:scale-105"
@@ -91,7 +91,7 @@ export default function Footer() {
 
                         {/* Instagram */}
                         <a
-                            href="https://www.instagram.com/your-handle"
+                            href="https://www.instagram.com/css.dcs.uop?igsh=Yjh6a2EyZWRjbHRp"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="flex items-center gap-2 hover:text-white transition transform hover:scale-105"
