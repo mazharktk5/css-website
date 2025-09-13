@@ -12,7 +12,7 @@ const developers = [
         linkedin: "www.linkedin.com/in/mazhar-ahmad78",
     },
     {
-        name: "Hanzalah Khan",
+        name: "Muhammad Hanzala Dawood",
         role: "MERN Developer",
         image: "/images/developers/hanzala.jpg",
         linkedin: "https://www.linkedin.com/in/mhk47/",
