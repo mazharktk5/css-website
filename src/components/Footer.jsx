@@ -61,7 +61,7 @@ export default function Footer() {
                                 href="mailto:css@university.edu"
                                 className="hover:text-white transition"
                             >
-                                css@university.edu
+                                computing.society@uop.edu.pk
                             </a>
                         </li>
                     </ul>
