@@ -49,6 +49,7 @@ export default function ContactPage() {
                 type="text"
                 id="name"
                 placeholder="Enter your name"
+                required 
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -62,7 +63,8 @@ export default function ContactPage() {
               <input
                 type="email"
                 id="email"
-                placeholder="Enter your email"
+                placeholder="Enter your email" 
+                required
                 className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -93,7 +95,8 @@ export default function ContactPage() {
             <textarea
               id="message"
               rows={5}
-              placeholder="Write your message..."
+              placeholder="Write your message..." 
+              required
               className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
             ></textarea>
           </div>
@@ -137,8 +140,8 @@ export default function ContactPage() {
                 </svg>
               </div>
               <h3 className="font-semibold text-lg">Email</h3>
-              <p className="text-gray-700">adv@gmail.com</p>
-              <p className="text-gray-700">hgf@gmail.com</p>
+              <p className="text-gray-700">computing.society@uop.edu.pk</p>
+              <p className="text-gray-700"></p>
             </motion.div>
 
             {/* Phone */}
@@ -170,8 +173,8 @@ export default function ContactPage() {
                 </svg>
               </div>
               <h3 className="font-semibold text-lg">PHONE</h3>
-              <p className="text-gray-700">+912 3 567 8987</p>
-              <p className="text-gray-700">+912 5 252 3336</p>
+              <p className="text-gray-700">+92 312 9057934</p>
+              <p className="text-gray-700"></p>
             </motion.div>
 
             {/* Office Location */}
@@ -231,7 +234,7 @@ export default function ContactPage() {
     <div className="flex justify-center gap-10">
       {/* WhatsApp */}
       <motion.a
-        href="https://wa.me/923001234567"
+        href="https://wa.me/923129057934"
         target="_blank"
         rel="noopener noreferrer"
         initial="hidden"
@@ -254,7 +257,7 @@ export default function ContactPage() {
 
       {/* Instagram */}
       <motion.a
-        href="https://instagram.com/"
+        href="https://www.instagram.com/css.dcs.uop/"
         target="_blank"
         rel="noopener noreferrer"
         initial="hidden"
@@ -278,7 +281,7 @@ export default function ContactPage() {
 
       {/* LinkedIn */}
       <motion.a
-        href="https://linkedin.com/"
+        href="https://www.linkedin.com/company/computing-students-society/"
         target="_blank"
         rel="noopener noreferrer"
         initial="hidden"
@@ -298,6 +301,30 @@ export default function ContactPage() {
           <path d="M22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.226.792 24 1.771 24h20.451C23.204 24 24 23.226 24 22.271V1.729C24 .774 23.204 0 22.225 0zM7.119 20.452H3.56V9h3.559v11.452zM5.34 7.577a2.065 2.065 0 1 1 0-4.13 2.065 2.065 0 0 1 0 4.13zM20.452 20.452h-3.559v-5.604c0-1.337-.027-3.059-1.865-3.059-1.867 0-2.153 1.459-2.153 2.967v5.696h-3.559V9h3.414v1.561h.049c.476-.9 1.637-1.849 3.37-1.849 3.604 0 4.272 2.372 4.272 5.457v6.283z" />
         </svg>
       </motion.a>
+      
+      {/* Facebook */}
+      <motion.a
+        href="https://www.facebook.com/CSS.UoP/" 
+        target="_blank"
+        rel="noopener noreferrer"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.2 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.6 }}
+        variants={fadeUp}
+        className="bg-blue-600 w-16 h-16 flex items-center justify-center rounded-full shadow-lg hover:bg-blue-700 transition"
+      >
+       <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="28"
+        height="28"
+        fill="white"
+        viewBox="0 0 24 24"
+      >
+        <path d="M22.675 0h-21.35C.597 0 0 .597 0 1.333v21.333C0 23.403.597 24 1.325 24h11.495V14.706h-3.13v-3.62h3.13V8.413c0-3.1 1.894-4.788 4.659-4.788 1.325 0 2.464.099 2.795.143v3.24l-1.918.001c-1.505 0-1.797.716-1.797 1.765v2.313h3.59l-.467 3.62h-3.123V24h6.116C23.403 24 24 23.403 24 22.667V1.333C24 .597 23.403 0 22.675 0z" />
+      </svg>
+      </motion.a>
+
     </div>
   </div>
 </div>
