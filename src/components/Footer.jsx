@@ -1,7 +1,7 @@
 // components/Footer.jsx
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Linkedin, Facebook, Instagram } from "lucide-react"; // ✅ removed duplicate Linkedin
+import { Mail, Linkedin, Facebook, Instagram } from "lucide-react";
 import logo from "../../public/images/logo/css-logo.jpg";
 
 export default function Footer() {

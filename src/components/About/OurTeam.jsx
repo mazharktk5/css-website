@@ -34,7 +34,7 @@ const team = {
         { name: "Jafar Ali", role: "Cyber Security Club Lead", image: "/images/team/cyber-lead.jpg" },
         { name: "Muhammad Ilyas", role: "AI & DS Club Lead", image: "/images/team/ai-lead.jpg" },
         { name: "Hamza Ahmed Khan", role: "App Development Club Lead", image: "/images/team/app-lead.jpg" },
-        { name: "Shahab Saqib", role: "PR Head", image: "/images/team/pr-lead.jpg" },
+        { name: "Shahab Saqib", role: "PR Head", image: "/images/team/pr-lead-2.jpg" },
         { name: "Iqra Noor", role: "Content & Graphics Head", image: "/images/team/graphic-head.jpg" },
     ],
 };
