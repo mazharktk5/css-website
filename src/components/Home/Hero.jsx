@@ -18,7 +18,7 @@ export default function Hero() {
       
       <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-0"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 items-center gap-12 w-full py-32 lg:min-h-[80vh]">
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 items-center gap-12 w-full lg:py-32 py-20 lg:min-h-[80vh]">
         
      
         <motion.div
@@ -31,7 +31,7 @@ export default function Hero() {
         >
           <div className="space-y-4">
             <h1 className="text-3xl sm:text-4xl lg:text-4xl font-black tracking-tight leading-[1.1] text-blue-950">
-              Innovate. <span className="text-blue-400 text-glow">Collaborate.</span> Lead.
+              Innovate. <span className="text-[#3c6da1] text-glow">Collaborate.</span> Lead.
             </h1>
             
    
@@ -40,7 +40,7 @@ export default function Hero() {
                 &quot;Join our community to turn your ideas into reality. Stay connected, 
                 keep learning, and build the future of tech, together.&quot;
               </p>
-              <footer className="mt-2 text-sm font-bold text-blue-400 uppercase tracking-widest">
+              <footer className="mt-2 text-sm font-bold text-[#3c6da1] uppercase tracking-widest">
                 — Sir Waheed
               </footer>
             </div>
@@ -54,7 +54,7 @@ export default function Hero() {
           <div className="flex flex-wrap justify-center lg:justify-start gap-5">
             <Link
               href="#events"
-              className="px-6 py-3 bg-blue-400 text-white rounded-2xl font-semibold hover:bg-blue-500 hover:-translate-y-1 transition-all shadow-xl shadow-blue-200"
+              className="px-6 py-3 bg-[#3c6da1] text-white rounded-2xl font-semibold hover:bg-blue-500 hover:-translate-y-1 transition-all shadow-xl shadow-blue-200"
             >
               Explore Events
             </Link>
