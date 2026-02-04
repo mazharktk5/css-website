@@ -1,92 +1,73 @@
-// components/About/MissionVision.jsx
 "use client";
 
 import { motion } from "framer-motion";
-import { Target, Lightbulb } from "lucide-react";
-
-const fadeUp = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-};
 
 export default function MissionVision() {
-    return (
-        <section className="relative py-24 bg-gradient-to-br from-gray-50 via-white to-blue-50 text-gray-900 overflow-hidden">
-            {/* subtle background accent */}
-            <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top_left,_#3b82f6_0%,_transparent_40%)]" />
+  return (
+    <section className="relative w-full min-h-screen bg-white overflow-hidden">
+      <div className="flex flex-col md:grid md:grid-cols-2">
+        
+        {/* --- ROW 1: VISION --- */}
+        {/* Image 1: Team/Robotic Theme */}
+        <div className="relative h-[400px] md:h-[500px] overflow-hidden">
+          <img 
+            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200" 
+            alt="Robotic Innovation Team"
+            className="w-full h-full object-cover"
+          />
+          {/* Blue Tint Overlay */}
+          <div className="absolute inset-0 bg-[#3e76b2]/20 mix-blend-multiply" />
+        </div>
 
-            <div className="relative max-w-7xl mx-auto px-6 lg:px-12">
-                {/* Heading */}
-                <motion.h2
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.3 }}
-                    className="text-4xl md:text-5xl font-extrabold text-center text-blue-900"
-                >
-                    Our Mission & Vision
-                </motion.h2>
-                <motion.p
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="show"
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ delay: 0.2 }}
-                    className="mt-4 text-lg text-gray-700 text-center max-w-2xl mx-auto"
-                >
-                    What drives us forward as a community of innovators and learners.
-                </motion.p>
+        {/* Text 1: Our Vision */}
+        <div className="bg-[#3e76b2] flex flex-col justify-center p-12 lg:p-24 text-white relative">
+          {/* Tech/Robotic Background Pattern Asset */}
+          <div className="absolute inset-0 opacity-10 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/circuit-board.png')]" />
+          
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="relative z-10"
+          >
+            <h2 className="text-4xl md:text-5xl font-serif tracking-tight mb-8 uppercase">Our Vision</h2>
+            <p className="text-lg md:text-xl leading-relaxed font-light opacity-90 border-l-2 border-white/30 pl-6">
+              To create a thriving student-led community where innovation,
+              collaboration, and lifelong learning are at the heart of every
+              initiative. We aim to bridge the gap between human creativity 
+              and robotic precision.
+            </p>
+          </motion.div>
+        </div>
 
-                {/* Cards */}
-                <div className="mt-16 grid gap-10 md:grid-cols-2">
-                    {/* Mission */}
-                    <motion.div
-                        variants={fadeUp}
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{ once: true, amount: 0.3 }}
-                        className="group relative bg-white rounded-2xl p-10 shadow-lg hover:shadow-2xl transition overflow-hidden"
-                    >
-                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-600 rounded-2xl transition" />
+        {/* --- ROW 2: MISSION (Reversed for Checkerboard) --- */}
+        {/* Text 2: Our Mission (Appears on left on desktop) */}
+        <div className="bg-[#f4f1ee] flex flex-col justify-center p-12 lg:p-24 text-[#3e76b2] md:order-3 relative">
+           <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+          >
+            <h2 className="text-4xl md:text-5xl font-serif tracking-tight mb-8 uppercase">Our Mission</h2>
+            <p className="text-lg md:text-xl leading-relaxed font-medium opacity-80 border-l-2 border-[#3e76b2]/30 pl-6">
+              To empower students with technical knowledge, hands-on
+              experience, and leadership opportunities that prepare them for
+              impactful careers in technology and beyond.
+            </p>
+          </motion.div>
+        </div>
 
-                        {/* Icon + Heading inline */}
-                        <div className="flex items-center gap-3">
-                            <Target className="w-10 h-10 text-blue-700" />
-                            <h3 className="text-2xl font-bold text-blue-900">Our Mission</h3>
-                        </div>
+        {/* Image 2: Team/Robotic Theme (Appears on right on desktop) */}
+        <div className="relative h-[400px] md:h-[500px] overflow-hidden md:order-4">
+          <img 
+            src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1200" 
+            alt="Robotic Arm and Students"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-[#3e76b2]/10 mix-blend-screen" />
+        </div>
 
-                        <p className="mt-4 text-gray-700 leading-relaxed">
-                            To empower students with technical knowledge, hands-on
-                            experience, and leadership opportunities that prepare them for
-                            impactful careers in technology and beyond.
-                        </p>
-                    </motion.div>
-
-                    {/* Vision */}
-                    <motion.div
-                        variants={fadeUp}
-                        initial="hidden"
-                        whileInView="show"
-                        viewport={{ once: true, amount: 0.3 }}
-                        transition={{ delay: 0.2 }}
-                        className="group relative bg-white rounded-2xl p-10 shadow-lg hover:shadow-2xl transition overflow-hidden"
-                    >
-                        <div className="absolute inset-0 border-2 border-transparent group-hover:border-blue-600 rounded-2xl transition" />
-
-                        {/* Icon + Heading inline */}
-                        <div className="flex items-center gap-3">
-                            <Lightbulb className="w-10 h-10 text-yellow-500" />
-                            <h3 className="text-2xl font-bold text-blue-900">Our Vision</h3>
-                        </div>
-
-                        <p className="mt-4 text-gray-700 leading-relaxed">
-                            To create a thriving student-led community where innovation,
-                            collaboration, and lifelong learning are at the heart of every
-                            initiative.
-                        </p>
-                    </motion.div>
-                </div>
-            </div>
-        </section>
-    );
+      </div>
+    </section>
+  );
 }

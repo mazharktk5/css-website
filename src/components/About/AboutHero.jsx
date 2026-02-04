@@ -1,27 +1,82 @@
-// components/About/AboutHero.jsx
 "use client";
 
 import { motion } from "framer-motion";
 
 export default function AboutHero() {
-    return (
-        <section className="relative min-h-[70vh] flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900 text-white overflow-hidden">
-            <div className="absolute inset-0 bg-black/40" /> {/* Overlay for contrast */}
+  return (
+    <section className="relative min-h-[70vh] md:min-h-screen bg-white flex flex-col md:flex-row items-stretch overflow-hidden">
+      
+      {/* 1. Vertical Sidebar Section */}
+      <div className="flex flex-col md:flex-row w-full md:w-1/3 lg:w-1/4 px-6 md:px-12 py-10 md:py-0 items-start md:items-center justify-start md:justify-center bg-white z-20">
+        
+        {/* Container for the Two Vertical Lines */}
+        <div className="flex flex-row md:flex-row-reverse items-end md:items-stretch gap-4 md:gap-6 h-auto md:h-[500px]">
+          
+          {/* Main Title - Vertical on Desktop */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-5xl lg:text-7xl font-bold text-[#3e76b2] md:[writing-mode:vertical-rl] md:rotate-180 leading-none whitespace-nowrap"
+          >
+            CSS Society
+          </motion.h1>
 
-            <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="relative z-10 text-center px-6"
-            >
-                <h1 className="text-4xl md:text-6xl font-bold">
-                    About the Computing Students Society
-                </h1>
-                <p className="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
-                    Building a vibrant tech community through workshops, hackathons, and
-                    collaboration — empowering the next generation of innovators.
-                </p>
-            </motion.div>
-        </section>
-    );
+          {/* Subtitle/Description - Vertical on Desktop */}
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-center md:items-stretch border-l-2 md:border-l-0 md:border-r-2 border-[#3e76b2] pl-4 md:pl-0 md:pr-4"
+          >
+            <p className="text-sm md:text-base text-gray-500 font-medium md:[writing-mode:vertical-rl] md:rotate-180 uppercase tracking-widest leading-tight">
+              Empowering the next generation of innovators.
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* 2. Image and Floating Card Section */}
+      <div className="relative flex-1 flex items-center justify-center p-4 md:p-0 bg-gray-50 md:bg-white">
+        
+        {/* Main Image Container */}
+        <motion.div 
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8 }}
+          className="relative w-full h-[300px] sm:h-[450px] md:h-[600px] lg:h-[700px] max-w-5xl overflow-hidden shadow-2xl"
+        >
+          <img 
+            src="/images/gallery/sportsweek3.JPG" 
+            alt="Computing Students Society"
+            className="w-full h-full object-cover"
+          />
+          {/* Subtle Color Overlay to tie in the blue (softer on mobile) */}
+          <div className="absolute inset-0 bg-[#3e76b2]/8 md:bg-[#3e76b2]/5" />
+        </motion.div>
+
+        {/* 3. Floating "About Us" Card */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5, duration: 0.5 }}
+          className="relative md:absolute mt-6 md:mt-0 md:bottom-20 md:right-10 lg:right-20 bg-[#3e76b2] text-white p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-2xl w-full md:w-auto max-w-full md:max-w-md lg:max-w-lg z-30"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">About Us</h2>
+          <p className="text-blue-50 leading-relaxed text-sm md:text-lg opacity-90">
+            The Computing Students Society is a vibrant tech community focused on 
+            bridging the gap between academia and industry. Through workshops, 
+            hackathons, and collaborative projects, we empower students to build 
+            future-ready skills.
+          </p>
+          
+          {/* Decorative pill bar from your image */}
+          <div className="mt-10 h-10 w-3/4 bg-white/10 rounded-full flex items-center px-4">
+             <div className="h-1 w-12 bg-white/20 rounded-full" />
+          </div>
+        </motion.div>
+      </div>
+
+    </section>
+  );
 }
