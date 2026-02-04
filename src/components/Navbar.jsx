@@ -27,37 +27,44 @@ export default function Navbar() {
     ];
 
     return (
-      <nav 
-    className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out backdrop-blur-md ${
-        scrolled 
-        ? "bg-[#0B0E14]/80 border-b border-white/10 py-1 shadow-2xl" 
-        : "bg-black/20 py-1 border-b border-white/5" 
-    }`}
->
+        <nav 
+            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out backdrop-blur-md ${
+                scrolled || open 
+                ? "bg-white md:bg-[#3e76b2]/95 border-b border-gray-100 md:border-white/10 py-1 shadow-xl" 
+                : "bg-white/80 py-1 border-b border-gray-100" 
+            }`}
+        >
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
                 <div className="flex items-center justify-between h-16">
                     
                     {/* Logo Area */}
                     <Link href="/" className="flex items-center space-x-3 group">
-                        <Image
-                            src={logo}
-                            alt="CSS Logo"
-                            width={45}
-                            height={45}
-                            className="rounded-full transition-transform duration-300 group-hover:scale-105 border border-white/20"
-                        />
-                        <span className="text-[#F8FAFC] font-bold tracking-tight text-xl drop-shadow-lg">
-                            CSS <span className="text-[#3c6da1]">Society</span>
+                        <div className="relative w-[40px] h-[40px] md:w-[45px] md:h-[45px]">
+                            <Image
+                                src={logo}
+                                alt="CSS Logo"
+                                fill
+                                className="rounded-full transition-transform duration-300 group-hover:scale-110 border-2 border-[#3e76b2]/20 object-cover"
+                            />
+                        </div>
+                        <span className={`font-black tracking-tighter text-xl md:text-2xl transition-colors duration-300 ${
+                            scrolled && !open ? "md:text-white text-[#3e76b2]" : "text-[#3e76b2]"
+                        }`}>
+                            CSS <span className={(scrolled && !open) ? "md:text-blue-200 text-gray-900" : "text-gray-900"}>SOCIETY</span>
                         </span>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-1">
+                    <div className="hidden md:flex items-center space-x-2">
                         {navLinks.map((link) => (
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className="px-4 py-2 text-[#F8FAFC] hover:text-[#83b4e9] transition-all font-medium text-sm"
+                                className={`px-4 py-2 transition-all font-bold text-xs uppercase tracking-widest ${
+                                    scrolled 
+                                    ? "text-white hover:text-blue-200" 
+                                    : "text-gray-600 hover:text-[#3e76b2]"
+                                }`}
                             >
                                 {link.name}
                             </Link>
@@ -65,7 +72,11 @@ export default function Navbar() {
                         
                         <Link
                             href="/contact"
-                            className="ml-6 px-6 py-2.5 bg-[#3c6da1] text-white rounded-full font-bold text-sm hover:brightness-110 transition-all shadow-lg active:scale-95"
+                            className={`ml-6 px-8 py-3 rounded-full font-black text-xs uppercase tracking-tighter transition-all shadow-lg active:scale-95 ${
+                                scrolled 
+                                ? "bg-white text-[#3e76b2] hover:bg-blue-50" 
+                                : "bg-[#3e76b2] text-white hover:brightness-110 shadow-[#3e76b2]/20"
+                            }`}
                         >
                             Join Us
                         </Link>
@@ -75,7 +86,7 @@ export default function Navbar() {
                     <div className="md:hidden">
                         <button
                             onClick={() => setOpen(!open)}
-                            className="p-2 text-[#F8FAFC]"
+                            className="p-2 text-[#3e76b2]"
                         >
                             {open ? <X size={28} /> : <Menu size={28} />}
                         </button>
@@ -83,25 +94,35 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu Overlay - Sliding White Panel */}
             <div 
-                className={`fixed inset-0 bg-[#0B0E14] z-[-1] transition-transform duration-500 ease-in-out md:hidden ${
-                    open ? "translate-x-0" : "translate-x-full"
+                className={`absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 overflow-hidden transition-all duration-500 ease-in-out md:hidden ${
+                    open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
                 }`}
             >
-                <div className="flex flex-col items-center justify-center h-full space-y-8">
-                    {navLinks.map((link) => (
+                <div className="flex flex-col p-8 space-y-6 shadow-inner">
+                    {navLinks.map((link, idx) => (
                         <Link
                             key={link.name}
                             href={link.href}
-                            className="text-2xl font-bold text-[#F8FAFC]"
+                            className={`text-2xl font-black text-[#3e76b2] uppercase tracking-tighter transition-all transform ${
+                                open ? "translate-x-0" : "-translate-x-4"
+                            }`}
+                            style={{ transitionDelay: `${idx * 50}ms` }}
                             onClick={() => setOpen(false)}
                         >
                             {link.name}
                         </Link>
                     ))}
+                    <Link
+                        href="/contact"
+                        className="w-full py-4 bg-[#3e76b2] text-white text-center rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-[#3e76b2]/20"
+                        onClick={() => setOpen(false)}
+                    >
+                        Join Us
+                    </Link>
                 </div>
             </div>
         </nav>
-    );
+    ); 
 }
