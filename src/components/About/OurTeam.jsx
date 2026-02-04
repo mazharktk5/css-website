@@ -3,21 +3,18 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import React from "react";
 
-//  Team Data
 const team = {
-    patron: [
+    executive: [
         {
             name: "Dr Shah Khusro",
             role: "Patron-in-Chief",
-            subRole: "Chairman, Dept. of Computer Science",
+            subRole: "Chairman, Dept. of CS",
             image: "/images/team/chairman.jpg",
         },
-    ],
-    chief: [
         {
             name: "Dr Waheed ur Rehman",
             role: "Chief Organizer",
-            subRole: "Coordinator, Dept. of Computer Science",
+            subRole: "Coordinator, Dept. of CS",
             image: "/images/team/coordinator.jpg",
         },
     ],
@@ -30,81 +27,69 @@ const team = {
     ],
     clubs: [
         { name: "Fatima Ijaz", role: "Management Head", image: "/images/team/management-lead.jpg" },
-        { name: "Muhammad Mamoon Khan", role: "Software Engineering Club Lead", image: "/images/developers/mamoon.jpg" },
-        { name: "Jafar Ali", role: "Cyber Security Club Lead", image: "/images/team/cyber-lead.jpg" },
-        { name: "Muhammad Ilyas", role: "AI & DS Club Lead", image: "/images/team/ai-lead.jpg" },
-        { name: "Hamza Ahmed Khan", role: "App Development Club Lead", image: "/images/team/app-lead2.jpg" },
+        { name: "Muhammad Mamoon Khan", role: "Software Engineering Lead", image: "/images/developers/mamoon.jpg" },
+        { name: "Jafar Ali", role: "Cyber Security Lead", image: "/images/team/cyber-lead.jpg" },
+        { name: "Muhammad Ilyas", role: "AI & DS Lead", image: "/images/team/ai-lead.jpg" },
+        { name: "Hamza Ahmed Khan", role: "App Dev Lead", image: "/images/team/app-lead2.jpg" },
         { name: "Shahab Saqib", role: "PR Head", image: "/images/team/pr-lead-2.jpg" },
         { name: "Iqra Noor", role: "Content & Graphics Head", image: "/images/team/graphic-head.jpg" },
     ],
 };
 
-// Member Card
 function MemberCard({ member, delay = 0 }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.6, delay }}
-            className="group relative rounded-2xl p-6 flex flex-col items-center text-center
-        bg-white backdrop-blur-sm border border-gray-100 shadow-lg hover:shadow-xl
-        hover:-translate-y-2 transition-all duration-300 w-full max-w-xs mx-auto
-        overflow-hidden h-full"
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay }}
+            className="group relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 cursor-pointer shadow-sm border border-gray-200"
         >
-            {/* Background Decoration */}
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            {/* Image logic: B&W to Color */}
+            <Image
+                src={member.image}
+                alt={member.name}
+                fill
+                className="object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700 ease-in-out"
+            />
 
-            {/* Avatar */}
-            <div className="relative w-28 h-28 mb-5 z-10 flex-shrink-0">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full scale-110 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg">
-                    <Image
-                        src={member.image}
-                        alt={member.name}
-                        fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                </div>
-            </div>
+            {/* Hover Text Reveal */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-            {/* Info */}
-            <div className="flex flex-col items-center z-10 flex-grow justify-start w-full">
-                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-indigo-700 transition-colors min-h-[56px] flex items-center justify-center w-full px-1">
+            <div className="absolute inset-0 p-5 flex flex-col justify-end transform translate-y-4 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                <div className="w-10 h-[2px] bg-[#3e76b2] mb-3" />
+                <h3 className="text-lg font-bold text-white leading-tight">
                     {member.name}
                 </h3>
-                <p className="text-sm font-medium text-indigo-600 mt-1 min-h-[40px] flex items-center justify-center w-full px-1">
+                <p className="text-xs font-bold text-[#3e76b2] uppercase tracking-widest mt-1">
                     {member.role}
                 </p>
                 {member.subRole && (
-                    <p className="text-xs text-gray-500 mt-2 bg-gray-100 px-2 py-1 rounded-full w-full">
+                    <p className="text-[10px] text-gray-400 mt-2 font-medium">
                         {member.subRole}
                     </p>
                 )}
+            </div>
+ 
+            <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded text-[9px] text-[#3e76b2] font-black uppercase tracking-tighter group-hover:opacity-0 transition-opacity">
+                {member.role}
             </div>
         </motion.div>
     );
 }
 
-//  Section Wrapper
-function Section({ title, members, colorClass }) {
+function GridSection({ title, members }) {
     return (
-        <div className="mt-16 md:mt-24">
-            <motion.h3
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                viewport={{ once: true }}
-                className={`text-3xl font-bold text-center mb-10 ${colorClass} relative pb-3`}
-            >
-                {title}
-                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gradient-to-r from-blue-400 to-indigo-600 rounded-full"></span>
-            </motion.h3>
-            <div className="grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 max-w-7xl mx-auto justify-items-center">
+        <div className="mt-20">
+            <div className="flex items-center gap-4 mb-10">
+                <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter">
+                    {title}
+                </h3>
+                <div className="flex-1 h-[1px] bg-gray-200" />
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                 {members.map((m, i) => (
-                    <div key={i} className="w-full flex justify-center">
-                        <MemberCard member={m} delay={i * 0.1} />
-                    </div>
+                    <MemberCard key={i} member={m} delay={i * 0.05} />
                 ))}
             </div>
         </div>
@@ -113,53 +98,27 @@ function Section({ title, members, colorClass }) {
 
 export default function OurTeam() {
     return (
-        <section className="py-20 bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 text-gray-800 min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Heading */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-16"
-                >
-                    <h2 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent mb-4">
-                        Meet Our Team
+        <section className="py-24 bg-white text-gray-900 min-h-screen">
+            <div className="max-w-7xl mx-auto px-6">
+                
+                {/* Clean, Modern Header */}
+                <div className="max-w-2xl mb-24">
+                    <h2 className="text-6xl font-black text-[#3e76b2] tracking-tighter uppercase leading-[0.9]">
+                        Our <br />
+                        <span className="text-gray-100 drop-shadow-[1px_1px_0_#3e76b2]">Collective</span>
                     </h2>
-                    <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                        The passionate people driving our mission forward with dedication and expertise.
+                    <p className="mt-6 text-gray-500 font-medium text-sm border-l-2 border-[#3e76b2] pl-4">
+                        Meet the architects of the Computing Students Society. 
+                        Bridging innovation with leadership.
                     </p>
-                </motion.div>
+                </div>
 
-                {/* Patron & Chief */}
-                <motion.div
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                    viewport={{ once: true }}
-                    className="flex flex-col md:flex-row justify-center gap-10 md:gap-16 mb-20"
-                >
-                    <div className="text-center w-full max-w-xs mx-auto">
-                        <h3 className="text-xl font-semibold mb-6 text-blue-700">Patron-in-Chief</h3>
-                        <MemberCard member={team.patron[0]} />
-                    </div>
-                    <div className="text-center w-full max-w-xs mx-auto">
-                        <h3 className="text-xl font-semibold mb-6 text-blue-700">Chief Organizer</h3>
-                        <MemberCard member={team.chief[0]} />
-                    </div>
-                </motion.div>
+                <GridSection title="Executive Board" members={team.executive} />
+                
+                <GridSection title="Cabinet" members={team.cabinet} />
+                
+                <GridSection title="Club Leads" members={team.clubs} />
 
-                {/* Sections */}
-                <Section
-                    title="Cabinet Members"
-                    members={team.cabinet}
-                    colorClass="text-indigo-700"
-                />
-                <Section
-                    title="Club Leads & Heads"
-                    members={team.clubs}
-                    colorClass="text-purple-700"
-                />
             </div>
         </section>
     );

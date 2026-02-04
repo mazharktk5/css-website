@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react"; 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
 const container = {
@@ -29,19 +29,29 @@ const teamMembers = [
 
 export default function AboutPreview() {
    
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const scrollRef = useRef(null);
 
 
     const nextMember = () => {
-        setCurrentIndex((prev) => (prev + 1) % teamMembers.length);
+        if (scrollRef.current) {
+            const card = scrollRef.current.querySelector('.team-card');
+            const gap = 16; // matches gap-4
+            const scrollBy = (card?.offsetWidth ?? 272) + gap;
+            scrollRef.current.scrollBy({ left: scrollBy, behavior: 'smooth' });
+        }
     };
 
     const prevMember = () => {
-        setCurrentIndex((prev) => (prev - 1 + teamMembers.length) % teamMembers.length);
+        if (scrollRef.current) {
+            const card = scrollRef.current.querySelector('.team-card');
+            const gap = 16;
+            const scrollBy = (card?.offsetWidth ?? 272) + gap;
+            scrollRef.current.scrollBy({ left: -scrollBy, behavior: 'smooth' });
+        }
     };
 
     return (
-        <section id="about" className="py-24 bg-white overflow-hidden relative min-h-screen flex items-center">
+        <section id="about" className="py-16 md:py-24 bg-white overflow-hidden relative md:min-h-screen flex items-center">
             <div className="absolute inset-0 pointer-events-none">
                 <div className="absolute -bottom-24 -left-24 w-[500px] h-[500px] bg-blue-50 rounded-full blur-3xl opacity-60" />
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#3e76b2]/5 to-transparent blur-3xl" />
@@ -64,7 +74,7 @@ export default function AboutPreview() {
                         <motion.h1 
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
-                            className="text-6xl md:text-7xl font-bold text-[#3e76b2] tracking-tight"
+                            className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#3e76b2] tracking-tight"
                         >
                             About Us
                         </motion.h1>
@@ -104,20 +114,16 @@ export default function AboutPreview() {
 
                             {/* Team Carousel Section */}
                             <motion.div variants={item} className="pt-2">
-                                <div className="relative h-80 w-full overflow-hidden">
-                                    {/* Using Framer Motion for smooth sliding transitions */}
-                                    <div 
-                                        className="flex gap-4 transition-transform duration-500 ease-in-out"
-                                        style={{ transform: `translateX(-${currentIndex * 272}px)` }} // 256px(w-64) + 16px(gap-4)
-                                    >
+                                <div className="relative w-full">
+                                    <div ref={scrollRef} className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-2 px-2 no-scrollbar">
                                         {teamMembers.map((member, idx) => (
-                                            <div key={idx} className="relative group flex-shrink-0 w-64 h-80 rounded-lg overflow-hidden cursor-pointer">
+                                            <div key={idx} className="team-card relative group flex-shrink-0 w-56 sm:w-64 h-72 md:h-80 rounded-lg overflow-hidden cursor-pointer snap-center">
                                                 <img 
                                                     src={member.img} 
                                                     alt={member.name}
                                                     className="w-full h-full object-cover transition-all duration-500 grayscale group-hover:grayscale-0 group-hover:scale-105"
                                                 />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-6 flex flex-col justify-end">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 sm:p-6 flex flex-col justify-end">
                                                     <p className="text-white font-bold uppercase text-sm">{member.name}</p>
                                                     <p className="text-gray-300 text-xs">{member.role}</p>
                                                 </div>
@@ -126,17 +132,19 @@ export default function AboutPreview() {
                                     </div>
                                 </div>
 
-                                {/* Navigation Buttons */}
-                                <div className="flex gap-3 mt-8">
+                                {/* Navigation Buttons (hidden on small screens) */}
+                                <div className="hidden sm:flex gap-3 mt-8">
                                     <button 
                                         onClick={prevMember}
                                         className="p-4 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors active:scale-90"
+                                        aria-label="Previous team member"
                                     >
                                         <ArrowLeft className="w-5 h-5 text-gray-600" />
                                     </button>
                                     <button 
                                         onClick={nextMember}
                                         className="p-4 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors active:scale-90"
+                                        aria-label="Next team member"
                                     >
                                         <ArrowRight className="w-5 h-5 text-gray-600" />
                                     </button>
