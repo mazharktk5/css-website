@@ -22,7 +22,7 @@ const teamMembers = [
     { name: "Sir Waheed", role: "Coordinator", img: "/images/team/coordinator.jpg" },
        { name: "Abdullah", role: "Vice President", img: "/images/team/cheif-secretary.jpg" },
     { name: "Ilyas", role: "President", img: "/images/team/ai-lead.jpg" },
-    { name: "Fatima", role: "Female Vice President", img: "/images/team/management-lead.jpg" },
+    { name: "Fatima", role: "Female Vice President", img: "/images/team/fatima.png" },
      { name: "Nida", role: "Web Member", img: "/images/developers/nida.png" },
      { name: "Mazhar", role: "Web Lead", img: "/images/developers/mazhar.jpg" },
 ];
