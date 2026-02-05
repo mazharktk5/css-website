@@ -36,14 +36,14 @@ export default function AboutHero() {
       </div>
 
       {/* 2. Image and Floating Card Section */}
-      <div className="relative flex-1 flex items-center justify-center p-4 md:p-0 bg-gray-50 md:bg-white">
+      <div className="relative flex-1 flex flex-col md:flex-row items-center justify-center p-4 md:p-0 bg-gray-50 md:bg-white gap-6 md:gap-0">
         
         {/* Main Image Container */}
         <motion.div 
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative w-full h-[300px] sm:h-[450px] md:h-[600px] lg:h-[700px] max-w-5xl overflow-hidden shadow-2xl"
+          className="relative w-full md:flex-1 h-[300px] sm:h-[450px] md:h-[600px] lg:h-[700px] max-w-5xl overflow-hidden shadow-2xl"
         >
           <img 
             src="/images/gallery/sportsweek3.JPG" 
@@ -60,7 +60,7 @@ export default function AboutHero() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 0.5 }}
-          className="relative md:absolute mt-6 md:mt-0 md:bottom-20 md:right-10 lg:right-20 bg-[#3e76b2] text-white p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-2xl w-full md:w-auto max-w-full md:max-w-md lg:max-w-lg z-30"
+          className="relative md:absolute mt-0 md:mt-0 md:bottom-20 md:right-10 lg:right-20 bg-[#3e76b2] text-white p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-2xl w-full sm:w-96 md:w-auto md:h-auto max-w-full md:max-w-md lg:max-w-lg z-30"
         >
           <h2 className="text-3xl md:text-4xl font-bold mb-6">About Us</h2>
           <p className="text-blue-50 leading-relaxed text-sm md:text-lg opacity-90">

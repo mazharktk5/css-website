@@ -45,7 +45,7 @@ export default function ContactPage() {
           variants={fadeUp}
           className="max-w-2xl mb-16"
         >
-           <h2 className="text-5xl md:text-6xl font-black text-[#3e76b2] tracking-tighter uppercase leading-[0.9]">
+           <h2 className="text-4xl sm:text-5xl md:text-6xl font-black text-[#3e76b2] tracking-tighter uppercase leading-[0.95]">
             Get In <br />
             <span className="text-gray-100 drop-shadow-[1px_1px_0_#3e76b2]">Touch</span>
           </h2>
@@ -54,7 +54,7 @@ export default function ContactPage() {
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-12 gap-y-16 lg:gap-16 items-start">
+        <div className="grid lg:grid-cols-12 gap-y-12 lg:gap-16 items-start">
           
           {/* Form Side */}
           <motion.div className="lg:col-span-7 relative">
@@ -65,7 +65,7 @@ export default function ContactPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   exit={{ opacity: 0, x: 20 }}
-                  className="bg-white border border-gray-100 shadow-2xl rounded-3xl p-6 md:p-12"
+                  className="bg-white border border-gray-100 shadow-2xl rounded-3xl p-4 md:p-12"
                 >
                   <form onSubmit={handleSubmit} className="space-y-6">
                     {/* FormSubmit Configuration */}
@@ -76,24 +76,24 @@ export default function ContactPage() {
                     <div className="grid md:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-[#3e76b2]">Full Name</label>
-                        <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all" />
+                        <input type="text" name="name" required placeholder="Your Name" className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 md:py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-black uppercase tracking-widest text-[#3e76b2]">Email Address</label>
-                        <input type="email" name="email" required placeholder="user@uop.edu.pk" className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all" />
+                        <input type="email" name="email" required placeholder="user@uop.edu.pk" className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 md:py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all" />
                       </div>
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-black uppercase tracking-widest text-[#3e76b2]">Subject</label>
-                      <input type="text" name="subject" required placeholder="Inquiry about..." className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all" />
+                      <input type="text" name="subject" required placeholder="Inquiry about..." className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 md:py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all" />
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-black uppercase tracking-widest text-[#3e76b2]">Your Message</label>
-                      <textarea name="message" required rows={5} placeholder="How can we help you?" className="w-full bg-gray-50 border-none rounded-xl px-4 py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all"></textarea>
+                      <textarea name="message" required rows={4} placeholder="How can we help you?" className="w-full bg-gray-50 border-none rounded-xl px-4 py-3 md:py-4 focus:ring-2 focus:ring-[#3e76b2] transition-all"></textarea>
                     </div>
                     
                     <div className="flex md:justify-start justify-center pt-2">
-                      <button type="submit" className="group flex items-center gap-3 px-10 py-4 w-full md:w-max bg-[#3e76b2] text-white rounded-xl font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-blue-100">
+                      <button type="submit" className="group flex items-center gap-3 px-6 md:px-10 py-3 md:py-4 w-full md:w-max bg-[#3e76b2] text-white rounded-xl font-black uppercase tracking-widest hover:scale-105 transition-all shadow-lg shadow-blue-100">
                         Send Message
                         <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
                       </button>
@@ -105,7 +105,7 @@ export default function ContactPage() {
                   key="success"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-[#3e76b2] text-white rounded-3xl p-12 text-center shadow-2xl flex flex-col items-center justify-center min-h-[500px]"
+                  className="bg-[#3e76b2] text-white rounded-3xl p-8 md:p-12 text-center shadow-2xl flex flex-col items-center justify-center min-h-[300px] md:min-h-[500px]"
                 >
                   <div className="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mb-6">
                     <CheckCircle2 size={48} className="text-white" />

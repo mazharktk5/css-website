@@ -103,9 +103,9 @@ export default function OurTeam() {
                 
                 {/* Clean, Modern Header */}
                 <div className="max-w-2xl mb-24">
-                    <h2 className="text-6xl font-black text-[#3e76b2] tracking-tighter uppercase leading-[0.9]">
+                    <h2 className="text-3xl sm:text-3xl md:text-3xl lg:text-6xl font-black text-[#3e76b2] tracking-tighter uppercase leading-[0.9]">
                         Our <br />
-                        <span className="text-gray-100 drop-shadow-[1px_1px_0_#3e76b2]">Collective</span>
+                        <span className="text-gray-100 drop-shadow-[1px_1px_0_#3e76b2] ">Collective</span>
                     </h2>
                     <p className="mt-6 text-gray-500 font-medium text-sm border-l-2 border-[#3e76b2] pl-4">
                         Meet the architects of the Computing Students Society. 
