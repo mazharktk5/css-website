@@ -19,7 +19,8 @@ const item = {
 };
 
 const teamMembers = [
-    { name: "Sir Waheed", role: "Coordinator", img: "/images/team/coordinator.jpg" },
+    { name: "Dr Shah Khusro", role: "Patron-in-Chief", img: "/images/team/chairman.jpg" },
+    { name: "Dr Waheed ur Rehman", role: "Chief Organizer", img: "/images/team/coordinator.jpg" },
     { name: "Ilyas", role: "President", img: "/images/team/ai-lead.jpg" },
     { name: "Abdullah", role: "Vice President", img: "/images/team/cheif-secretary.jpg" },
     { name: "Fatima", role: "Female Vice President", img: "/images/team/fatima.png" },
