@@ -13,7 +13,7 @@ export default function Hero() {
   return (
     <section 
       className="relative text-gray-900 overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/images/gallery/heroback.png')",backgroundSize:"100%",backgroundPosition:"center" }} 
+      style={{ backgroundImage: "url('/images/gallery/heroback.png')",backgroundSize:"cover",backgroundPosition:"center" }} 
     >
       
       <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-0"></div>
@@ -89,8 +89,7 @@ export default function Hero() {
               className="object-cover object-center rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
             />
             
-            <div className="absolute inset-0 rounded-[2.5rem] backdrop-blur-[1px]"></div>
-            
+          
             {/* Decorative Blue Glow behind the image */}
             <div className="absolute -z-10 -inset-4 bg-blue-400/20 blur-3xl rounded-full opacity-50"></div>
           </motion.div>
