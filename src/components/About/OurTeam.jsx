@@ -43,7 +43,7 @@ function MemberCard({ member, delay = 0 }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay }}
-            className="group relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 cursor-pointer shadow-sm border border-gray-200"
+            className="group relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 cursor-pointer shadow-sm border border-gray-200 select-none"
         >
             {/* Image logic: B&W to Color */}
             <Image
@@ -82,7 +82,7 @@ function GridSection({ title, members }) {
     return (
         <div className="mt-20">
             <div className="flex items-center gap-4 mb-10">
-                <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter">
+                <h3 className="text-xl font-black text-gray-900 uppercase tracking-tighter ">
                     {title}
                 </h3>
                 <div className="flex-1 h-[1px] bg-gray-200" />
