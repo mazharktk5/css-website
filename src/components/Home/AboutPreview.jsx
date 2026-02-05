@@ -121,9 +121,9 @@ export default function AboutPreview() {
                                                 <img 
                                                     src={member.img} 
                                                     alt={member.name}
-                                                    className="w-full h-full object-cover transition-all duration-500 grayscale group-hover:grayscale-0 group-hover:scale-105"
+                                                    className="w-full h-full object-cover transition-all duration-500 grayscale group-hover:grayscale-0 group-active:grayscale-0 group-hover:scale-105 group-active:scale-105"
                                                 />
-                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity p-4 sm:p-6 flex flex-col justify-end">
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity p-4 sm:p-6 flex flex-col justify-end">
                                                     <p className="text-white font-bold uppercase text-sm">{member.name}</p>
                                                     <p className="text-gray-300 text-xs">{member.role}</p>
                                                 </div>
