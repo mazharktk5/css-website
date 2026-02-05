@@ -117,7 +117,7 @@ export default function AboutPreview() {
                                 <div className="relative w-full">
                                     <div ref={scrollRef} className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-2 px-2 no-scrollbar">
                                         {teamMembers.map((member, idx) => (
-                                            <div key={idx} className="team-card relative group flex-shrink-0 w-56 sm:w-64 h-72 md:h-80 rounded-lg overflow-hidden cursor-pointer snap-center">
+                                            <div key={idx} className=" select-none team-card relative group flex-shrink-0 w-56 sm:w-64 h-72 md:h-80 rounded-lg overflow-hidden cursor-pointer snap-center">
                                                 <img 
                                                     src={member.img} 
                                                     alt={member.name}
