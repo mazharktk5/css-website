@@ -20,15 +20,15 @@ const item = {
 
 const teamMembers = [
     { name: "Sir Waheed", role: "Coordinator", img: "/images/team/coordinator.jpg" },
-       { name: "Abdullah", role: "Vice President", img: "/images/team/cheif-secretary.jpg" },
     { name: "Ilyas", role: "President", img: "/images/team/ai-lead.jpg" },
+    { name: "Abdullah", role: "Vice President", img: "/images/team/cheif-secretary.jpg" },
     { name: "Fatima", role: "Female Vice President", img: "/images/team/fatima.png" },
-     { name: "Nida", role: "Web Member", img: "/images/developers/nida.png" },
-     { name: "Mazhar", role: "Web Lead", img: "/images/developers/mazhar.jpg" },
+    //  { name: "Nida", role: "Web Member", img: "/images/developers/nida.png" },
+    //  { name: "Mazhar", role: "Web Lead", img: "/images/developers/mazhar.jpg" },
 ];
 
 export default function AboutPreview() {
-   
+
     const scrollRef = useRef(null);
 
 
@@ -57,33 +57,33 @@ export default function AboutPreview() {
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-[#3e76b2]/5 to-transparent blur-3xl" />
             </div>
             {/* Background Glows */}
-<div className="absolute inset-0 pointer-events-none overflow-hidden">
-    {/* The Bottom-Left Blue Aura */}
-    <div 
-        className="absolute -bottom-[10%] -left-[10%] w-[600px] h-[600px] rounded-full opacity-40 blur-[120px]"
-        style={{
-            background: `radial-gradient(circle, #3e76b2 0%, #93c5fd 50%, transparent 70%)`
-        }}
-    />
-</div>
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                {/* The Bottom-Left Blue Aura */}
+                <div
+                    className="absolute -bottom-[10%] -left-[10%] w-[600px] h-[600px] rounded-full opacity-40 blur-[120px]"
+                    style={{
+                        background: `radial-gradient(circle, #3e76b2 0%, #93c5fd 50%, transparent 70%)`
+                    }}
+                />
+            </div>
 
             <div className="max-w-7xl mx-auto px-6 lg:px-12 relative z-10 w-full">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
-                    
+
                     <div className="lg:col-span-4">
-                        <motion.h1 
+                        <motion.h1
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             className="text-4xl md:text-6xl lg:text-7xl font-bold text-[#3e76b2] tracking-tight"
                         >
                             About Us
                         </motion.h1>
-                        
-                
+
+
                     </div>
 
                     <div className="lg:col-span-8">
-                        <motion.div 
+                        <motion.div
                             variants={container}
                             initial="hidden"
                             whileInView="show"
@@ -95,9 +95,9 @@ export default function AboutPreview() {
                                     Our team helps students <br />
                                     <span className="text-[#3e76b2]">succeed in computing.</span>
                                 </motion.h2>
-                                
+
                                 <motion.p variants={item} className="text-lg text-gray-600 leading-relaxed mb-4">
-                                    At the Computing Students Society, we believe in the power of community to drive results 
+                                    At the Computing Students Society, we believe in the power of community to drive results
                                     and grow future leaders.
                                 </motion.p>
 
@@ -106,7 +106,7 @@ export default function AboutPreview() {
                                         href="/about"
                                         className="group inline-flex items-center gap-3 px-8 py-3 font-semibold text-white transition-all bg-[#3e76b2] rounded-xl hover:bg-[#3e76b2]/90 hover:shadow-xl"
                                     >
-                                        Read More 
+                                        Read More
                                         <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                                     </Link>
                                 </motion.div>
@@ -118,8 +118,8 @@ export default function AboutPreview() {
                                     <div ref={scrollRef} className="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-2 px-2 no-scrollbar">
                                         {teamMembers.map((member, idx) => (
                                             <div key={idx} className=" select-none team-card relative group flex-shrink-0 w-56 sm:w-64 h-72 md:h-80 rounded-lg overflow-hidden cursor-pointer snap-center">
-                                                <img 
-                                                    src={member.img} 
+                                                <img
+                                                    src={member.img}
                                                     alt={member.name}
                                                     className="w-full h-full object-cover transition-all duration-500 grayscale group-hover:grayscale-0 group-active:grayscale-0 group-hover:scale-105 group-active:scale-105"
                                                 />
@@ -134,14 +134,14 @@ export default function AboutPreview() {
 
                                 {/* Navigation Buttons (hidden on small screens) */}
                                 <div className="hidden sm:flex gap-3 mt-8">
-                                    <button 
+                                    <button
                                         onClick={prevMember}
                                         className="p-4 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors active:scale-90"
                                         aria-label="Previous team member"
                                     >
                                         <ArrowLeft className="w-5 h-5 text-gray-600" />
                                     </button>
-                                    <button 
+                                    <button
                                         onClick={nextMember}
                                         className="p-4 border border-gray-200 rounded-full hover:bg-gray-50 transition-colors active:scale-90"
                                         aria-label="Next team member"
