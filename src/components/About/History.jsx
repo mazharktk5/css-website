@@ -111,21 +111,6 @@ export default function History() {
                     </p>
                   </motion.div>
                 )}
-
-                {/* Mobile Spacing for Top items (so they appear below circle on mobile) */}
-                {event.position === "top" && (
-                   <motion.div 
-                   initial={{ opacity: 0 }}
-                   whileInView={{ opacity: 1 }}
-                   className="mt-8 text-center md:hidden"
-                 >
-                   <span className="text-[#3e76b2] font-bold text-xl">{event.year}</span>
-                   <h3 className="font-bold text-gray-800 text-lg my-1">{event.title}</h3>
-                   <p className="text-xs text-gray-500 leading-relaxed">
-                     {event.description}
-                   </p>
-                 </motion.div>
-                )}
               </div>
             ))}
           </div>
