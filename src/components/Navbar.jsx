@@ -23,20 +23,19 @@ export default function Navbar() {
         { name: "About", href: "/about" },
         { name: "Events", href: "/events" },
         { name: "Gallery", href: "/gallery" },
-        // { name: "Contact", href: "/contact" },
+        { name: "Contact Us", href: "/contact" },
     ];
 
     return (
-        <nav 
-            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out backdrop-blur-md ${
-                scrolled || open 
-                ? "bg-white md:bg-[#3e76b2]/95 border-b border-gray-100 md:border-white/10 py-1 shadow-xl" 
-                : "bg-white/80 py-1 border-b border-gray-100" 
-            }`}
+        <nav
+            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out backdrop-blur-md ${scrolled || open
+                ? "bg-white md:bg-[#63b3ed]/95 border-b border-gray-200 md:border-gray-300 py-1 shadow-xl"
+                : "bg-white/80 py-1 border-b border-gray-200"
+                }`}
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
                 <div className="flex items-center justify-between h-16">
-                    
+
                     {/* Logo Area */}
                     <Link href="/" className="flex items-center space-x-3 group">
                         <div className="relative w-[40px] h-[40px] md:w-[45px] md:h-[45px]">
@@ -44,14 +43,10 @@ export default function Navbar() {
                                 src={logo}
                                 alt="CSS Logo"
                                 fill
-                                className="rounded-full transition-transform duration-300 group-hover:scale-110 border-2 border-[#3e76b2]/20 object-cover"
+                                className="rounded-full transition-transform duration-300 group-hover:scale-110 border-2 border-[#63b3ed]/20 object-cover"
                             />
                         </div>
-                        <span className={`font-black tracking-tighter text-xl md:text-2xl transition-colors duration-300 ${
-                            scrolled && !open ? "md:text-white text-[#3e76b2]" : "text-[#3e76b2]"
-                        }`}>
-                            CSS <span className={(scrolled && !open) ? "md:text-blue-200 text-gray-900" : "text-gray-900"}>SOCIETY</span>
-                        </span>
+                        <span className={`font-black tracking-tighter text-xl md:text-2xl transition-colors duration-300 ${scrolled && !open ? "md:text-[#63b3ed] text-[#1a202c]" : "text-[#1a202c]"}`}>CSS <span className={(scrolled && !open) ? "md:text-gray-700 text-gray-900" : "text-gray-900"}>SOCIETY</span></span>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -60,25 +55,23 @@ export default function Navbar() {
                             <Link
                                 key={link.name}
                                 href={link.href}
-                                className={`px-4 py-2 transition-all font-bold text-xs uppercase tracking-widest ${
-                                    scrolled 
-                                    ? "text-white hover:text-blue-200" 
-                                    : "text-gray-600 hover:text-[#3e76b2]"
-                                }`}
+                                className={`px-4 py-2 transition-all font-bold text-xs uppercase tracking-widest ${scrolled
+                                    ? "text-[#1a202c] hover:text-[#63b3ed]"
+                                    : "text-gray-600 hover:text-[#63b3ed]"
+                                    }`}
                             >
                                 {link.name}
                             </Link>
                         ))}
-                        
+
                         <Link
                             href="/contact"
-                            className={`ml-6 px-8 py-3 rounded-full font-black text-xs uppercase tracking-tighter transition-all shadow-lg active:scale-95 ${
-                                scrolled 
-                                ? "bg-white text-[#3e76b2] hover:bg-blue-50" 
-                                : "bg-[#3e76b2] text-white hover:brightness-110 shadow-[#3e76b2]/20"
-                            }`}
+                            className={`ml-6 px-8 py-3 rounded-full font-black text-xs uppercase tracking-tighter transition-all shadow-lg active:scale-95 ${scrolled
+                                ? "bg-[#63b3ed] text-white hover:bg-blue-400"
+                                : "bg-[#63b3ed] text-white hover:brightness-110 shadow-[#63b3ed]/20"
+                                }`}
                         >
-                            Join Us
+                            Contact Us
                         </Link>
                     </div>
 
@@ -86,7 +79,7 @@ export default function Navbar() {
                     <div className="md:hidden">
                         <button
                             onClick={() => setOpen(!open)}
-                            className="p-2 text-[#3e76b2]"
+                            className="p-2 text-[#63b3ed]"
                         >
                             {open ? <X size={28} /> : <Menu size={28} />}
                         </button>
@@ -95,19 +88,15 @@ export default function Navbar() {
             </div>
 
             {/* Mobile Menu Overlay - Sliding White Panel */}
-            <div 
-                className={`absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 overflow-hidden transition-all duration-500 ease-in-out md:hidden ${
-                    open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"
-                }`}
+            <div
+                className={`absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 overflow-hidden transition-all duration-500 ease-in-out md:hidden ${open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
             >
                 <div className="flex flex-col p-8 space-y-6 shadow-inner">
                     {navLinks.map((link, idx) => (
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`text-2xl font-black text-[#3e76b2] uppercase tracking-tighter transition-all transform ${
-                                open ? "translate-x-0" : "-translate-x-4"
-                            }`}
+                            className={`text-2xl font-black text-[#63b3ed] uppercase tracking-tighter transition-all transform ${open ? "translate-x-0" : "-translate-x-4"}`}
                             style={{ transitionDelay: `${idx * 50}ms` }}
                             onClick={() => setOpen(false)}
                         >
@@ -116,13 +105,13 @@ export default function Navbar() {
                     ))}
                     <Link
                         href="/contact"
-                        className="w-full py-4 bg-[#3e76b2] text-white text-center rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-[#3e76b2]/20"
+                        className="w-full py-4 bg-[#63b3ed] text-white text-center rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-[#63b3ed]/20"
                         onClick={() => setOpen(false)}
                     >
-                        Join Us
+                        Contact Us
                     </Link>
                 </div>
             </div>
         </nav>
-    ); 
+    );
 }
