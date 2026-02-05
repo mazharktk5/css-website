@@ -22,38 +22,38 @@
   },
   {
     "id": 4,
+    "eventName": "Github and LinkedIn Workshop",
+    "category": "Workshop",
+    "image": "/images/gallery/github5.JPG",
+    "description": "Our Society's President giving a token of appreciation to our guest speaker"
+  },
+  {
+    "id": 5,
     "eventName": "AI Bootcamp",
     "category": "Bootcamp",
     "image": "/images/gallery/Ai1.jpg",
     "description": "Best practices in Artificial Intelligence"
   },
   {
-    "id": 5,
+    "id": 6,
     "eventName": "CyberSecurity BootCamp",
     "category": "Bootcamp",
     "image": "/images/gallery/Cyber1.jpg",
     "description": "Learn the basics of CyberSecurity"
   },
   {
-    "id": 6,
+    "id": 7,
     "eventName": "Github and LinkedIn Workshop",
     "category": "Workshop",
     "image": "/images/gallery/github2.jpg",
     "description": "Mastering GitHub and LinkedIn for Career Growth"
   },
   {
-    "id": 7,
+    "id": 8,
     "eventName": "Github and LinkedIn Workshop",
     "category": "Workshop",
     "image": "/images/gallery/github3.JPG",
     "description": "Our guest speaker explaining the importance of GitHub and LinkedIn"
-  },
-  {
-    "id": 8,
-    "eventName": "Github and LinkedIn Workshop",
-    "category": "Workshop",
-    "image": "/images/gallery/github5.JPG",
-    "description": "Our Society's President giving a token of appreciation to our guest speaker"
   },
   {
     "id": 9,
