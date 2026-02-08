@@ -9,19 +9,23 @@ const team = {
     ],
     cabinet: [
         { name: "Muhammad Ilyas", role: "President", image: "/images/team/ai-lead.jpg" },
-        { name: "Muhammad Jawad", role: "Vice President", image: "/images/team/vp.jpg" },
-        { name: "Abdullah Ahmed", role: "Chief Secretary", image: "/images/team/cheif-secretary.jpg" },
-        { name: "Hashir Ahmed", role: "Information Secretary", image: "/images/team/information-secretary.jpg" },
-        { name: "Atiq Ullah Khan", role: "Media Secretary", image: "/images/team/media-secretary.jpg" },
+        { name: "Abdullah Ahmad", role: "Vice President", image: "/images/team/cheif-secretary.jpg" },
+        { name: "Fatima Ijaz", role: "Female Vice President", image: "/images/team/management-lead.jpg" },
+        { name: "Mati Ullah Bangash", role: "Chief Secretary", image: "/images/team/chief-secretary.jpg" },
+        { name: "Safia Zulfiqar", role: "Information Secretary", image: "/images/developers/safia.jpg" },
+        { name: "Abubakar Dayan", role: "Media Secretary", image: "/images/team/app-lead.jpg" },
     ],
     clubs: [
-        { name: "Fatima Ijaz", role: "Management Head", image: "/images/team/management-lead.jpg" },
-        { name: "Muhammad Mamoon Khan", role: "Software Engineering Lead", image: "/images/developers/mamoon.jpg" },
-        { name: "Jafar Ali", role: "Cyber Security Lead", image: "/images/team/cyber-lead.jpg" },
-        { name: "Muhammad Ilyas", role: "AI & DS Lead", image: "/images/team/ai-lead.jpg" },
-        { name: "Hamza Ahmed Khan", role: "App Dev Lead", image: "/images/team/app-lead2.jpg" },
-        { name: "Shahab Saqib", role: "PR Head", image: "/images/team/pr-lead-2.jpg" },
-        { name: "Iqra Noor", role: "Content & Graphics Head", image: "/images/team/graphic-head.jpg" },
+        { name: "Mazhar Ahmad", role: "Software Engineering Lead", image: "/images/team/software-lead.jpg" },
+        { name: "Hashir Ahmad", role: "Cyber Security Lead", image: "/images/team/information-secretary.jpg" },
+        { name: "Junaid Ahmad", role: "AI & DS Lead", image: "/images/team/app-lead.jpg" },
+        { name: "Amna Amir", role: "Content & Graphics Head", image: "/images/team/graphic-head.jpg" },
+        { name: "Bilal Shahid", role: "Management Head", image: "/images/team/management-head.jpg" },
+        { name: "M Uzair", role: "External PR Head", image: "/images/team/pr-lead.jpg" },
+        { name: "Yahya Jan", role: "Literary Club Head", image: "/images/team/app-lead.jpg" },
+        { name: "M Ali", role: "Creative Club Head", image: "/images/team/creative-head.jpg" },
+
+
     ],
 };
 
