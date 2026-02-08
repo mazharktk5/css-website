@@ -1,5 +1,5 @@
 {
-  "upcoming": [
+  "AI": [
     {
       "id": 1,
       "title": "Cybersecurity Seminar",
@@ -9,19 +9,15 @@
       "image": "/images/events/CyberBootcamp.png",
       "description": "Join us for an engaging seminar on cybersecurity best practices and emerging threats.",
       "tags": ["Cybersecurity", "Seminar"],
-      "registrationLink": "#"
-    },
-    {
-      "id": 2,
-      "title": "AI & Machine Learning Symposium",
-      "date": "2025-10-15",
-      "time": "10:00 AM - 4:00 PM",
-      "location": "Main Auditorium",
-      "image": "/images/events/AiBootcamp.png",
-      "description": "Industry experts will share insights on the latest AI trends and machine learning applications.",
-      "tags": ["Conference", "AI/ML"],
-      "registrationLink": "#"
-    },
+      "registrationLink": "#",
+      "category": "AI"
+      
+    }
+   
+  ],
+
+  "Web Devlopment": [
+  
     {
       "id": 3,
       "title": "Debate Competition",
@@ -31,9 +27,26 @@
       "image": "/images/events/DebateCompetition.png",
       "description": "Showcase your debating skills in our annual competition with exciting prizes for the winners.",
       "tags": ["Competition", "Debate "],
-      "registrationLink": "#"
+      "registrationLink": "#",
+       "category":"Web Devlopment"
     }
   ],
+  "Cyber Security": [
+  
+    {
+      "id": 3,
+      "title": "Debate Competition",
+      "date": "2025-11-20",
+      "time": "9:00 AM - 11:00 AM",
+      "location": "Engineering Building",
+      "image": "/images/events/DebateCompetition.png",
+      "description": "Showcase your debating skills in our annual competition with exciting prizes for the winners.",
+      "tags": ["Competition", "Debate "],
+      "registrationLink": "#",
+      "category":"Cyber Security"
+    }
+  ],
+  
   "past": [
     {
       "id": 4,
@@ -42,7 +55,8 @@
       "description": "A hands-on workshop introducing 50+ students to web development fundamentals including HTML, CSS, JavaScript, and React.",
       "participants": "50+ students",
       "image": "/images/gallery/webdev1.PNG",
-      "tags": ["Workshop", "Web Development"]
+      "tags": ["Workshop", "Web Development"],
+      "category":"past"
     },
     {
       "id": 5,
@@ -51,7 +65,8 @@
       "description": "An engaging seminar on cybersecurity best practices and emerging threats, attended by over 80 students. Included a live hacking demo and Q&A session.",
       "participants": "20+ attendees",
       "image": "/images/gallery/Cyber1.jpg",
-      "tags": ["Competition", "Hackathon"]
+      "tags": ["Competition", "Hackathon"],
+       "category":"past"
     },
     {
       "id": 6,
@@ -60,7 +75,8 @@
       "description": "A networking event focused on optimizing GitHub and LinkedIn profiles for career growth, featuring a guest speaker from the tech industry.",
       "participants": "100+ students",
       "image": "/images/gallery/github2.jpg",
-      "tags": ["Networking", "Career"]
+      "tags": ["Networking", "Career"],
+       "category":"past"
     },
     {
       "id": 7,
@@ -69,7 +85,8 @@
       "description": "  A Comprehensive event where industry experts shared insights on the latest AI trends and machine learning applications.",
       "participants": "35 students",
       "image": "/images/gallery/Ai1.jpg",
-      "tags": ["Workshop", "Programming"]
+      "tags": ["Workshop", "Programming"],
+       "category":"past"
     }
   ]
 }
