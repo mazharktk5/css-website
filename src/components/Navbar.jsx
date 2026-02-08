@@ -11,9 +11,7 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
 
     useEffect(() => {
-        const handleScroll = () => {
-            setScrolled(window.scrollY > 50);
-        };
+        const handleScroll = () => setScrolled(window.scrollY > 50);
         window.addEventListener("scroll", handleScroll);
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
@@ -23,89 +21,78 @@ export default function Navbar() {
         { name: "About", href: "/about" },
         { name: "Events", href: "/events" },
         { name: "Gallery", href: "/gallery" },
-        { name: "Contact Us", href: "/contact" },
     ];
 
     return (
         <nav
             className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ease-in-out backdrop-blur-md ${scrolled || open
-                ? "bg-white md:bg-[#63b3ed]/95 border-b border-gray-200 md:border-gray-300 py-1 shadow-xl"
-                : "bg-white/80 py-1 border-b border-gray-200"
+                ? "bg-gradient-to-r from-[#1e3a8a]/95 via-[#3e76b2]/80 to-[#1e40af]/95 shadow-xl py-2"
+                : "bg-[#1e3a8a]/70 py-4"
                 }`}
         >
-            <div className="max-w-7xl mx-auto px-6 lg:px-12">
-                <div className="flex items-center justify-between h-16">
-
-                    {/* Logo Area */}
-                    <Link href="/" className="flex items-center space-x-3 group">
-                        <div className="relative w-[40px] h-[40px] md:w-[45px] md:h-[45px]">
-                            <Image
-                                src={logo}
-                                alt="CSS Logo"
-                                fill
-                                className="rounded-full transition-transform duration-300 group-hover:scale-110 border-2 border-[#63b3ed]/20 object-cover"
-                            />
-                        </div>
-                        <span className={`font-black tracking-tighter text-xl md:text-2xl transition-colors duration-300 ${scrolled && !open ? "md:text-[#63b3ed] text-[#1a202c]" : "text-[#1a202c]"}`}>CSS <span className={(scrolled && !open) ? "md:text-gray-700 text-gray-900" : "text-gray-900"}>SOCIETY</span></span>
-                    </Link>
-
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-2">
-                        {navLinks.map((link) => (
-                            <Link
-                                key={link.name}
-                                href={link.href}
-                                className={`px-4 py-2 transition-all font-bold text-xs uppercase tracking-widest ${scrolled
-                                    ? "text-[#1a202c] hover:text-[#63b3ed]"
-                                    : "text-gray-600 hover:text-[#63b3ed]"
-                                    }`}
-                            >
-                                {link.name}
-                            </Link>
-                        ))}
-
-                        <Link
-                            href="/contact"
-                            className={`ml-6 px-8 py-3 rounded-full font-black text-xs uppercase tracking-tighter transition-all shadow-lg active:scale-95 ${scrolled
-                                ? "bg-[#63b3ed] text-white hover:bg-blue-400"
-                                : "bg-[#63b3ed] text-white hover:brightness-110 shadow-[#63b3ed]/20"
-                                }`}
-                        >
-                            Contact Us
-                        </Link>
+            <div className="max-w-7xl mx-auto px-6 lg:px-12 flex items-center justify-between h-16">
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-3">
+                    <div className="relative w-10 h-10 md:w-12 md:h-12">
+                        <Image
+                            src={logo}
+                            alt="CSS Logo"
+                            fill
+                            className="rounded-full object-cover border-2 border-white/40 transition-transform duration-300 hover:scale-110"
+                        />
                     </div>
+                    <span className="font-black text-xl md:text-2xl text-white tracking-tight">
+                        CSS <span className="text-[#93c5fd]">SOCIETY</span>
+                    </span>
+                </Link>
 
-                    {/* Mobile Toggle */}
-                    <div className="md:hidden">
-                        <button
-                            onClick={() => setOpen(!open)}
-                            className="p-2 text-[#63b3ed]"
-                        >
-                            {open ? <X size={28} /> : <Menu size={28} />}
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            {/* Mobile Menu Overlay - Sliding White Panel */}
-            <div
-                className={`absolute top-full left-0 w-full bg-white/95 backdrop-blur-xl border-b border-gray-200 overflow-hidden transition-all duration-500 ease-in-out md:hidden ${open ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
-            >
-                <div className="flex flex-col p-8 space-y-6 shadow-inner">
-                    {navLinks.map((link, idx) => (
+                {/* Desktop Menu */}
+                <div className="hidden md:flex items-center space-x-6">
+                    {navLinks.map((link) => (
                         <Link
                             key={link.name}
                             href={link.href}
-                            className={`text-2xl font-black text-[#63b3ed] uppercase tracking-tighter transition-all transform ${open ? "translate-x-0" : "-translate-x-4"}`}
-                            style={{ transitionDelay: `${idx * 50}ms` }}
-                            onClick={() => setOpen(false)}
+                            className="text-white font-semibold uppercase tracking-widest hover:text-[#93c5fd] transition-colors"
                         >
                             {link.name}
                         </Link>
                     ))}
                     <Link
                         href="/contact"
-                        className="w-full py-4 bg-[#63b3ed] text-white text-center rounded-xl font-bold uppercase tracking-widest shadow-lg shadow-[#63b3ed]/20"
+                        className="ml-4 px-6 py-2 rounded-full bg-[#93c5fd] text-blue-900 font-bold uppercase tracking-wider hover:bg-blue-400 transition-all shadow-md"
+                    >
+                        Contact Us
+                    </Link>
+                </div>
+
+                {/* Mobile Toggle */}
+                <div className="md:hidden">
+                    <button onClick={() => setOpen(!open)} className="text-white p-2">
+                        {open ? <X size={28} /> : <Menu size={28} />}
+                    </button>
+                </div>
+            </div>
+
+            {/* Mobile Menu */}
+            <div
+                className={`md:hidden bg-gradient-to-b from-[#1e3a8a]/95 to-[#3e76b2]/90 overflow-hidden transition-all duration-500 ${open ? "max-h-[500px] opacity-100 py-4" : "max-h-0 opacity-0"
+                    }`}
+            >
+                <div className="flex flex-col items-center space-y-6 px-6">
+                    {navLinks.map((link, idx) => (
+                        <Link
+                            key={link.name}
+                            href={link.href}
+                            className="text-white font-bold uppercase tracking-widest text-lg hover:text-[#93c5fd] transition-colors"
+                            onClick={() => setOpen(false)}
+                            style={{ transitionDelay: `${idx * 50}ms` }}
+                        >
+                            {link.name}
+                        </Link>
+                    ))}
+                    <Link
+                        href="/contact"
+                        className="w-full text-center py-3 bg-[#93c5fd] text-blue-900 font-bold uppercase tracking-wider rounded-xl shadow-md hover:bg-blue-400 transition-all"
                         onClick={() => setOpen(false)}
                     >
                         Contact Us
