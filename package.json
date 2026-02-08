@@ -10,8 +10,12 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.0.1",
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^17.2.4",
     "framer-motion": "^12.23.12",
+    "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.543.0",
+    "mongoose": "^9.1.6",
     "next": "^16.1.6",
     "react": "19.1.0",
     "react-dom": "19.1.0",
