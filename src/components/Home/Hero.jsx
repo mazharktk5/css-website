@@ -1,98 +1,70 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0 },
-};
-
 export default function Hero() {
   return (
-    <section 
-      className="relative text-gray-900 overflow-hidden bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: "url('/images/gallery/heroback.png')",backgroundSize:"cover",backgroundPosition:"center" }} 
+    <section
+      className="relative min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: "url('/images/gallery/heroimage.png')" }}
     >
-      
-      <div className="absolute inset-0 bg-white/50 backdrop-blur-[2px] z-0"></div>
+      {/* Base overlay */}
+      <div className="absolute inset-0 bg-black/40"></div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 grid lg:grid-cols-2 items-center gap-12 w-full lg:py-32 py-20 lg:min-h-[80vh]">
-        
-     
+      {/* Bottom fade for grounding */}
+      <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-black/70 to-transparent"></div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 min-h-screen flex items-center">
         <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          variants={fadeUp}
-          className="space-y-8 z-10 text-center lg:text-left flex flex-col justify-center h-full"
+          className="max-w-3xl"
         >
-          <div className="space-y-4">
-            <h1 className="text-3xl sm:text-4xl lg:text-4xl font-black tracking-tight leading-[1.1] text-blue-950">
-              Innovate. <span className="text-[#3c6da1] text-glow">Collaborate.</span> Lead.
-            </h1>
-            
-   
-            <div className="relative pl-4 border-l-4 border-blue-500 py-2 italic text-gray-600 bg-blue-50/50 rounded-r-lg">
-              <p className="text-lg sm:text-xl font-medium">
-                &quot;Join our community to turn your ideas into reality. Stay connected, 
-                keep learning, and build the future of tech, together.&quot;
-              </p>
-              <footer className="mt-2 text-sm font-bold text-[#3c6da1] uppercase tracking-widest">
-                — Sir Waheed
-              </footer>
-            </div>
-          </div>
-
-          <p className="text-base sm:text-lg text-gray-700 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-            The Computing Students Society is more than just a club; it&apos;s a launchpad 
-            for the next generation of digital pioneers.
+          {/* Meta line */}
+          <p className="mb-6 text-xs tracking-[0.35em] uppercase text-white/70">
+            Computing Students Society • Est. 2024
           </p>
 
-          <div className="flex flex-wrap justify-center lg:justify-start gap-5">
-            <Link
-              href="#events"
-              className="px-6 py-3 bg-[#3c6da1] text-white rounded-2xl font-semibold hover:bg-blue-500 hover:-translate-y-1 transition-all shadow-xl shadow-blue-200"
-            >
-              Explore Events
-            </Link>
-            <Link
-              href="/contact"
-              className="px-6 py-3 border-2 border-blue-400 text-blue-900 rounded-2xl font-semibold hover:bg-blue-50 hover:-translate-y-1 transition-all"
-            >
-              Join Our Community
-            </Link>
-          </div>
-        </motion.div>
+          {/* Content with guide line */}
+          <div className="flex gap-6">
+            <div className="w-px bg-white/40"></div>
 
-        {/* Right image Container */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: "easeOut" }}
-          className="relative w-full h-[350px] sm:h-[450px] lg:h-[400px] flex justify-center"
-        >
-          {/* Subtle Floating Animation Wrapper */}
-          <motion.div 
-            animate={{ y: [0, -15, 0] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            className="relative w-full h-full max-w-xl"
-          >
-            <Image
-              src="/images/gallery/heroimage.png"
-              alt="CSS Community Collaboration"
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.15)]"
-            />
-            
-          
-            {/* Decorative Blue Glow behind the image */}
-            <div className="absolute -z-10 -inset-4 bg-blue-400/20 blur-3xl rounded-full opacity-50"></div>
-          </motion.div>
+            <div>
+              <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-[1.05]">
+                Innovate.
+                <br />
+                Collaborate.
+                <span className="block text-[#6ea3d8]">Lead.</span>
+              </h1>
+
+              <p className="mt-8 text-xl text-white/90 max-w-2xl">
+                A community where ideas turn into products,
+                students grow into leaders, and technology meets purpose.
+              </p>
+
+              <p className="mt-4 text-sm uppercase tracking-widest text-white/70">
+                — Sir Waheed
+              </p>
+
+              <div className="mt-10 flex gap-8 flex-wrap">
+                <Link
+                  href="#events"
+                  className="text-white font-semibold underline underline-offset-8 hover:text-[#6ea3d8] transition"
+                >
+                  Explore Events
+                </Link>
+
+                <Link
+                  href="/contact"
+                  className="text-white font-semibold underline underline-offset-8 hover:text-[#6ea3d8] transition"
+                >
+                  Join Community
+                </Link>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>
