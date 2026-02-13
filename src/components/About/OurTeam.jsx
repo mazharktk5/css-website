@@ -8,9 +8,9 @@ const team = {
         { name: "Dr Waheed ur Rehman", role: "Chief Organizer", subRole: "Coordinator, Dept. of CS", image: "/images/team/coordinator.jpg" },
     ],
     cabinet: [
-        { name: "Muhammad Ilyas", role: "President", image: "/images/team/ai-lead.jpg" },
-        { name: "Abdullah Ahmad", role: "Vice President", image: "/images/team/cheif-secretary.jpg" },
-        { name: "Fatima Ijaz", role: "Female Vice President", image: "/images/team/management-lead.jpg" },
+        { name: "Muhammad Ilyas", role: "President", image: "/images/team/president.jpg" },
+        { name: "Abdullah Ahmad", role: "Vice President", image: "/images/team/vp.jpg" },
+        { name: "Fatima Ijaz", role: "Female Vice President", image: "/images/team/fatima.png" },
         { name: "Mati Ullah Bangash", role: "Chief Secretary", image: "/images/team/chief-secretary.jpg" },
         { name: "Safia Zulfiqar", role: "Information Secretary", image: "/images/developers/safia.jpg" },
         { name: "Abubakar Dayan", role: "Media Secretary", image: "/images/team/app-lead.jpg" },

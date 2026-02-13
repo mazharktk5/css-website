@@ -21,8 +21,8 @@ const item = {
 const teamMembers = [
     { name: "Dr Shah Khusro", role: "Patron-in-Chief", img: "/images/team/chairman.jpg" },
     { name: "Dr Waheed ur Rehman", role: "Chief Organizer", img: "/images/team/coordinator.jpg" },
-    { name: "Ilyas", role: "President", img: "/images/team/ai-lead.jpg" },
-    { name: "Abdullah", role: "Vice President", img: "/images/team/cheif-secretary.jpg" },
+    { name: "Ilyas", role: "President", img: "/images/team/president.jpg" },
+    { name: "Abdullah", role: "Vice President", img: "/images/team/vp.jpg" },
     { name: "Fatima", role: "Female Vice President", img: "/images/team/fatima.png" },
     //  { name: "Nida", role: "Web Member", img: "/images/developers/nida.png" },
     //  { name: "Mazhar", role: "Web Lead", img: "/images/developers/mazhar.jpg" },
