@@ -32,6 +32,18 @@ export async function POST(request) {
         return NextResponse.json({ token, email: admin.email });
     } catch (error) {
         console.error("Login API error:", error);
-        return NextResponse.json({ error: "Server error" }, { status: 500 });
+
+        // Help diagnose Vercel build/runtime issues
+        if (error.message?.includes("MONGO_URI")) {
+            return NextResponse.json({ error: "Configuration Error: MONGO_URI is not defined." }, { status: 500 });
+        }
+        if (error.name === "MongooseServerSelectionError") {
+            return NextResponse.json({ error: "Database Connection Error: IP might not be whitelisted." }, { status: 500 });
+        }
+
+        return NextResponse.json({
+            error: "Server error",
+            message: process.env.NODE_ENV === "development" ? error.message : undefined
+        }, { status: 500 });
     }
 }
