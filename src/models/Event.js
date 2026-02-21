@@ -8,7 +8,6 @@ const EventSchema = new mongoose.Schema({
     image: { type: String, default: "" },
     description: { type: String, default: "" },
     tags: [{ type: String }],
-    registrationLink: { type: String, default: "#" },
     category: { type: String, required: true },
     participants: { type: String, default: "" },
 }, { timestamps: true });

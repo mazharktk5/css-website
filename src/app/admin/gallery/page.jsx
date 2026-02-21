@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
 import Image from "next/image";
 import { Plus, Pencil, Trash2, X, Save, ImageIcon } from "lucide-react";
+import ConfirmModal from "@/components/Admin/ConfirmModal";
 
 const emptyItem = { eventName: "", category: "", image: "", description: "" };
 
@@ -14,6 +15,7 @@ export default function AdminGallery() {
     const [editing, setEditing] = useState(null);
     const [form, setForm] = useState(emptyItem);
     const [saving, setSaving] = useState(false);
+    const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
@@ -59,7 +61,11 @@ export default function AdminGallery() {
     };
 
     const handleDelete = async (id) => {
-        if (!confirm("Delete this gallery item?")) return;
+        setDeleteModal({ open: true, id });
+    };
+
+    const confirmDelete = async () => {
+        const id = deleteModal.id;
         await fetch(`/api/gallery/${id}`, {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` },
@@ -156,6 +162,14 @@ export default function AdminGallery() {
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={deleteModal.open}
+                onClose={() => setDeleteModal({ open: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Delete Gallery Item"
+                message="Are you sure you want to delete this gallery item? This action will remove the image from the website gallery."
+            />
         </AdminLayout>
     );
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
 import Image from "next/image";
 import { Plus, Pencil, Trash2, X, Save, User } from "lucide-react";
+import ConfirmModal from "@/components/Admin/ConfirmModal";
 
 const emptyMember = { name: "", role: "", subRole: "", image: "", section: "cabinet", order: 0 };
 
@@ -14,6 +15,7 @@ export default function AdminTeam() {
     const [editing, setEditing] = useState(null);
     const [form, setForm] = useState(emptyMember);
     const [saving, setSaving] = useState(false);
+    const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
@@ -47,7 +49,11 @@ export default function AdminTeam() {
     };
 
     const handleDelete = async (id) => {
-        if (!confirm("Delete this team member?")) return;
+        setDeleteModal({ open: true, id });
+    };
+
+    const confirmDelete = async () => {
+        const id = deleteModal.id;
         await fetch(`/api/team/${id}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
         fetchMembers();
     };
@@ -154,6 +160,14 @@ export default function AdminTeam() {
                     </div>
                 </div>
             )}
+
+            <ConfirmModal
+                isOpen={deleteModal.open}
+                onClose={() => setDeleteModal({ open: false, id: null })}
+                onConfirm={confirmDelete}
+                title="Delete Team Member"
+                message="Are you sure you want to delete this team member? This will remove them from the public team page."
+            />
         </AdminLayout>
     );
 }

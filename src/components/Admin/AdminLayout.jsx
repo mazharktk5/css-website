@@ -8,6 +8,7 @@ import {
     CalendarDays,
     Image,
     Users,
+    Bell,
     LogOut,
     Menu,
     X,
@@ -18,6 +19,7 @@ import {
 const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Events", href: "/admin/events", icon: CalendarDays },
+    { name: "Registrations", href: "/admin/registrations", icon: Bell },
     { name: "Gallery", href: "/admin/gallery", icon: Image },
     { name: "Team", href: "/admin/team", icon: Users },
 ];
@@ -115,8 +117,8 @@ export default function AdminLayout({ children }) {
                                 href={item.href}
                                 onClick={() => setSidebarOpen(false)}
                                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200 group ${isActive
-                                        ? "bg-gradient-to-r from-blue-600/20 to-indigo-600/10 text-blue-400 border border-blue-500/20 shadow-lg shadow-blue-500/5"
-                                        : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
+                                    ? "bg-gradient-to-r from-blue-600/20 to-indigo-600/10 text-blue-400 border border-blue-500/20 shadow-lg shadow-blue-500/5"
+                                    : "text-gray-400 hover:text-white hover:bg-white/[0.04]"
                                     }`}
                             >
                                 <item.icon className={`w-5 h-5 ${isActive ? "text-blue-400" : "text-gray-500 group-hover:text-gray-300"}`} />

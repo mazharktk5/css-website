@@ -4,6 +4,7 @@ import AboutPreview from "../components/Home/AboutPreview";
 import Highlights from "../components/Home/EventsPreview";
 import GalleryPreview from "../components/Home/GalleryPreview";
 import DevelopersPreview from "@/components/Home/DevelopersPreview";
+import RegistrationPopup from "@/components/Home/RegistrationPopup";
 // import EventsPreview from "@/components/EventsPreview";
 // import GalleryPreview from "@/components/GalleryPreview";
 // import FooterCTA from "@/components/FooterCTA";
@@ -36,6 +37,7 @@ export default function Home() {
         <GalleryPreview />
         <DevelopersPreview />
         {/* <FooterCTA /> */}
+        <RegistrationPopup />
       </main>
 
       {/* <Footer /> */}

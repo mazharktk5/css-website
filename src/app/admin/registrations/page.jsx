@@ -2,82 +2,86 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
-import { Plus, Pencil, Trash2, X, Save, Calendar, MapPin, Tag } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Save, Calendar, Link as LinkIcon, Type } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 
-const emptyEvent = {
+const emptyAnnouncement = {
     title: "",
-    date: "",
-    time: "",
-    location: "",
-    image: "",
     description: "",
-    tags: "",
-    category: "",
-    participants: "",
+    googleFormLink: "",
+    expiryDate: "",
 };
 
-export default function AdminEvents() {
-    const [events, setEvents] = useState([]);
+export default function AdminRegistrations() {
+    const [announcements, setAnnouncements] = useState([]);
     const [loading, setLoading] = useState(true);
     const [modalOpen, setModalOpen] = useState(false);
     const [editing, setEditing] = useState(null);
-    const [form, setForm] = useState(emptyEvent);
+    const [form, setForm] = useState(emptyAnnouncement);
     const [saving, setSaving] = useState(false);
     const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
-    const fetchEvents = async () => {
+    const fetchAnnouncements = async () => {
         try {
-            const res = await fetch("/api/events");
+            const res = await fetch("/api/announcements");
             const data = await res.json();
-            setEvents(Array.isArray(data) ? data : []);
+            setAnnouncements(Array.isArray(data) ? data : []);
         } catch { /* ignore */ }
         setLoading(false);
     };
 
-    useEffect(() => { fetchEvents(); }, []);
+    useEffect(() => { fetchAnnouncements(); }, []);
 
     const openAdd = () => {
         setEditing(null);
-        setForm(emptyEvent);
+        setForm(emptyAnnouncement);
         setModalOpen(true);
     };
 
-    const openEdit = (event) => {
-        setEditing(event._id);
+    const openEdit = (ann) => {
+        setEditing(ann._id);
+        // Format date for datetime-local input (YYYY-MM-DDTHH:MM) in local timezone
+        const date = new Date(ann.expiryDate);
+        const tzOffset = date.getTimezoneOffset() * 60000; // offset in milliseconds
+        const localISODate = new Date(date.getTime() - tzOffset).toISOString().slice(0, 16);
+
         setForm({
-            ...event,
-            tags: Array.isArray(event.tags) ? event.tags.join(", ") : event.tags || "",
+            ...ann,
+            expiryDate: localISODate
         });
         setModalOpen(true);
     };
 
     const handleSave = async () => {
         setSaving(true);
-        const body = {
-            ...form,
-            tags: typeof form.tags === "string" ? form.tags.split(",").map((t) => t.trim()).filter(Boolean) : form.tags,
-        };
-
         try {
+            let res;
             if (editing) {
-                await fetch(`/api/events/${editing}`, {
+                res = await fetch(`/api/announcements/${editing}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-                    body: JSON.stringify(body),
+                    body: JSON.stringify(form),
                 });
             } else {
-                await fetch("/api/events", {
+                res = await fetch("/api/announcements", {
                     method: "POST",
                     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-                    body: JSON.stringify(body),
+                    body: JSON.stringify(form),
                 });
             }
-            setModalOpen(false);
-            fetchEvents();
-        } catch { /* ignore */ }
+
+            if (res.ok) {
+                setModalOpen(false);
+                fetchAnnouncements();
+            } else {
+                const error = await res.json();
+                alert(error.error || "Failed to save announcement");
+            }
+        } catch (err) {
+            alert("An error occurred while saving");
+        }
         setSaving(false);
     };
 
@@ -87,11 +91,19 @@ export default function AdminEvents() {
 
     const confirmDelete = async () => {
         const id = deleteModal.id;
-        await fetch(`/api/events/${id}`, {
-            method: "DELETE",
-            headers: { Authorization: `Bearer ${token}` },
-        });
-        fetchEvents();
+        try {
+            const res = await fetch(`/api/announcements/${id}`, {
+                method: "DELETE",
+                headers: { Authorization: `Bearer ${token}` },
+            });
+            if (res.ok) {
+                fetchAnnouncements();
+            } else {
+                alert("Failed to delete announcement");
+            }
+        } catch {
+            alert("An error occurred while deleting");
+        }
     };
 
     return (
@@ -100,60 +112,66 @@ export default function AdminEvents() {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div>
-                        <h2 className="text-xl font-black text-white">Events Management</h2>
-                        <p className="text-gray-500 text-sm mt-1">{events.length} total events</p>
+                        <h2 className="text-xl font-black text-white">Registrations Management</h2>
+                        <p className="text-gray-500 text-sm mt-1">{announcements.length} total popups</p>
                     </div>
                     <button
                         onClick={openAdd}
                         className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20 text-sm"
                     >
-                        <Plus className="w-4 h-4" /> Add Event
+                        <Plus className="w-4 h-4" /> Add Registration
                     </button>
                 </div>
 
-                {/* Events Table */}
+                {/* Table */}
                 <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden">
                     {loading ? (
                         <div className="p-12 text-center">
                             <div className="w-8 h-8 border-2 border-blue-500/30 border-t-blue-500 rounded-full animate-spin mx-auto" />
                         </div>
-                    ) : events.length === 0 ? (
-                        <div className="p-12 text-center text-gray-500">No events found. Click &quot;Add Event&quot; to get started.</div>
+                    ) : announcements.length === 0 ? (
+                        <div className="p-12 text-center text-gray-500">No registrations found. Click &quot;Add Registration&quot; to get started.</div>
                     ) : (
                         <div className="overflow-x-auto">
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr className="border-b border-white/[0.06]">
-                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Title</th>
-                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Category</th>
-                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Date</th>
-                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Location</th>
+                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Event Title</th>
+                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Expiry Date/Time</th>
+                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Status</th>
                                         <th className="text-right px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {events.map((event) => (
-                                        <tr key={event._id} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
-                                            <td className="px-6 py-4 text-white font-semibold">{event.title}</td>
-                                            <td className="px-6 py-4">
-                                                <span className="px-3 py-1 rounded-full text-xs font-bold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-                                                    {event.category}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-gray-400">{event.date}</td>
-                                            <td className="px-6 py-4 text-gray-400">{event.location || "—"}</td>
-                                            <td className="px-6 py-4 text-right">
-                                                <div className="flex items-center justify-end gap-2">
-                                                    <button onClick={() => openEdit(event)} className="p-2 rounded-lg hover:bg-white/[0.05] text-gray-400 hover:text-blue-400 transition-colors">
-                                                        <Pencil className="w-4 h-4" />
-                                                    </button>
-                                                    <button onClick={() => handleDelete(event._id)} className="p-2 rounded-lg hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-colors">
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                    {announcements.map((ann) => {
+                                        const isExpired = new Date(ann.expiryDate) < new Date();
+                                        return (
+                                            <tr key={ann._id} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
+                                                <td className="px-6 py-4 text-white font-semibold">{ann.title}</td>
+                                                <td className="px-6 py-4 text-gray-400">
+                                                    {new Date(ann.expiryDate).toLocaleString()}
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${isExpired
+                                                        ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                                                        : "bg-green-500/10 text-green-400 border border-green-500/20"
+                                                        }`}>
+                                                        {isExpired ? "Expired" : "Active"}
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4 text-right">
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        <button onClick={() => openEdit(ann)} className="p-2 rounded-lg hover:bg-white/[0.05] text-gray-400 hover:text-blue-400 transition-colors">
+                                                            <Pencil className="w-4 h-4" />
+                                                        </button>
+                                                        <button onClick={() => handleDelete(ann._id)} className="p-2 rounded-lg hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-colors">
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
                                 </tbody>
                             </table>
                         </div>
@@ -167,7 +185,7 @@ export default function AdminEvents() {
                     <div className="bg-[#111827] border border-white/[0.08] rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-2xl">
                         {/* Modal Header */}
                         <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
-                            <h3 className="text-lg font-black text-white">{editing ? "Edit Event" : "Add Event"}</h3>
+                            <h3 className="text-lg font-black text-white">{editing ? "Edit Registration" : "Add Registration"}</h3>
                             <button onClick={() => setModalOpen(false)} className="p-2 hover:bg-white/[0.05] rounded-lg text-gray-400">
                                 <X className="w-5 h-5" />
                             </button>
@@ -175,23 +193,18 @@ export default function AdminEvents() {
 
                         {/* Modal Body */}
                         <div className="p-6 space-y-5">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                                <InputField label="Title" icon={<Tag className="w-4 h-4" />} value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
-                                <InputField label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} placeholder="e.g. AI, Web Development, past" />
-                                <InputField label="Date" icon={<Calendar className="w-4 h-4" />} type="date" value={form.date} onChange={(v) => setForm({ ...form, date: v })} />
-                                <InputField label="Time" value={form.time} onChange={(v) => setForm({ ...form, time: v })} placeholder="e.g. 2:00 PM - 5:00 PM" />
-                                <InputField label="Location" icon={<MapPin className="w-4 h-4" />} value={form.location} onChange={(v) => setForm({ ...form, location: v })} />
-                                <InputField label="Participants" value={form.participants} onChange={(v) => setForm({ ...form, participants: v })} placeholder="e.g. 50+ students" />
-                            </div>
-                            <InputField label="Image Path" value={form.image} onChange={(v) => setForm({ ...form, image: v })} placeholder="/images/events/..." />
-                            <InputField label="Tags (comma separated)" value={form.tags} onChange={(v) => setForm({ ...form, tags: v })} placeholder="Workshop, AI, Hackathon" />
+                            <InputField label="Event Title" icon={<Type className="w-4 h-4" />} value={form.title} onChange={(v) => setForm({ ...form, title: v })} />
+                            <InputField label="Google Form Link" icon={<LinkIcon className="w-4 h-4" />} value={form.googleFormLink} onChange={(v) => setForm({ ...form, googleFormLink: v })} />
+                            <InputField label="Expiry Date & Time" icon={<Calendar className="w-4 h-4" />} type="datetime-local" value={form.expiryDate} onChange={(v) => setForm({ ...form, expiryDate: v })} />
+
                             <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Description</label>
+                                <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Brief Description</label>
                                 <textarea
                                     value={form.description}
                                     onChange={(e) => setForm({ ...form, description: e.target.value })}
                                     rows={3}
                                     className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all resize-none text-sm"
+                                    placeholder="Short description for the popup..."
                                 />
                             </div>
                         </div>
@@ -203,11 +216,11 @@ export default function AdminEvents() {
                             </button>
                             <button
                                 onClick={handleSave}
-                                disabled={saving || !form.title || !form.category || !form.date}
+                                disabled={saving || !form.title || !form.googleFormLink || !form.expiryDate}
                                 className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20 text-sm disabled:opacity-50"
                             >
                                 <Save className="w-4 h-4" />
-                                {saving ? "Saving..." : "Save Event"}
+                                {saving ? "Saving..." : "Save Registration"}
                             </button>
                         </div>
                     </div>
@@ -218,8 +231,8 @@ export default function AdminEvents() {
                 isOpen={deleteModal.open}
                 onClose={() => setDeleteModal({ open: false, id: null })}
                 onConfirm={confirmDelete}
-                title="Delete Event"
-                message="Are you sure you want to delete this event? This action cannot be undone."
+                title="Delete Registration"
+                message="Are you sure you want to delete this registration popup? It will be immediately removed from the home page."
             />
         </AdminLayout>
     );
