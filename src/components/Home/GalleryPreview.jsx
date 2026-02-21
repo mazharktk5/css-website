@@ -1,24 +1,38 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import galleryData from "../../data/gallery.json";
 
 const GalleryPreview = () => {
-    // Group images by eventName
-    const groupedEvents = Object.values(
-        galleryData.reduce((acc, item) => {
-            if (!acc[item.eventName]) {
-                acc[item.eventName] = item; // pick first image as cover
-            }
-            return acc;
-        }, {})
-    );
+    const [previewEvents, setPreviewEvents] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    // Take only first 3 unique events
-    const previewEvents = groupedEvents.slice(0, 3);
+    useEffect(() => {
+        const fetchGallery = async () => {
+            try {
+                const res = await fetch("/api/gallery");
+                const data = await res.json();
+                const galleryData = Array.isArray(data) ? data : [];
+
+                // Group images by eventName — pick first image as cover
+                const grouped = Object.values(
+                    galleryData.reduce((acc, item) => {
+                        if (!acc[item.eventName]) {
+                            acc[item.eventName] = item;
+                        }
+                        return acc;
+                    }, {})
+                );
+                setPreviewEvents(grouped.slice(0, 3));
+            } catch {
+                setPreviewEvents([]);
+            }
+            setLoading(false);
+        };
+        fetchGallery();
+    }, []);
 
     return (
         <section
@@ -59,46 +73,52 @@ const GalleryPreview = () => {
                 </div>
 
                 {/* Gallery Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {previewEvents.map((item, index) => (
-                        <motion.div
-                            key={item.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-[#3c6da1]/30"
-                        >
-                            {/* Image */}
-                            <div className="relative h-72 overflow-hidden">
-                                <Image
-                                    src={item.image}
-                                    alt={item.eventName}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-105"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                {loading ? (
+                    <div className="flex justify-center py-16">
+                        <div className="w-10 h-10 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+                        {previewEvents.map((item, index) => (
+                            <motion.div
+                                key={item._id || `gallery-${index}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ delay: index * 0.1 }}
+                                className="group bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl hover:border-[#3c6da1]/30"
+                            >
+                                {/* Image */}
+                                <div className="relative h-72 overflow-hidden">
+                                    <Image
+                                        src={item.image}
+                                        alt={item.eventName}
+                                        fill
+                                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-white/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
 
-                                {/* Category */}
-                                <div className="absolute top-4 left-4">
-                                    <span className="bg-[#3c6da1] text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
-                                        {item.category}
-                                    </span>
+                                    {/* Category */}
+                                    <div className="absolute top-4 left-4">
+                                        <span className="bg-[#3c6da1] text-white px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">
+                                            {item.category}
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
 
-                            {/* Content */}
-                            <div className="p-8">
-                                <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#3c6da1] transition-colors">
-                                    {item.eventName}
-                                </h3>
-                                <p className="text-gray-500 text-sm line-clamp-2">
-                                    {item.description}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                                {/* Content */}
+                                <div className="p-8">
+                                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-[#3c6da1] transition-colors">
+                                        {item.eventName}
+                                    </h3>
+                                    <p className="text-gray-500 text-sm line-clamp-2">
+                                        {item.description}
+                                    </p>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+                )}
 
                 {/* CTA */}
                 <div className="text-center mt-16">

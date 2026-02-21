@@ -1,33 +1,7 @@
 "use client";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-
-const team = {
-    executive: [
-        { name: "Dr Shah Khusro", role: "Patron-in-Chief", subRole: "Chairman, Dept. of CS", image: "/images/team/chairman.jpg" },
-        { name: "Dr Waheed ur Rehman", role: "Chief Organizer", subRole: "Coordinator, Dept. of CS", image: "/images/team/coordinator.jpg" },
-    ],
-    cabinet: [
-        { name: "Muhammad Ilyas", role: "President", image: "/images/team/president.jpg" },
-        { name: "Abdullah Ahmad", role: "Vice President", image: "/images/team/vp.jpg" },
-        { name: "Fatima Ijaz", role: "Female Vice President", image: "/images/team/fatima.png" },
-        { name: "Mati Ullah Bangash", role: "Chief Secretary", image: "/images/team/chief-secretary.jpg" },
-        { name: "Safia Zulfiqar", role: "Information Secretary", image: "/images/developers/safia.jpg" },
-        { name: "Abubakar Dayan", role: "Media Secretary", image: "/images/team/app-lead.jpg" },
-    ],
-    clubs: [
-        { name: "Mazhar Ahmad", role: "Software Engineering Lead", image: "/images/team/software-lead.jpg" },
-        { name: "Hashir Ahmad", role: "Cyber Security Lead", image: "/images/team/information-secretary.jpg" },
-        { name: "Junaid Ahmad", role: "AI & DS Lead", image: "/images/team/app-lead.jpg" },
-        { name: "Amna Amir", role: "Content & Graphics Head", image: "/images/team/graphic-head.jpg" },
-        { name: "Bilal Shahid", role: "Management Head", image: "/images/team/management-head.jpg" },
-        { name: "M Uzair", role: "External PR Head", image: "/images/team/pr-lead.jpg" },
-        { name: "Yahya Jan", role: "Literary Club Head", image: "/images/team/app-lead.jpg" },
-        { name: "M Ali", role: "Creative Club Head", image: "/images/team/creative-head.jpg" },
-
-
-    ],
-};
 
 function MemberCard({ member, delay = 0 }) {
     return (
@@ -39,7 +13,7 @@ function MemberCard({ member, delay = 0 }) {
             className="group relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-gray-100 cursor-pointer shadow-sm border border-gray-200 select-none"
         >
             <Image
-                src={member.image}
+                src={member.image || "/images/team/placeholder.jpg"}
                 alt={member.name}
                 fill
                 className="object-cover grayscale group-hover:grayscale-0 group-active:grayscale-0 group-hover:scale-105 group-active:scale-105 transition-all duration-700 ease-in-out"
@@ -63,13 +37,35 @@ function GridSection({ title, members }) {
                 <div className="flex-1 h-[1px] bg-gray-200" />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                {members.map((m, i) => <MemberCard key={i} member={m} delay={i * 0.05} />)}
+                {members.map((m, i) => <MemberCard key={m._id || i} member={m} delay={i * 0.05} />)}
             </div>
         </div>
     );
 }
 
 export default function OurTeam() {
+    const [team, setTeam] = useState({ executive: [], cabinet: [], clubs: [] });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchTeam = async () => {
+            try {
+                const res = await fetch("/api/team");
+                const data = await res.json();
+                const members = Array.isArray(data) ? data : [];
+                setTeam({
+                    executive: members.filter(m => m.section === "executive"),
+                    cabinet: members.filter(m => m.section === "cabinet"),
+                    clubs: members.filter(m => m.section === "clubs"),
+                });
+            } catch {
+                setTeam({ executive: [], cabinet: [], clubs: [] });
+            }
+            setLoading(false);
+        };
+        fetchTeam();
+    }, []);
+
     return (
         <section className="py-24 bg-white text-gray-900 min-h-screen">
             <div className="max-w-7xl mx-auto px-6">
@@ -83,9 +79,17 @@ export default function OurTeam() {
                     </p>
                 </div>
 
-                <GridSection title="Executive Board" members={team.executive} />
-                <GridSection title="Cabinet" members={team.cabinet} />
-                <GridSection title="Club Leads" members={team.clubs} />
+                {loading ? (
+                    <div className="flex justify-center py-16">
+                        <div className="w-10 h-10 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+                    </div>
+                ) : (
+                    <>
+                        {team.executive.length > 0 && <GridSection title="Executive Board" members={team.executive} />}
+                        {team.cabinet.length > 0 && <GridSection title="Cabinet" members={team.cabinet} />}
+                        {team.clubs.length > 0 && <GridSection title="Club Leads" members={team.clubs} />}
+                    </>
+                )}
             </div>
         </section>
     );

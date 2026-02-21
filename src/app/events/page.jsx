@@ -1,19 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, Users } from "lucide-react";
-import eventsData from "../../data/events.json";
 
 const Events = () => {
+    const [allEvents, setAllEvents] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("All");
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const res = await fetch("/api/events");
+                const data = await res.json();
+                setAllEvents(Array.isArray(data) ? data : []);
+            } catch {
+                setAllEvents([]);
+            }
+            setLoading(false);
+        };
+        fetchEvents();
+    }, []);
 
     // Exclude "past" from filter buttons
-    const categories = ["All", ...Object.keys(eventsData).filter(c => c !== "past")];
-
-    // Flatten all events
-    const allEvents = Object.values(eventsData).flat();
+    const categories = ["All", ...new Set(allEvents.map(e => e.category).filter(c => c !== "past"))];
 
     // Filtered events
     const filteredEvents =
@@ -34,6 +46,14 @@ const Events = () => {
             day: "numeric",
         });
     };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
+                <div className="w-10 h-10 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-gray-50 pt-20">
@@ -68,9 +88,9 @@ const Events = () => {
 
                 {/* Events Grid */}
                 <div className="grid md:grid-cols-3 gap-8">
-                    {displayEvents.map((event) => (
+                    {displayEvents.map((event, idx) => (
                         <motion.div
-                            key={`${event.category}-${event.id}`} // ensure unique key
+                            key={event._id || `event-${idx}`}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -118,7 +138,7 @@ const Events = () => {
 
                 {/* CTA Section */}
                 <section className="mt-20 bg-blue-900 rounded-2xl p-12 text-center text-white">
-                    <h2 className="text-3xl font-bold mb-4">Don't Miss Out!</h2>
+                    <h2 className="text-3xl font-bold mb-4">Don&apos;t Miss Out!</h2>
                     <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
                         Stay updated with our latest events and activities. Follow us to
                         receive notifications about upcoming workshops, competitions, and
