@@ -5,6 +5,7 @@ import AdminLayout from "@/components/Admin/AdminLayout";
 import Image from "next/image";
 import { Plus, Pencil, Trash2, X, Save, ImageIcon } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
+import ImageUpload from "@/components/Admin/ImageUpload";
 
 const emptyItem = { eventName: "", category: "", image: "", description: "" };
 
@@ -136,7 +137,7 @@ export default function AdminGallery() {
                         <div className="p-6 space-y-5">
                             <GInput label="Event Name" value={form.eventName} onChange={(v) => setForm({ ...form, eventName: v })} />
                             <GInput label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} placeholder="e.g. Workshop, Bootcamp, Games" />
-                            <GInput label="Image Path" icon={<ImageIcon className="w-4 h-4" />} value={form.image} onChange={(v) => setForm({ ...form, image: v })} placeholder="/images/gallery/..." />
+                            <ImageUpload label="Gallery Image" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
                             <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Description</label>
                                 <textarea

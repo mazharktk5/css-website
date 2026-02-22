@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
 import { Plus, Pencil, Trash2, X, Save, Calendar, MapPin, Tag } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
+import ImageUpload from "@/components/Admin/ImageUpload";
 
 const emptyEvent = {
     title: "",
@@ -183,7 +184,7 @@ export default function AdminEvents() {
                                 <InputField label="Location" icon={<MapPin className="w-4 h-4" />} value={form.location} onChange={(v) => setForm({ ...form, location: v })} />
                                 <InputField label="Participants" value={form.participants} onChange={(v) => setForm({ ...form, participants: v })} placeholder="e.g. 50+ students" />
                             </div>
-                            <InputField label="Image Path" value={form.image} onChange={(v) => setForm({ ...form, image: v })} placeholder="/images/events/..." />
+                            <ImageUpload label="Event Image" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
                             <InputField label="Tags (comma separated)" value={form.tags} onChange={(v) => setForm({ ...form, tags: v })} placeholder="Workshop, AI, Hackathon" />
                             <div className="space-y-2">
                                 <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Description</label>

@@ -5,6 +5,7 @@ import AdminLayout from "@/components/Admin/AdminLayout";
 import Image from "next/image";
 import { Plus, Pencil, Trash2, X, Save, User } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
+import ImageUpload from "@/components/Admin/ImageUpload";
 
 const emptyMember = { name: "", role: "", subRole: "", image: "", section: "cabinet", order: 0 };
 
@@ -129,7 +130,7 @@ export default function AdminTeam() {
                             <TInput label="Full Name" icon={<User className="w-4 h-4" />} value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
                             <TInput label="Role / Title" value={form.role} onChange={(v) => setForm({ ...form, role: v })} placeholder="e.g. President, AI Lead" />
                             <TInput label="Sub Role (optional)" value={form.subRole} onChange={(v) => setForm({ ...form, subRole: v })} placeholder="e.g. Chairman, Dept. of CS" />
-                            <TInput label="Image Path" value={form.image} onChange={(v) => setForm({ ...form, image: v })} placeholder="/images/team/..." />
+                            <ImageUpload label="Member Photo" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
                             <div className="grid grid-cols-2 gap-5">
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Section</label>
