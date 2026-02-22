@@ -1,13 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Image as ImageIcon, Sparkles, Filter, ChevronRight, LayoutGrid, Zap } from 'lucide-react';
+import ImageLightbox from '@/components/Gallery/ImageLightbox';
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [loading, setLoading] = useState(true);
+    const [lightbox, setLightbox] = useState({ isOpen: false, index: 0 });
 
     useEffect(() => {
         const fetchGallery = async () => {
@@ -23,199 +27,220 @@ const Gallery = () => {
         fetchGallery();
     }, []);
 
-    const categories = ['All', ...new Set(galleryData.map(item => item.category))];
+    const categories = useMemo(() =>
+        ['All', ...new Set(galleryData.map(item => item.category))],
+        [galleryData]
+    );
 
-    const filteredImages = selectedCategory === 'All'
-        ? galleryData
-        : galleryData.filter(item => item.category === selectedCategory);
+    const filteredImages = useMemo(() =>
+        selectedCategory === 'All'
+            ? galleryData
+            : galleryData.filter(item => item.category === selectedCategory),
+        [galleryData, selectedCategory]
+    );
+
+    const openLightbox = (index) => setLightbox({ isOpen: true, index });
+    const closeLightbox = () => setLightbox({ isOpen: false, index: 0 });
+    const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % filteredImages.length }));
+    const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + filteredImages.length) % filteredImages.length }));
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 pt-20 flex items-center justify-center">
-                <div className="w-10 h-10 border-3 border-blue-200 border-t-blue-600 rounded-full animate-spin" />
+            <div className="min-h-screen bg-white pt-20 flex items-center justify-center">
+                <div className="relative">
+                    <div className="w-16 h-16 border-2 border-blue-100 rounded-full" />
+                    <div className="absolute inset-0 w-16 h-16 border-t-2 border-blue-900 rounded-full animate-spin" />
+                </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 pt-20 relative overflow-hidden">
-            {/* Subtle Background Glow */}
-            <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl" />
-                <div className="absolute top-1/2 -left-40 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl" />
+        <div className="min-h-screen bg-gray-50 text-gray-900 selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+            {/* Soft Background Accents */}
+            <div className="fixed inset-0 pointer-events-none opacity-20">
+                <div className="absolute top-[10%] left-[5%] w-[30%] h-[30%] bg-blue-400/20 rounded-full blur-[100px]" />
+                <div className="absolute bottom-[10%] right-[5%] w-[30%] h-[30%] bg-blue-600/10 rounded-full blur-[100px]" />
             </div>
 
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                {/* Hero Section  */}
-                <div className="relative h-[65vh] w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] 
-                flex items-center justify-center overflow-hidden mb-20">
+            {/* Premium Header */}
+            <header className="relative pt-32 pb-16 px-6 bg-gradient-to-b from-[#1e3a8a] to-[#3e76b2] text-white">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="max-w-7xl mx-auto flex flex-col items-center relative z-10"
+                >
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-6 backdrop-blur-sm">
+                        Captured Moments
+                    </div>
 
-                    {/* Background Image */}
-                    <Image
-                        src="/images/gallery/github2.jpg"
-                        alt="Gallery Background"
-                        fill
-                        priority
-                        className="object-cover"
-                    />
+                    <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-center">
+                        Our <span className="text-[#93c5fd]">Captures</span>
+                    </h1>
 
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black/75" />
+                    <p className="text-blue-50/80 text-lg md:text-xl max-w-2xl text-center leading-relaxed font-medium">
+                        A visual record of our growth, innovation, and community impact. Explore the moments that define CSS Society.
+                    </p>
 
-                    {/* Content */}
-                    <div className="relative z-10 text-center px-6 max-w-4xl">
-                        <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-6 tracking-tight">
-                            Gallery
-                        </h1>
-
-                        <p className="text-lg sm:text-xl text-gray-200 leading-relaxed mb-10">
-                            Discover moments from our{" "}
-                            <span className="text-blue-400 font-semibold">events</span>,{" "}
-                            <span className="text-blue-400 font-semibold">workshops</span>, and{" "}
-                            <span className="text-blue-400 font-semibold">community activities</span> —
-                            where ideas grow, skills evolve, and connections are built.
-                        </p>
-
-                        {/* Action Buttons */}
-                        <div className="flex flex-col sm:flex-row justify-center gap-4">
-                            <Link href="/events">
-                                <button className="px-8 py-3 rounded-full bg-blue-900 text-white font-medium
-                                   hover:bg-blue-800 transition-all duration-300 shadow-lg">
-                                    See Events
-                                </button>
-                            </Link>
-
-                            <Link href="/contact">
-                                <button className="px-8 py-3 rounded-full border border-white text-white font-medium
-                                   hover:bg-white hover:text-blue-900 transition-all duration-300">
-                                    Contact Us
-                                </button>
-                            </Link>
+                    <div className="mt-10 flex items-center gap-6">
+                        <div className="px-5 py-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
+                            <span className="text-2xl font-black text-white">{galleryData.length}</span>
+                            <span className="ml-2 text-blue-200 font-bold text-xs uppercase tracking-widest">Images</span>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
-                {/* Category Filter */}
-                <div className="flex flex-wrap justify-center gap-4 mb-14">
-                    {categories.map((category) => (
+                {/* Waves Pattern Effect */}
+                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gray-50" style={{ clipPath: 'polygon(0 100%, 100% 100%, 100% 0, 0 100%)' }}></div>
+            </header>
+
+            <main className="max-w-7xl mx-auto px-6 pb-40 -mt-8 relative z-20">
+                {/* Clean Filter Controls */}
+                <div className="sticky top-24 z-40 mb-12 flex flex-wrap items-center justify-center gap-2 p-2 bg-white/80 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] shadow-xl shadow-blue-900/5">
+                    {categories.map((cat) => (
                         <button
-                            key={category}
-                            onClick={() => setSelectedCategory(category)}
-                            className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 backdrop-blur-md ${selectedCategory === category
-                                    ? 'bg-blue-900 text-white shadow-[0_10px_30px_rgba(30,64,175,0.35)] scale-105'
-                                    : 'bg-white/70 text-blue-900 hover:bg-blue-50 border border-blue-200 hover:scale-105'
-                                }`}
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`
+                                px-6 py-2.5 rounded-[2rem] text-xs font-black tracking-wider transition-all
+                                ${selectedCategory === cat
+                                    ? 'bg-[#1e3a8a] text-white shadow-lg shadow-blue-900/20'
+                                    : 'text-gray-500 hover:text-[#1e3a8a] hover:bg-blue-50'}
+                            `}
                         >
-                            {category}
+                            {cat}
                         </button>
                     ))}
                 </div>
 
-                {/* Gallery Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {filteredImages.map((item, idx) => (
-                        <div
-                            key={item._id || `gallery-${idx}`}
-                            className="group relative bg-white/80 backdrop-blur-xl rounded-2xl overflow-hidden 
-                                   border border-white/40 shadow-[0_20px_40px_rgba(0,0,0,0.08)]
-                                   hover:shadow-[0_30px_60px_rgba(30,64,175,0.25)]
-                                   transition-all duration-500 hover:-translate-y-3"
-                        >
-                            {/* Image Container */}
-                            <div className="relative h-64 overflow-hidden">
-                                <Image
-                                    src={item.image}
-                                    alt={item.eventName}
-                                    fill
-                                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                                />
+                {/* Improved Masonry Grid */}
+                <motion.div
+                    layout
+                    className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8"
+                >
+                    <AnimatePresence mode="popLayout">
+                        {filteredImages.map((item, idx) => (
+                            <motion.div
+                                layout
+                                key={item._id || `gal-${idx}`}
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95 }}
+                                transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
+                                className="break-inside-avoid group relative cursor-pointer"
+                                onClick={() => openLightbox(idx)}
+                            >
+                                <div className="relative rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-2 group-hover:border-blue-200">
+                                    {/* Image with soft overlay */}
+                                    <div className="relative overflow-hidden">
+                                        <Image
+                                            src={item.image}
+                                            alt={item.eventName}
+                                            width={800}
+                                            height={1000}
+                                            className="w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        />
 
-                                {/* Gradient Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                        {/* Elegant Overlay */}
+                                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500">
+                                            <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="px-3 py-1 bg-[#93c5fd] rounded-full text-[10px] font-black uppercase tracking-widest text-blue-900">
+                                                        {item.category}
+                                                    </span>
+                                                </div>
+                                                <h3 className="text-xl font-black text-white leading-tight">
+                                                    {item.eventName}
+                                                </h3>
+                                                <p className="text-blue-100/70 text-xs font-medium line-clamp-2">
+                                                    {item.description}
+                                                </p>
+                                            </div>
+                                        </div>
 
-                                {/* Category Badge */}
-                                <div className="absolute top-4 left-4">
-                                    <span className="bg-blue-900/90 text-white px-4 py-1.5 rounded-full text-xs font-semibold tracking-wide shadow-md">
-                                        {item.category}
-                                    </span>
+                                        {/* Zoom Icon */}
+                                        <div className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-md rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100 border border-white/20">
+                                            <LayoutGrid className="w-5 h-5 text-white" />
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-
-                            {/* Caption Section */}
-                            <div className="p-6">
-                                <h3 className="text-xl font-bold text-blue-900 mb-3 group-hover:tracking-wide transition-all duration-300">
-                                    {item.eventName}
-                                </h3>
-                                <p className="text-gray-600 text-sm leading-relaxed">
-                                    {item.description}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
-                </div>
+                            </motion.div>
+                        ))}
+                    </AnimatePresence>
+                </motion.div>
 
                 {/* Empty State */}
                 {filteredImages.length === 0 && (
-                    <div className="text-center py-20">
-                        <div className="text-gray-400 mb-6">
-                            <svg className="mx-auto h-20 w-20" fill="currentColor" viewBox="0 0 20 20">
-                                <path
-                                    fillRule="evenodd"
-                                    d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
+                    <div className="flex flex-col items-center justify-center py-40 text-center">
+                        <div className="p-8 bg-white rounded-[2.5rem] border border-gray-100 shadow-xl mb-6">
+                            <ImageIcon className="w-12 h-12 text-gray-200" />
                         </div>
-                        <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                            No images found
-                        </h3>
-                        <p className="text-gray-500">
-                            No images available for the selected category.
-                        </p>
+                        <h3 className="text-2xl font-black text-gray-900 mb-2">No captures found</h3>
+                        <p className="text-gray-500 font-medium">This category is currently empty. More moments coming soon!</p>
                     </div>
                 )}
+            </main>
 
-                {/* Stats Section */}
-                <div className="mt-24 grid grid-cols-1 sm:grid-cols-3 gap-10 text-center">
-                    {[{
-                        value: galleryData.length,
-                        label: "Total Images"
-                    }, {
-                        value: categories.length - 1,
-                        label: "Categories"
-                    }, {
-                        value: new Date().getFullYear(),
-                        label: "Current Year"
-                    }].map((stat, idx) => (
-                        <div
-                            key={idx}
-                            className="group relative bg-white/70 backdrop-blur-2xl rounded-3xl p-10
-                       border border-white/40 overflow-hidden
-                       shadow-[0_25px_50px_rgba(0,0,0,0.1)]
-                       hover:shadow-[0_30px_70px_rgba(30,64,175,0.35)]
-                       transition-all duration-500 hover:-translate-y-3"
-                        >
-                            {/* Glow Accent */}
-                            <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500
-                            bg-gradient-to-br from-blue-500/10 via-transparent to-transparent" />
-
-                            {/* Top Accent Line */}
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-1 
-                            bg-blue-900 rounded-full" />
-
-                            {/* Content */}
-                            <div className="relative z-10">
-                                <div className="text-5xl font-extrabold text-blue-900 mb-4 tracking-tight">
-                                    {stat.value}
-                                </div>
-
-                                <div className="text-gray-600 tracking-widest uppercase text-sm">
-                                    {stat.label}
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+            {/* Premium Stats Grid */}
+            <section className="bg-white border-t border-gray-100 py-32">
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+                    <div className="space-y-2">
+                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{galleryData.length}</div>
+                        <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Total Memories</div>
+                    </div>
+                    <div className="space-y-2">
+                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{categories.length - 1}</div>
+                        <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Unique Categories</div>
+                    </div>
+                    <div className="space-y-2">
+                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{new Date().getFullYear()}</div>
+                        <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Archive Started</div>
+                    </div>
                 </div>
+            </section>
+
+            {/* Lightbox Integration */}
+            {lightbox.isOpen && (
+                <ImageLightbox
+                    images={filteredImages}
+                    currentIndex={lightbox.index}
+                    onClose={closeLightbox}
+                    onNext={nextImage}
+                    onPrev={prevImage}
+                />
+            )}
+
+            <style jsx global>{`
+                @keyframes spin-reverse {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(-360deg); }
+                }
+                .animate-spin-reverse {
+                    animation: spin-reverse 1.5s linear infinite;
+                }
+                .animate-pulse-slow {
+                    animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+                }
+            `}</style>
+        </div>
+    );
+};
+
+const StatCard = ({ value, label, icon, color }) => {
+    const colors = {
+        blue: "text-blue-400 bg-blue-400/5 border-blue-400/10",
+        indigo: "text-indigo-400 bg-indigo-400/5 border-indigo-400/10",
+        violet: "text-violet-400 bg-violet-400/5 border-violet-400/10"
+    };
+
+    return (
+        <div className={`p-8 rounded-[2rem] bg-white/[0.02] border border-white/[0.05] flex flex-col items-start gap-4 transition-all hover:bg-white/[0.04]`}>
+            <div className={`p-3 rounded-xl ${colors[color]} border font-bold`}>
+                {icon}
+            </div>
+            <div>
+                <div className="text-4xl font-black text-white tracking-tighter mb-1">{value}</div>
+                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-500">{label}</div>
             </div>
         </div>
     );
