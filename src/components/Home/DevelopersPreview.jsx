@@ -13,17 +13,17 @@ const fadeUp = {
 export default function DevelopersPreview() {
     return (
         <section className="py-24 relative overflow-hidden bg-white">
-        
+
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            
-                <div 
+
+                <div
                     className="absolute -bottom-[10%] -right-[10%] w-[600px] h-[600px] rounded-full opacity-40 blur-[120px]"
                     style={{
                         background: `radial-gradient(circle, #3e76b2 0%, #93c5fd 50%, transparent 70%)`
                     }}
                 />
-                
-                
+
+
                 <div className="absolute -top-[10%] -right-[10%] w-[500px] h-[500px] bg-blue-50/50 blur-[100px] rounded-full" />
             </div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"></div>
@@ -72,7 +72,7 @@ export default function DevelopersPreview() {
                             <div className="relative w-32 h-32 mb-6 flex-shrink-0">
                                 {/* Animated Glow Ring - Adjusted to softer blue */}
                                 <div className="absolute inset-0 bg-[#3c6da1]/20 rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                
+
                                 <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-gray-50 p-1 bg-white">
                                     <div className="relative w-full h-full rounded-full overflow-hidden">
                                         <Image
@@ -93,7 +93,7 @@ export default function DevelopersPreview() {
                                 <p className="text-[#3c6da1] text-xs font-bold mt-2 tracking-widest uppercase">
                                     {dev.role}
                                 </p>
-                                
+
                                 <div className="mt-8 pt-6 border-t border-gray-100 w-full">
                                     <a
                                         href={dev.linkedin}
