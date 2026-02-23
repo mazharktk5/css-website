@@ -46,7 +46,7 @@ export default function Navbar() {
                         <span className="font-black text-2xl text-white tracking-tighter leading-none uppercase italic">
                             CSS <span className="text-[#93c5fd] not-italic">SOCIETY</span>
                         </span>
-                        <span className="text-[7px] font-black tracking-[0.4em] text-white/60 uppercase mt-1">UOP Directorate</span>
+                        <span className="text-[7px] font-black tracking-[0.4em] text-white/60 uppercase mt-1">Dep Of Computer Science</span>
                     </div>
                 </Link>
 
