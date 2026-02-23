@@ -5,7 +5,9 @@ import Highlights from "../components/Home/EventsPreview";
 import GalleryPreview from "../components/Home/GalleryPreview";
 import DevelopersPreview from "@/components/Home/DevelopersPreview";
 import RegistrationPopup from "@/components/Home/RegistrationPopup";
-import Reveal from "@/components/Reveal";
+// import EventsPreview from "@/components/EventsPreview";
+// import GalleryPreview from "@/components/GalleryPreview";
+// import FooterCTA from "@/components/FooterCTA";
 
 export default function Home() {
   return (
@@ -29,18 +31,12 @@ export default function Home() {
 
       <main className="pt-16">
         <Hero />
-        <Reveal width="100%">
-          <AboutPreview />
-        </Reveal>
-        <Reveal width="100%">
-          <Highlights />
-        </Reveal>
-        <Reveal width="100%">
-          <GalleryPreview />
-        </Reveal>
-        <Reveal width="100%">
-          <DevelopersPreview />
-        </Reveal>
+        <AboutPreview />
+        <Highlights />
+        {/* <EventsPreview /> */}
+        <GalleryPreview />
+        <DevelopersPreview />
+        {/* <FooterCTA /> */}
         <RegistrationPopup />
       </main>
     </>
