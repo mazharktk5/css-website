@@ -48,50 +48,58 @@ const Gallery = () => {
         return (
             <div className="min-h-screen bg-white pt-20 flex items-center justify-center">
                 <div className="relative">
-                    <div className="w-16 h-16 border-2 border-blue-100 rounded-full" />
-                    <div className="absolute inset-0 w-16 h-16 border-t-2 border-blue-900 rounded-full animate-spin" />
+                    <div className="w-16 h-16 border-2 border-slate-100 rounded-full" />
+                    <div className="absolute inset-0 w-16 h-16 border-t-2 border-[#1e3a8a] rounded-full animate-spin" />
                 </div>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 text-gray-900 selection:bg-blue-100 selection:text-blue-900 overflow-x-hidden">
+        <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] overflow-x-hidden">
             {/* Soft Background Accents */}
-            <div className="fixed inset-0 pointer-events-none opacity-20">
-                <div className="absolute top-[10%] left-[5%] w-[30%] h-[30%] bg-blue-400/20 rounded-full blur-[100px]" />
-                <div className="absolute bottom-[10%] right-[5%] w-[30%] h-[30%] bg-blue-600/10 rounded-full blur-[100px]" />
+            <div className="fixed inset-0 pointer-events-none opacity-[0.03]">
+                <div className="absolute top-[10%] left-[5%] w-[30%] h-[30%] bg-[#1e3a8a] rounded-full blur-[120px]" />
+                <div className="absolute bottom-[10%] right-[5%] w-[30%] h-[30%] bg-[#93c5fd] rounded-full blur-[120px]" />
             </div>
 
-            {/* Premium Header */}
-            <header className="relative pt-32 pb-16 px-6 bg-gradient-to-b from-[#1e3a8a] to-[#3e76b2] text-white">
+            {/* High Contrast Branding Header */}
+            <header className="relative pt-40 pb-20 overflow-hidden bg-slate-950">
+                <div className="absolute inset-0 z-0">
+                    <div className="absolute top-0 right-0 w-1/2 h-full bg-[#1e3a8a]/20 blur-[120px]" />
+                    <div className="absolute bottom-0 left-0 w-1/2 h-full bg-[#93c5fd]/10 blur-[120px]" />
+                </div>
+
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="max-w-7xl mx-auto flex flex-col items-center relative z-10"
+                    className="max-w-7xl mx-auto px-6 relative z-10"
                 >
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-blue-100 text-[10px] font-black uppercase tracking-[0.2em] mb-6 backdrop-blur-sm">
-                        Captured Moments
-                    </div>
+                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12">
+                        <div className="max-w-4xl">
+                            <div className="flex items-center gap-4 mb-8">
+                                <span className="w-12 h-[1px] bg-[#93c5fd]" />
+                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#93c5fd]">Visual Archive</span>
+                            </div>
 
-                    <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight text-center">
-                        Our <span className="text-[#93c5fd]">Captures</span>
-                    </h1>
+                            <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter uppercase italic leading-[0.85] text-white">
+                                DIGITAL <br /><span className="text-[#93c5fd] not-italic">GALLERY.</span>
+                            </h1>
 
-                    <p className="text-blue-50/80 text-lg md:text-xl max-w-2xl text-center leading-relaxed font-medium">
-                        A visual record of our growth, innovation, and community impact. Explore the moments that define CSS Society.
-                    </p>
+                            <p className="text-white/60 text-lg md:text-xl max-w-2xl leading-relaxed font-medium">
+                                A curated visual record of our engineering mastery, innovation, and community impact.
+                                Exploring the moments that define our collective progress.
+                            </p>
+                        </div>
 
-                    <div className="mt-10 flex items-center gap-6">
-                        <div className="px-5 py-2 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-md">
-                            <span className="text-2xl font-black text-white">{galleryData.length}</span>
-                            <span className="ml-2 text-blue-200 font-bold text-xs uppercase tracking-widest">Images</span>
+                        <div className="flex items-center gap-6 bg-white/5 p-4 rounded-[2rem] border border-white/10 backdrop-blur-xl">
+                            <div className="px-8 py-4">
+                                <div className="text-4xl font-black text-white tracking-tighter">{galleryData.length}</div>
+                                <div className="text-[10px] font-black uppercase tracking-widest text-white/30">Total Assets</div>
+                            </div>
                         </div>
                     </div>
                 </motion.div>
-
-                {/* Waves Pattern Effect */}
-                <div className="absolute bottom-0 left-0 right-0 h-16 bg-gray-50" style={{ clipPath: 'polygon(0 100%, 100% 100%, 100% 0, 0 100%)' }}></div>
             </header>
 
             <main className="max-w-7xl mx-auto px-6 pb-40 -mt-8 relative z-20">

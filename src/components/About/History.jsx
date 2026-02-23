@@ -47,30 +47,30 @@ export default function History() {
   }, []);
 
   return (
-    <section className="relative py-24 bg-[#0a192f] overflow-hidden">
+    <section className="relative py-32 bg-slate-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Title Section */}
-        <div className="flex flex-col items-center mb-24">
+        <div className="flex flex-col items-center mb-32">
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             className="flex flex-col items-center"
           >
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tighter uppercase italic">
-              Our <span className="text-[#6ea3d8]">Legacy</span>
+            <h2 className="text-5xl md:text-7xl font-black text-slate-900 mb-8 tracking-tighter uppercase italic">
+              ENGINEERING <span className="text-[#1e3a8a]">LEGACY.</span>
             </h2>
-            <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-[#6ea3d8] to-transparent" />
+            <div className="w-32 h-[2px] bg-gradient-to-r from-transparent via-[#1e3a8a] to-transparent" />
           </motion.div>
         </div>
 
         <div className="relative">
           {/* Central Line - Desktop */}
-          <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/10 hidden md:block" />
+          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-slate-200 hidden md:block" />
 
           {/* Central Line - Mobile */}
-          <div className="absolute top-0 left-8 w-[2px] h-full bg-white/10 md:hidden" />
+          <div className="absolute top-0 left-8 w-[1px] h-full bg-slate-200 md:hidden" />
 
           {/* Timeline Items */}
           <div className="grid grid-cols-1 md:grid-cols-5 gap-16 md:gap-0 relative z-10">
@@ -79,17 +79,17 @@ export default function History() {
 
                 {/* Desktop Layout */}
                 {!isMobile && (
-                  <div className="flex flex-col items-center w-full min-h-[300px] justify-center">
+                  <div className="flex flex-col items-center w-full min-h-[350px] justify-center">
                     {/* Top Content */}
-                    <div className="h-1/2 flex flex-col justify-end pb-8 w-full text-center px-4">
+                    <div className="h-1/2 flex flex-col justify-end pb-12 w-full text-center px-6">
                       {event.position === "top" && (
                         <motion.div
                           initial={{ opacity: 0, y: -20 }}
                           whileInView={{ opacity: 1, y: 0 }}
                         >
-                          <span className="text-[#6ea3d8] font-black text-[10px] uppercase tracking-widest block mb-2">{event.year}</span>
-                          <h3 className="font-bold text-white text-base mb-2">{event.title}</h3>
-                          <p className="text-[11px] text-blue-100/60 leading-relaxed max-w-[160px] mx-auto">
+                          <span className="text-[#1e3a8a] font-black text-[9px] uppercase tracking-[0.3em] block mb-4">{event.year}</span>
+                          <h3 className="font-black text-slate-900 text-sm mb-3 uppercase tracking-tight italic">{event.title}</h3>
+                          <p className="text-[10px] text-slate-500 leading-relaxed max-w-[180px] mx-auto font-medium">
                             {event.description}
                           </p>
                         </motion.div>
@@ -101,21 +101,21 @@ export default function History() {
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
                       transition={{ delay: idx * 0.1 }}
-                      className="w-10 h-10 rounded-full border border-white/20 bg-[#0a192f] flex items-center justify-center relative z-20"
+                      className="w-12 h-12 rounded-full border border-slate-100 bg-white shadow-xl flex items-center justify-center relative z-20"
                     >
-                      <div className="w-3 h-3 rounded-full bg-[#6ea3d8] shadow-[0_0_15px_rgba(110,163,216,0.8)]" />
+                      <div className="w-3 h-3 rounded-full bg-[#1e3a8a] shadow-[0_0_15px_rgba(30,58,138,0.3)]" />
                     </motion.div>
 
                     {/* Bottom Content */}
-                    <div className="h-1/2 flex flex-col justify-start pt-8 w-full text-center px-4">
+                    <div className="h-1/2 flex flex-col justify-start pt-12 w-full text-center px-6">
                       {event.position === "bottom" && (
                         <motion.div
                           initial={{ opacity: 0, y: 20 }}
                           whileInView={{ opacity: 1, y: 0 }}
                         >
-                          <span className="text-[#6ea3d8] font-black text-[10px] uppercase tracking-widest block mb-2">{event.year}</span>
-                          <h3 className="font-bold text-white text-base mb-2">{event.title}</h3>
-                          <p className="text-[11px] text-blue-100/60 leading-relaxed max-w-[160px] mx-auto">
+                          <span className="text-[#1e3a8a] font-black text-[9px] uppercase tracking-[0.3em] block mb-4">{event.year}</span>
+                          <h3 className="font-black text-slate-900 text-sm mb-3 uppercase tracking-tight italic">{event.title}</h3>
+                          <p className="text-[10px] text-slate-500 leading-relaxed max-w-[180px] mx-auto font-medium">
                             {event.description}
                           </p>
                         </motion.div>
@@ -130,19 +130,19 @@ export default function History() {
                     <motion.div
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
-                      className="shrink-0 w-16 h-16 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center relative z-20"
+                      className="shrink-0 w-16 h-16 rounded-full border border-slate-100 bg-white shadow-lg flex items-center justify-center relative z-20"
                     >
-                      <div className="w-2 h-2 rounded-full bg-[#6ea3d8] shadow-[0_0_10px_rgba(110,163,216,0.8)]" />
+                      <div className="w-2 h-2 rounded-full bg-[#1e3a8a]" />
                     </motion.div>
 
                     <motion.div
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
-                      className="flex-1 pb-12"
+                      className="flex-1 pb-16"
                     >
-                      <span className="text-[#6ea3d8] font-black text-[10px] uppercase tracking-widest block mb-2">{event.year}</span>
-                      <h3 className="font-bold text-white text-xl mb-2">{event.title}</h3>
-                      <p className="text-sm text-blue-100/60 leading-relaxed">
+                      <span className="text-[#1e3a8a] font-black text-[9px] uppercase tracking-[0.3em] block mb-3">{event.year}</span>
+                      <h3 className="font-black text-slate-900 text-2xl mb-4 italic uppercase tracking-tighter">{event.title}</h3>
+                      <p className="text-sm text-slate-500 leading-relaxed font-medium">
                         {event.description}
                       </p>
                     </motion.div>
