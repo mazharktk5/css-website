@@ -4,65 +4,91 @@ import { motion } from "framer-motion";
 
 export default function AboutHero() {
   return (
-    <section className="relative min-h-[70vh] md:min-h-screen bg-white flex flex-col md:flex-row items-stretch overflow-hidden">
-
-      {/* Sidebar Vertical Title */}
-      <div className="flex flex-col md:w-1/3 lg:w-1/4 px-6 md:px-12 py-10 md:py-0 items-start md:items-center justify-start md:justify-center bg-white z-20">
-        <div className="flex flex-row md:flex-row-reverse items-end md:items-stretch gap-4 md:gap-6 h-auto md:h-[500px]">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-5xl lg:text-7xl font-bold text-[#3e76b2] md:[writing-mode:vertical-rl] md:rotate-180 leading-none whitespace-nowrap"
-          >
-            CSS Society
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="flex items-center border-r-2 border-[#3e76b2] pl-0 md:pl-4"
-          >
-            <p className="text-sm md:text-base text-gray-500 font-medium md:[writing-mode:vertical-rl] md:rotate-180 uppercase tracking-widest leading-tight">
-              Empowering the next generation of innovators.
-            </p>
-          </motion.div>
-        </div>
+    <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-[#0a192f]">
+      {/* Background Image with Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img
+          src="/images/gallery/sportsweek3.JPG"
+          alt="Computing Students Society"
+          className="w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0a192f]/80 via-[#0a192f]/40 to-[#0a192f]" />
       </div>
 
-      {/* Image + Floating Card */}
-      <div className="relative flex-1 flex items-center justify-center p-4 md:p-0 bg-gray-50 md:bg-white gap-6 md:gap-0">
+      {/* Animated Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative w-full md:flex-1 h-[300px] sm:h-[450px] md:h-[600px] lg:h-[700px] max-w-5xl overflow-hidden shadow-2xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            rotate: [0, 90, 0],
+            opacity: [0.1, 0.2, 0.1]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 bg-[#3e76b2] rounded-full blur-[120px]"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            rotate: [0, -90, 0],
+            opacity: [0.1, 0.15, 0.1]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-[#6ea3d8] rounded-full blur-[120px]"
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 flex flex-col items-center text-center">
+        {/* Breadcrumb/Meta */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-8"
         >
-          <img
-            src="/images/gallery/sportsweek3.JPG"
-            alt="Computing Students Society"
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-[#3e76b2]/8 md:bg-[#3e76b2]/5" />
+          <span className="px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-[#6ea3d8] text-xs font-bold tracking-[0.3em] uppercase">
+            Our Journey Since 2024
+          </span>
         </motion.div>
 
+        {/* Hero Content Card */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.5, duration: 0.5 }}
-          className="relative md:absolute mt-0 md:mt-0 md:bottom-20 md:right-10 lg:right-20 bg-[#3e76b2] text-white p-6 md:p-12 rounded-2xl md:rounded-3xl shadow-2xl w-full sm:w-96 md:w-auto md:h-auto max-w-full md:max-w-md lg:max-w-lg z-30"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative max-w-4xl p-8 md:p-16 rounded-[2rem] md:rounded-[3rem] border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl overflow-hidden"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">About Us</h2>
-          <p className="text-blue-50 leading-relaxed text-sm md:text-lg opacity-90">
+          {/* Inner glass highlight */}
+          <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-8 italic">
+            CSS <br /> <span className="text-[#6ea3d8]">SOCIETY</span>
+          </h1>
+
+          <p className="text-xl md:text-2xl text-blue-100/80 max-w-2xl mx-auto leading-relaxed font-medium">
             The Computing Students Society is a vibrant tech community focused on
             bridging the gap between academia and industry. Through workshops,
             hackathons, and collaborative projects, we empower students to build
             future-ready skills.
           </p>
-          <div className="mt-10 h-10 w-3/4 bg-white/10 rounded-full flex items-center px-4">
-            <div className="h-1 w-12 bg-white/20 rounded-full" />
+
+          <div className="mt-12 flex flex-col md:flex-row items-center justify-center gap-6">
+            <div className="h-[1px] w-12 bg-[#6ea3d8]" />
+            <p className="text-[#6ea3d8] uppercase tracking-[0.4em] text-xs font-bold">
+              Innovate • Collaborate • Lead
+            </p>
+            <div className="h-[1px] w-12 bg-[#6ea3d8]" />
           </div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        >
+          <div className="w-px h-12 bg-gradient-to-b from-[#6ea3d8] to-transparent" />
+          <span className="text-[10px] text-white/40 uppercase tracking-widest font-black">Scroll Down</span>
         </motion.div>
       </div>
     </section>
