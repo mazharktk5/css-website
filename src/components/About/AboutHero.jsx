@@ -10,9 +10,9 @@ export default function AboutHero() {
         <img
           src="/images/gallery/sportsweek3.JPG"
           alt="Computing Students Society"
-          className="w-full h-full object-cover opacity-30 grayscale"
+          className="w-full h-full object-cover opacity-50 grayscale transition-opacity duration-700"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/90 via-slate-950/60 to-slate-950" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-transparent to-slate-950/80" />
       </div>
 
       {/* Animated Elements */}
