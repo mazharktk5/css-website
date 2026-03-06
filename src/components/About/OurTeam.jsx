@@ -98,7 +98,7 @@ export default function OurTeam() {
                             <div className="w-1.5 h-16 sm:h-24 bg-[#1e3a8a] shrink-0" />
                             <p className="max-w-xl text-slate-500 font-medium text-lg md:text-xl leading-relaxed">
                                 Curating high-performance talent and visionary leadership.
-                                We are the architects of the Computing Students Society.
+                                We are the heart of the Computing Students Society.
                             </p>
                         </div>
                     </motion.div>

@@ -60,7 +60,7 @@ export default function MissionVision() {
                 </h2>
                 <div className="w-16 h-[2px] bg-[#1e3a8a] mb-8" />
                 <p className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium">
-                  Architecting professional pathways through high-end workshops, competitive hackathons, and community-driven excellence.
+                  Forging professional pathways through high-end workshops, competitive hackathons, and community-driven excellence.
                 </p>
               </motion.div>
             </div>

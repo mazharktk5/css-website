@@ -14,6 +14,7 @@ import {
     X,
     Shield,
     ChevronRight,
+    Youtube,
 } from "lucide-react";
 
 const navItems = [
@@ -21,6 +22,7 @@ const navItems = [
     { name: "Events", href: "/admin/events", icon: CalendarDays },
     { name: "Registrations", href: "/admin/registrations", icon: Bell },
     { name: "Gallery", href: "/admin/gallery", icon: Image },
+    { name: "Videos", href: "/admin/videos", icon: Youtube },
     { name: "Team", href: "/admin/team", icon: Users },
 ];
 

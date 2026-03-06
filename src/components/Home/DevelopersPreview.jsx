@@ -28,7 +28,7 @@ export default function DevelopersPreview() {
                     style={{ x: xPos }}
                     className="text-[18vw] font-black italic tracking-tighter uppercase text-[#1e3a8a]"
                 >
-                    ARCHITECTS
+                    DEVELOPERS
                 </motion.h2>
             </div>
 

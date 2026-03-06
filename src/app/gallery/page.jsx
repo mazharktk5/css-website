@@ -9,40 +9,66 @@ import ImageLightbox from '@/components/Gallery/ImageLightbox';
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState([]);
+    const [categories, setCategories] = useState(['All']);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [loading, setLoading] = useState(true);
+    const [loadingMore, setLoadingMore] = useState(false);
     const [lightbox, setLightbox] = useState({ isOpen: false, index: 0 });
+    const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
+
+    const fetchGallery = async (pageNumber = 1, append = false, category = 'All') => {
+        if (pageNumber === 1) setLoading(true);
+        else setLoadingMore(true);
+
+        try {
+            const res = await fetch(`/api/gallery?page=${pageNumber}&limit=12&category=${category}`);
+            const data = await res.json();
+
+            if (append) {
+                setGalleryData(prev => {
+                    const existingIds = new Set(prev.map(i => i._id));
+                    const newItems = (data.items || []).filter(i => !existingIds.has(i._id));
+                    return [...prev, ...newItems];
+                });
+            } else {
+                // Also deduplicate initial items just in case the API returns duplicates
+                const uniqueItems = [];
+                const seen = new Set();
+                (data.items || []).forEach(item => {
+                    if (!seen.has(item._id)) {
+                        seen.add(item._id);
+                        uniqueItems.push(item);
+                    }
+                });
+                setGalleryData(uniqueItems);
+            }
+
+            if (data.categories) {
+                setCategories(data.categories);
+            }
+            setPagination(data.pagination || { page: 1, totalPages: 1 });
+        } catch (err) {
+            console.error("Failed to fetch gallery:", err);
+        } finally {
+            setLoading(false);
+            setLoadingMore(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchGallery = async () => {
-            try {
-                const res = await fetch('/api/gallery');
-                const data = await res.json();
-                setGalleryData(Array.isArray(data) ? data : []);
-            } catch {
-                setGalleryData([]);
-            }
-            setLoading(false);
-        };
-        fetchGallery();
-    }, []);
+        fetchGallery(1, false, selectedCategory);
+    }, [selectedCategory]);
 
-    const categories = useMemo(() =>
-        ['All', ...new Set(galleryData.map(item => item.category))],
-        [galleryData]
-    );
-
-    const filteredImages = useMemo(() =>
-        selectedCategory === 'All'
-            ? galleryData
-            : galleryData.filter(item => item.category === selectedCategory),
-        [galleryData, selectedCategory]
-    );
+    const handleLoadMore = () => {
+        if (pagination.page < pagination.totalPages) {
+            fetchGallery(pagination.page + 1, true, selectedCategory);
+        }
+    };
 
     const openLightbox = (index) => setLightbox({ isOpen: true, index });
     const closeLightbox = () => setLightbox({ isOpen: false, index: 0 });
-    const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % filteredImages.length }));
-    const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + filteredImages.length) % filteredImages.length }));
+    const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % galleryData.length }));
+    const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + galleryData.length) % galleryData.length }));
 
     if (loading) {
         return (
@@ -121,53 +147,50 @@ const Gallery = () => {
                     ))}
                 </div>
 
-                {/* Improved Masonry Grid */}
-                <motion.div
-                    layout
-                    className="columns-1 sm:columns-2 lg:columns-3 gap-8 space-y-8"
-                >
+                {/* High Performance Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     <AnimatePresence mode="popLayout">
-                        {filteredImages.map((item, idx) => (
+                        {galleryData.map((item, idx) => (
                             <motion.div
                                 layout
                                 key={item._id || `gal-${idx}`}
-                                initial={{ opacity: 0, y: 20 }}
+                                initial={{ opacity: 0, y: 30 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.5, ease: [0.19, 1, 0.22, 1] }}
-                                className="break-inside-avoid group relative cursor-pointer"
+                                transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1], delay: (idx % 3) * 0.1 }}
+                                className="group relative cursor-pointer"
                                 onClick={() => openLightbox(idx)}
                             >
-                                <div className="relative rounded-3xl overflow-hidden bg-white border border-gray-100 shadow-sm transition-all duration-500 hover:shadow-2xl hover:shadow-blue-900/10 hover:-translate-y-2 group-hover:border-blue-200">
-                                    {/* Image with soft overlay */}
-                                    <div className="relative overflow-hidden">
+                                <div className="relative rounded-[2.5rem] overflow-hidden bg-white border border-slate-100 shadow-sm transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(30,58,138,0.15)] hover:-translate-y-3 group-hover:border-blue-200/50">
+                                    {/* Image Container with Consistent Aspect Ratio */}
+                                    <div className="relative aspect-[4/5] overflow-hidden">
                                         <Image
                                             src={item.image}
                                             alt={item.eventName}
-                                            width={800}
-                                            height={1000}
-                                            className="w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                            fill
+                                            className="object-cover transition-transform duration-[1.5s] group-hover:scale-110"
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                         />
 
                                         {/* Elegant Overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-0 group-hover:opacity-90 transition-opacity duration-500">
-                                            <div className="absolute bottom-0 left-0 right-0 p-8 flex flex-col gap-2 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                                                <div className="flex items-center gap-2">
-                                                    <span className="px-3 py-1 bg-[#93c5fd] rounded-full text-[10px] font-black uppercase tracking-widest text-blue-900">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700">
+                                            <div className="absolute bottom-0 left-0 right-0 p-10 flex flex-col gap-3 translate-y-10 group-hover:translate-y-0 transition-transform duration-700 delay-100">
+                                                <div className="flex items-center gap-3">
+                                                    <span className="px-4 py-1.5 bg-blue-500/20 backdrop-blur-xl border border-blue-400/30 rounded-full text-[9px] font-black uppercase tracking-[2px] text-blue-100">
                                                         {item.category}
                                                     </span>
                                                 </div>
-                                                <h3 className="text-xl font-black text-white leading-tight">
+                                                <h3 className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">
                                                     {item.eventName}
                                                 </h3>
-                                                <p className="text-blue-100/70 text-xs font-medium line-clamp-2">
+                                                <p className="text-blue-100/60 text-xs font-medium line-clamp-2 leading-relaxed">
                                                     {item.description}
                                                 </p>
                                             </div>
                                         </div>
 
-                                        {/* Zoom Icon */}
-                                        <div className="absolute top-6 right-6 w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-md rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 scale-75 group-hover:scale-100 border border-white/20">
+                                        {/* Decorative Zoom Trigger */}
+                                        <div className="absolute top-8 right-8 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-2xl rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 translate-x-10 group-hover:translate-x-0 border border-white/20">
                                             <LayoutGrid className="w-5 h-5 text-white" />
                                         </div>
                                     </div>
@@ -175,16 +198,37 @@ const Gallery = () => {
                             </motion.div>
                         ))}
                     </AnimatePresence>
-                </motion.div>
+                </div>
 
                 {/* Empty State */}
-                {filteredImages.length === 0 && (
-                    <div className="flex flex-col items-center justify-center py-40 text-center">
-                        <div className="p-8 bg-white rounded-[2.5rem] border border-gray-100 shadow-xl mb-6">
-                            <ImageIcon className="w-12 h-12 text-gray-200" />
+                {!loading && galleryData.length === 0 && (
+                    <div className="flex flex-col items-center justify-center py-40 text-center grayscale opacity-40">
+                        <div className="p-10 bg-slate-100/50 rounded-[3rem] border border-slate-200 mb-8">
+                            <ImageIcon className="w-16 h-16 text-slate-400" />
                         </div>
-                        <h3 className="text-2xl font-black text-gray-900 mb-2">No captures found</h3>
-                        <p className="text-gray-500 font-medium">This category is currently empty. More moments coming soon!</p>
+                        <h3 className="text-3xl font-black text-slate-900 mb-3 uppercase italic tracking-tighter">Visual Silence</h3>
+                        <p className="text-slate-500 font-medium max-w-sm">No captures found in this archival sector. Check back later.</p>
+                    </div>
+                )}
+                {/* Load More */}
+                {!loading && pagination.page < pagination.totalPages && (
+                    <div className="mt-20 flex justify-center">
+                        <button
+                            disabled={loadingMore}
+                            onClick={handleLoadMore}
+                            className="group relative px-12 py-4 bg-slate-900 border border-slate-800 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-white hover:bg-[#1e3a8a] hover:border-[#93c5fd]/30 transition-all active:scale-95 disabled:opacity-50 shadow-2xl shadow-blue-900/20"
+                        >
+                            <span className="relative z-10 flex items-center gap-3">
+                                {loadingMore ? (
+                                    <>
+                                        <div className="w-3 h-3 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+                                        ARCHIVING MOMENTS...
+                                    </>
+                                ) : (
+                                    "Expand Visual Records"
+                                )}
+                            </span>
+                        </button>
                     </div>
                 )}
             </main>
@@ -197,7 +241,7 @@ const Gallery = () => {
                         <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Total Memories</div>
                     </div>
                     <div className="space-y-2">
-                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{categories.length - 1}</div>
+                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{categories.length > 1 ? categories.length - 1 : 0}</div>
                         <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Unique Categories</div>
                     </div>
                     <div className="space-y-2">
@@ -210,7 +254,7 @@ const Gallery = () => {
             {/* Lightbox Integration */}
             {lightbox.isOpen && (
                 <ImageLightbox
-                    images={filteredImages}
+                    images={galleryData}
                     currentIndex={lightbox.index}
                     onClose={closeLightbox}
                     onNext={nextImage}

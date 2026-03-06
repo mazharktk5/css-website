@@ -23,16 +23,21 @@ export default function AdminRegistrations() {
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
-    const fetchAnnouncements = async () => {
+    const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
+    const [page, setPage] = useState(1);
+
+    const fetchAnnouncements = async (pageNumber = 1) => {
+        setLoading(true);
         try {
-            const res = await fetch("/api/announcements");
+            const res = await fetch(`/api/announcements?page=${pageNumber}&limit=10`);
             const data = await res.json();
-            setAnnouncements(Array.isArray(data) ? data : []);
+            setAnnouncements(data.announcements || []);
+            setPagination(data.pagination || { page: 1, totalPages: 1 });
         } catch { /* ignore */ }
         setLoading(false);
     };
 
-    useEffect(() => { fetchAnnouncements(); }, []);
+    useEffect(() => { fetchAnnouncements(page); }, [page]);
 
     const openAdd = () => {
         setEditing(null);
@@ -177,6 +182,31 @@ export default function AdminRegistrations() {
                         </div>
                     )}
                 </div>
+
+                {/* Pagination Controls */}
+                {!loading && pagination.totalPages > 1 && (
+                    <div className="flex items-center justify-between px-6 py-4 bg-white/[0.02] border border-white/[0.06] rounded-2xl">
+                        <span className="text-xs text-gray-500 font-medium tracking-tight">
+                            Page <span className="text-white">{pagination.page}</span> of {pagination.totalPages}
+                        </span>
+                        <div className="flex items-center gap-2">
+                            <button
+                                disabled={page === 1}
+                                onClick={() => setPage(page - 1)}
+                                className="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white bg-white/[0.05] border border-white/[0.08] disabled:opacity-30 transition-all"
+                            >
+                                Previous
+                            </button>
+                            <button
+                                disabled={page === pagination.totalPages}
+                                onClick={() => setPage(page + 1)}
+                                className="px-4 py-3 rounded-xl text-xs font-bold text-gray-400 hover:text-white bg-white/[0.05] border border-white/[0.08] disabled:opacity-30 transition-all"
+                            >
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Modal */}

@@ -103,7 +103,7 @@ export default function AboutPreview() {
                             <div className="absolute bottom-12 left-12">
                                 <span className="text-8xl font-black text-slate-900/5 italic tracking-tighter block mb-4 uppercase">CSS.</span>
                                 <p className="text-[10px] font-black tracking-[0.4em] uppercase text-[#1e3a8a] max-w-[150px] leading-relaxed">
-                                    THE ARCHITECTS OF DIGITAL TRANSFORMATION
+                                    THE DRIVERS OF DIGITAL INNOVATION
                                 </p>
                             </div>
                         </motion.div>
@@ -134,7 +134,7 @@ export default function AboutPreview() {
 
                                 <motion.h2 variants={item} className="text-4xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase italic leading-[0.9] mb-8">
                                     We empower <br />
-                                    <span className="text-[#1e3a8a]">future architects.</span>
+                                    <span className="text-[#1e3a8a]">future innovators.</span>
                                 </motion.h2>
 
                                 <motion.p variants={item} className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium max-w-xl">

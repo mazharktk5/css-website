@@ -20,16 +20,21 @@ export default function AdminGallery() {
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
-    const fetchItems = async () => {
+    const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
+    const [page, setPage] = useState(1);
+
+    const fetchItems = async (pageNumber = 1) => {
+        setLoading(true);
         try {
-            const res = await fetch("/api/gallery");
+            const res = await fetch(`/api/gallery?page=${pageNumber}&limit=12`);
             const data = await res.json();
-            setItems(Array.isArray(data) ? data : []);
+            setItems(data.items || []);
+            setPagination(data.pagination || { page: 1, totalPages: 1 });
         } catch { /* ignore */ }
         setLoading(false);
     };
 
-    useEffect(() => { fetchItems(); }, []);
+    useEffect(() => { fetchItems(page); }, [page]);
 
     const openAdd = () => { setEditing(null); setForm(emptyItem); setModalOpen(true); };
 
@@ -121,48 +126,75 @@ export default function AdminGallery() {
                         ))}
                     </div>
                 )}
-            </div>
 
-            {/* Modal */}
-            {modalOpen && (
-                <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-                    <div className="bg-[#111827] border border-white/[0.08] rounded-2xl w-full max-w-lg shadow-2xl">
-                        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
-                            <h3 className="text-lg font-black text-white">{editing ? "Edit Gallery Item" : "Add Gallery Item"}</h3>
-                            <button onClick={() => setModalOpen(false)} className="p-2 hover:bg-white/[0.05] rounded-lg text-gray-400">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-
-                        <div className="p-6 space-y-5">
-                            <GInput label="Event Name" value={form.eventName} onChange={(v) => setForm({ ...form, eventName: v })} />
-                            <GInput label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} placeholder="e.g. Workshop, Bootcamp, Games" />
-                            <ImageUpload label="Gallery Image" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
-                            <div className="space-y-2">
-                                <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Description</label>
-                                <textarea
-                                    value={form.description}
-                                    onChange={(e) => setForm({ ...form, description: e.target.value })}
-                                    rows={3}
-                                    className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all resize-none text-sm"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/[0.06]">
-                            <button onClick={() => setModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/[0.05] transition-all">Cancel</button>
+                {/* Pagination Controls */}
+                {!loading && pagination.totalPages > 1 && (
+                    <div className="flex items-center justify-between px-6 py-4 bg-white/[0.02] border border-white/[0.06] rounded-2xl">
+                        <span className="text-xs text-gray-500 font-medium tracking-tight">
+                            Page <span className="text-white">{pagination.page}</span> of {pagination.totalPages}
+                        </span>
+                        <div className="flex items-center gap-2">
                             <button
-                                onClick={handleSave}
-                                disabled={saving || !form.eventName || !form.category || !form.image}
-                                className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-violet-600/20 text-sm disabled:opacity-50"
+                                disabled={page === 1}
+                                onClick={() => setPage(page - 1)}
+                                className="px-4 py-2 rounded-xl text-xs font-bold text-gray-400 hover:text-white bg-white/[0.05] border border-white/[0.08] disabled:opacity-30 transition-all"
                             >
-                                <Save className="w-4 h-4" />
-                                {saving ? "Saving..." : "Save"}
+                                Previous
+                            </button>
+                            <button
+                                disabled={page === pagination.totalPages}
+                                onClick={() => setPage(page + 1)}
+                                className="px-4 py-3 rounded-xl text-xs font-bold text-gray-400 hover:text-white bg-white/[0.05] border border-white/[0.08] disabled:opacity-30 transition-all"
+                            >
+                                Next
                             </button>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+            </div>
+
+            {/* Modal */}
+            {
+                modalOpen && (
+                    <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+                        <div className="bg-[#111827] border border-white/[0.08] rounded-2xl w-full max-w-lg shadow-2xl">
+                            <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
+                                <h3 className="text-lg font-black text-white">{editing ? "Edit Gallery Item" : "Add Gallery Item"}</h3>
+                                <button onClick={() => setModalOpen(false)} className="p-2 hover:bg-white/[0.05] rounded-lg text-gray-400">
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            <div className="p-6 space-y-5">
+                                <GInput label="Event Name" value={form.eventName} onChange={(v) => setForm({ ...form, eventName: v })} />
+                                <GInput label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} placeholder="e.g. Workshop, Bootcamp, Games" />
+                                <ImageUpload label="Gallery Image" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Description</label>
+                                    <textarea
+                                        value={form.description}
+                                        onChange={(e) => setForm({ ...form, description: e.target.value })}
+                                        rows={3}
+                                        className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all resize-none text-sm"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/[0.06]">
+                                <button onClick={() => setModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/[0.05] transition-all">Cancel</button>
+                                <button
+                                    onClick={handleSave}
+                                    disabled={saving || !form.eventName || !form.category || !form.image}
+                                    className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-500 hover:to-purple-500 text-white font-bold px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-violet-600/20 text-sm disabled:opacity-50"
+                                >
+                                    <Save className="w-4 h-4" />
+                                    {saving ? "Saving..." : "Save"}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
 
             <ConfirmModal
                 isOpen={deleteModal.open}
@@ -171,7 +203,7 @@ export default function AdminGallery() {
                 title="Delete Gallery Item"
                 message="Are you sure you want to delete this gallery item? This action will remove the image from the website gallery."
             />
-        </AdminLayout>
+        </AdminLayout >
     );
 }
 

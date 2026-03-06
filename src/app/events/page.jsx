@@ -15,21 +15,41 @@ const Events = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [loading, setLoading] = useState(true);
-    const [visibleCount, setVisibleCount] = useState(12);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
+
+    const fetchEvents = async (pageNumber = 1, append = false) => {
+        if (pageNumber === 1) setLoading(true);
+        else setLoadingMore(true);
+
+        try {
+            const res = await fetch(`/api/events?page=${pageNumber}&limit=12`);
+            const data = await res.json();
+
+            if (append) {
+                setAllEvents(prev => [...prev, ...(data.events || [])]);
+            } else {
+                setAllEvents(data.events || []);
+            }
+
+            setPagination(data.pagination || { page: 1, totalPages: 1 });
+        } catch (err) {
+            console.error("Failed to fetch events:", err);
+        } finally {
+            setLoading(false);
+            setLoadingMore(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchEvents = async () => {
-            try {
-                const res = await fetch("/api/events");
-                const data = await res.json();
-                setAllEvents(Array.isArray(data) ? data : []);
-            } catch {
-                setAllEvents([]);
-            }
-            setLoading(false);
-        };
-        fetchEvents();
+        fetchEvents(1);
     }, []);
+
+    const handleLoadMore = () => {
+        if (pagination.page < pagination.totalPages) {
+            fetchEvents(pagination.page + 1, true);
+        }
+    };
 
     const categories = useMemo(() =>
         ["All", ...new Set(allEvents.map(e => e.category).filter(c => c && c !== "past"))],
@@ -45,7 +65,7 @@ const Events = () => {
         });
     }, [allEvents, searchQuery, selectedCategory]);
 
-    const displayedEvents = filteredEvents.slice(0, visibleCount);
+    const displayedEvents = filteredEvents;
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -82,7 +102,7 @@ const Events = () => {
                         <div className="max-w-3xl">
                             <div className="flex items-center gap-4 mb-8">
                                 <span className="w-12 h-[1px] bg-[#93c5fd]" />
-                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#93c5fd]">Event Architecture</span>
+                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#93c5fd]">Event Logistics</span>
                             </div>
                             <h1 className="text-6xl md:text-8xl font-black tracking-tighter uppercase italic leading-[0.85] text-white">
                                 PREMIER <br /> <span className="text-[#93c5fd] not-italic">CATALOG.</span>
@@ -288,13 +308,16 @@ const Events = () => {
                 )}
 
                 {/* Load More */}
-                {visibleCount < filteredEvents.length && (
+                {!loading && pagination.page < pagination.totalPages && (
                     <div className="mt-32 flex justify-center">
                         <button
-                            onClick={() => setVisibleCount(prev => prev + 12)}
+                            disabled={loadingMore}
+                            onClick={handleLoadMore}
                             className="group relative px-12 py-5 bg-white border border-slate-100 rounded-2xl overflow-hidden active:scale-95 transition-all shadow-xl shadow-slate-200/50"
                         >
-                            <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-900 group-hover:text-[#1e3a8a] transition-colors">Load Extended Archives</span>
+                            <span className="relative z-10 text-[10px] font-black uppercase tracking-[0.4em] text-slate-900 group-hover:text-[#1e3a8a] transition-colors">
+                                {loadingMore ? "SYNCHRONIZING RECORDS..." : "Load Extended Archives"}
+                            </span>
                             <div className="absolute inset-0 bg-slate-50 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                         </button>
                     </div>

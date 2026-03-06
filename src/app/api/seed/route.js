@@ -5,6 +5,7 @@ import Admin from "@/models/Admin";
 import Event from "@/models/Event";
 import GalleryItem from "@/models/GalleryItem";
 import TeamMember from "@/models/TeamMember";
+import Video from "@/models/Video";
 
 export async function POST() {
     try {
@@ -80,6 +81,38 @@ export async function POST() {
                 { name: "M Ali", role: "Creative Club Head", image: "/images/team/creative-head.jpg", section: "clubs", order: 8 },
             ];
             await TeamMember.insertMany(teamData);
+        }
+
+        // --- Seed Videos ---
+        const videoCount = await Video.countDocuments();
+        if (videoCount === 0) {
+            const videoData = [
+                {
+                    title: "Inside a Google Data Center",
+                    youtubeUrl: "https://www.youtube.com/watch?v=kd33UVZhnAA",
+                    videoId: "kd33UVZhnAA",
+                    thumbnail: "https://img.youtube.com/vi/kd33UVZhnAA/maxresdefault.jpg",
+                    description: "Take a 360-degree tour of a Google data center and see the infrastructure that powers the internet.",
+                    category: "Computing"
+                },
+                {
+                    title: "The Code That Took Humans to the Moon",
+                    youtubeUrl: "https://www.youtube.com/watch?v=P_1N6_n0uic",
+                    videoId: "P_1N6_n0uic",
+                    thumbnail: "https://img.youtube.com/vi/P_1N6_n0uic/maxresdefault.jpg",
+                    description: "Exploring the legendary software engineering behind the Apollo 11 mission.",
+                    category: "Programming"
+                },
+                {
+                    title: "AlphaGo - The Movie",
+                    youtubeUrl: "https://www.youtube.com/watch?v=WXuK6gekU1Y",
+                    videoId: "WXuK6gekU1Y",
+                    thumbnail: "https://img.youtube.com/vi/WXuK6gekU1Y/maxresdefault.jpg",
+                    description: "The story of how artificial intelligence took on the world's most complex game.",
+                    category: "AI"
+                }
+            ];
+            await Video.insertMany(videoData);
         }
 
         return NextResponse.json({

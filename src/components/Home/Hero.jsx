@@ -43,7 +43,7 @@ export default function Hero() {
             >
               <span className="w-12 h-px bg-[#1e3a8a]" />
               <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[#1e3a8a]/60">
-                Computing Students Society // Digital Architects
+                Computing Students Society // Digital Innovators
               </p>
             </motion.div>
 
@@ -99,7 +99,7 @@ export default function Hero() {
                 className="text-xl md:text-2xl text-slate-500 max-w-xl font-medium leading-tight"
               >
                 A high-end computing society where code meets purpose,
-                and students evolve into the architects of tomorrow.
+                and students evolve into the leaders of tomorrow.
               </motion.p>
 
               <div>

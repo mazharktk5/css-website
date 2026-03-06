@@ -57,12 +57,12 @@ export default function AboutHero() {
           className="relative max-w-5xl"
         >
           <h1 className="text-6xl sm:text-8xl lg:text-[10rem] font-black text-white leading-[0.8] tracking-tighter mb-12 uppercase italic">
-            THE <br /> <span className="text-[#93c5fd] not-italic">ARCHITECTS.</span>
+            THE <br /> <span className="text-[#93c5fd] not-italic">INNOVATORS.</span>
           </h1>
 
           <p className="text-xl md:text-2xl text-blue-100/60 max-w-3xl mx-auto leading-relaxed font-medium">
             Bridging the gap between academic theory and industry reality.
-            We build the skills, the culture, and the legacy of tomorrow&apos;s engineers.
+            We build the skills, the culture, and the legacy of tomorrow&apos;s computing leaders.
           </p>
 
           <div className="mt-20 flex items-center justify-center gap-8">

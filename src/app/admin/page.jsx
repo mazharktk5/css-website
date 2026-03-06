@@ -2,29 +2,32 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
-import { CalendarDays, Image, Users, TrendingUp } from "lucide-react";
+import { CalendarDays, Image, Users, TrendingUp, Youtube } from "lucide-react";
 
 export default function AdminDashboard() {
-    const [stats, setStats] = useState({ events: 0, gallery: 0, team: 0 });
+    const [stats, setStats] = useState({ events: 0, gallery: 0, team: 0, videos: 0 });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const [eventsRes, galleryRes, teamRes] = await Promise.all([
+                const [eventsRes, galleryRes, teamRes, vidoesRes] = await Promise.all([
                     fetch("/api/events"),
                     fetch("/api/gallery"),
                     fetch("/api/team"),
+                    fetch("/api/videos"),
                 ]);
-                const [events, gallery, team] = await Promise.all([
+                const [events, gallery, team, videos] = await Promise.all([
                     eventsRes.json(),
                     galleryRes.json(),
                     teamRes.json(),
+                    vidoesRes.json(),
                 ]);
                 setStats({
-                    events: Array.isArray(events) ? events.length : 0,
-                    gallery: Array.isArray(gallery) ? gallery.length : 0,
-                    team: Array.isArray(team) ? team.length : 0,
+                    events: events.pagination?.total || 0,
+                    gallery: gallery.pagination?.total || 0,
+                    team: Array.isArray(team) ? team.length : 0, // Team is not paginated yet
+                    videos: videos.pagination?.total || 0,
                 });
             } catch (err) {
                 console.error("Failed to fetch stats:", err);
@@ -48,6 +51,13 @@ export default function AdminDashboard() {
             icon: Image,
             gradient: "from-violet-600 to-purple-500",
             shadow: "shadow-violet-500/20",
+        },
+        {
+            title: "Videos",
+            value: stats.videos,
+            icon: Youtube,
+            gradient: "from-red-600 to-rose-500",
+            shadow: "shadow-red-500/20",
         },
         {
             title: "Team Members",
