@@ -59,7 +59,7 @@ export default function History() {
             className="flex flex-col items-center"
           >
             <h2 className="text-5xl md:text-7xl font-black text-slate-900 mb-8 tracking-tighter uppercase italic">
-              ENGINEERING <span className="text-[#1e3a8a]">LEGACY.</span>
+              COMPUTING <span className="text-[#1e3a8a]">LEGACY.</span>
             </h2>
             <div className="w-32 h-[2px] bg-gradient-to-r from-transparent via-[#1e3a8a] to-transparent" />
           </motion.div>

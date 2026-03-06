@@ -68,7 +68,7 @@ export default function AboutHero() {
           <div className="mt-20 flex items-center justify-center gap-8">
             <div className="h-[1px] w-16 bg-[#1e3a8a]" />
             <p className="text-[#93c5fd] uppercase tracking-[0.5em] text-[10px] font-black">
-              Engineering Excellence
+              Computing Excellence
             </p>
             <div className="h-[1px] w-16 bg-[#1e3a8a]" />
           </div>

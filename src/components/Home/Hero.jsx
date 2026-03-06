@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -33,7 +32,7 @@ export default function Hero() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-8 space-y-12"
+            className="lg:col-span-7 space-y-12"
           >
             {/* Brand Tag */}
             <motion.div
@@ -49,30 +48,66 @@ export default function Hero() {
             </motion.div>
 
             <div className="space-y-10">
-              <h1 className="text-6xl sm:text-8xl lg:text-[9.5rem] font-black text-slate-900 leading-[0.85] tracking-tighter uppercase">
-                Build <br />
-                The <span className="text-[#1e3a8a] italic">Legacy.</span>
-              </h1>
+              <motion.h1
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.15,
+                      delayChildren: 0.3
+                    }
+                  }
+                }}
+                className="text-4xl sm:text-7xl lg:text-[7rem] font-extrabold text-slate-900 leading-[0.9] tracking-tight uppercase"
+              >
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="block"
+                >
+                  Connect.
+                </motion.span>
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="block"
+                >
+                  Code.
+                </motion.span>
+                <motion.span
+                  variants={{
+                    hidden: { opacity: 0, y: 30 },
+                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+                  }}
+                  className="text-[#1e3a8a] italic inline-block"
+                >
+                  Create.
+                </motion.span>
+              </motion.h1>
 
-              <p className="text-xl md:text-2xl text-slate-500 max-w-xl font-medium leading-tight">
-                A high-end engineering community where code meets purpose,
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.8 }}
+                className="text-xl md:text-2xl text-slate-500 max-w-xl font-medium leading-tight"
+              >
+                A high-end computing society where code meets purpose,
                 and students evolve into the architects of tomorrow.
-              </p>
+              </motion.p>
 
-              <div className="flex flex-wrap gap-8 items-center pt-4">
+              <div>
                 <Link
                   href="/events"
                   className="bg-slate-900 text-white px-10 py-5 rounded-full text-[11px] font-black uppercase tracking-[0.3em] hover:bg-[#1e3a8a] transition-all active:scale-95 shadow-2xl shadow-slate-200"
                 >
                   Explore Archive
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.3em] text-slate-900 hover:text-[#1e3a8a] transition-all"
-                >
-                  Join Society
-                  <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </Link>
               </div>
             </div>
@@ -83,12 +118,12 @@ export default function Hero() {
             initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="lg:col-span-4 hidden lg:block relative"
+            className="lg:col-span-5 hidden lg:block relative"
           >
             <div className="relative aspect-[4/5] rounded-[4rem] overflow-hidden border-8 border-white shadow-[-40px_40px_80px_rgba(0,0,0,0.05)]">
               <img
                 src="/images/gallery/heroimage.png"
-                alt="Engineering Concept"
+                alt="Computing Concept"
                 className="w-full h-full object-cover grayscale opacity-90 transition-all duration-1000 hover:grayscale-0 hover:scale-110"
               />
               <div className="absolute inset-0 bg-blue-600/10 mix-blend-overlay" />
@@ -104,28 +139,6 @@ export default function Hero() {
             </div>
           </motion.div>
         </div>
-
-        {/* Bottom Bar - Made part of the normal flow for better spacing */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="mt-20 pt-10 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-8"
-        >
-          <div className="flex items-center gap-6">
-            <div className="w-px h-10 bg-slate-200" />
-            <div className="flex flex-col">
-              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Guiding Vision</span>
-              <span className="text-sm font-bold text-slate-900 italic tracking-tight">— Sir Waheed Ur Rehman</span>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <div className="w-2 h-2 rounded-full bg-slate-200" />
-            <div className="w-2 h-2 rounded-full bg-[#1e3a8a]" />
-            <div className="w-2 h-2 rounded-full bg-slate-200" />
-          </div>
-        </motion.div>
       </div>
     </section>
   );

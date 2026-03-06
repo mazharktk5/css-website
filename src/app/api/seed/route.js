@@ -22,8 +22,8 @@ export async function POST() {
         if (eventCount === 0) {
             const eventsData = [
                 { title: "Cybersecurity Seminar", date: "2025-09-25", time: "2:00 PM - 5:00 PM", location: "Computer Lab A", image: "/images/events/CyberBootcamp.png", description: "Join us for an engaging seminar on cybersecurity best practices and emerging threats.", tags: ["Cybersecurity", "Seminar"], category: "AI" },
-                { title: "Debate Competition", date: "2025-11-20", time: "9:00 AM - 11:00 AM", location: "Engineering Building", image: "/images/events/DebateCompetition.png", description: "Showcase your debating skills in our annual competition with exciting prizes for the winners.", tags: ["Competition", "Debate"], category: "Web Development" },
-                { title: "Debate Competition", date: "2025-11-20", time: "9:00 AM - 11:00 AM", location: "Engineering Building", image: "/images/events/DebateCompetition.png", description: "Showcase your debating skills in our annual competition with exciting prizes for the winners.", tags: ["Competition", "Debate"], category: "Cyber Security" },
+                { title: "Debate Competition", date: "2025-11-20", time: "9:00 AM - 11:00 AM", location: "Computing Building", image: "/images/events/DebateCompetition.png", description: "Showcase your debating skills in our annual competition with exciting prizes for the winners.", tags: ["Competition", "Debate"], category: "Web Development" },
+                { title: "Debate Competition", date: "2025-11-20", time: "9:00 AM - 11:00 AM", location: "Computing Building", image: "/images/events/DebateCompetition.png", description: "Showcase your debating skills in our annual competition with exciting prizes for the winners.", tags: ["Competition", "Debate"], category: "Cyber Security" },
                 { title: "Web Dev Bootcamp 2025", date: "2025-08-15", description: "A hands-on workshop introducing 50+ students to web development fundamentals including HTML, CSS, JavaScript, and React.", participants: "50+ students", image: "/images/gallery/webdev1.PNG", tags: ["Workshop", "Web Development"], category: "past" },
                 { title: "Cybersecurity Seminar", date: "2024-11-22", description: "An engaging seminar on cybersecurity best practices and emerging threats, attended by over 80 students.", participants: "20+ attendees", image: "/images/gallery/Cyber1.jpg", tags: ["Competition", "Hackathon"], category: "past" },
                 { title: "Github and LinkedIn Networking Event", date: "2024-10-10", description: "A networking event focused on optimizing GitHub and LinkedIn profiles for career growth.", participants: "100+ students", image: "/images/gallery/github2.jpg", tags: ["Networking", "Career"], category: "past" },
@@ -70,7 +70,7 @@ export async function POST() {
                 { name: "Mati Ullah Bangash", role: "Chief Secretary", image: "/images/team/chief-secretary.jpg", section: "cabinet", order: 4 },
                 { name: "Safia Zulfiqar", role: "Information Secretary", image: "/images/developers/safia.jpg", section: "cabinet", order: 5 },
                 { name: "Abubakar Dayan", role: "Media Secretary", image: "/images/team/app-lead.jpg", section: "cabinet", order: 6 },
-                { name: "Mazhar Ahmad", role: "Software Engineering Lead", image: "/images/team/software-lead.jpg", section: "clubs", order: 1 },
+                { name: "Mazhar Ahmad", role: "Software Computing Lead", image: "/images/team/software-lead.jpg", section: "clubs", order: 1 },
                 { name: "Hashir Ahmad", role: "Cyber Security Lead", image: "/images/team/information-secretary.jpg", section: "clubs", order: 2 },
                 { name: "Junaid Ahmad", role: "AI & DS Lead", image: "/images/team/app-lead.jpg", section: "clubs", order: 3 },
                 { name: "Amna Amir", role: "Content & Graphics Head", image: "/images/team/graphic-head.jpg", section: "clubs", order: 4 },

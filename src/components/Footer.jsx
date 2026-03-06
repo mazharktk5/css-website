@@ -24,7 +24,7 @@ export default function Footer() {
                         </span>
                     </Link>
                     <p className="text-xs leading-relaxed text-gray-500 max-w-xs font-medium uppercase tracking-wider">
-                        The elite engineering community defining the future of digital architecture.
+                        The elite computing society defining the future of digital architecture.
                     </p>
                 </div>
 

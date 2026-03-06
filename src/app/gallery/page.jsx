@@ -87,7 +87,7 @@ const Gallery = () => {
                             </h1>
 
                             <p className="text-white/60 text-lg md:text-xl max-w-2xl leading-relaxed font-medium">
-                                A curated visual record of our engineering mastery, innovation, and community impact.
+                                A curated visual record of our computing mastery, innovation, and community impact.
                                 Exploring the moments that define our collective progress.
                             </p>
                         </div>

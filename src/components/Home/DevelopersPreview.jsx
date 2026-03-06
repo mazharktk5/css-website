@@ -42,7 +42,7 @@ export default function DevelopersPreview() {
                             className="flex items-center gap-4 mb-4 text-[#1e3a8a]"
                         >
                             <span className="w-12 h-px bg-[#1e3a8a]" />
-                            <span className="text-[10px] font-black uppercase tracking-[0.6em]">System Engineering</span>
+                            <span className="text-[10px] font-black uppercase tracking-[0.6em]">System Computing</span>
                         </motion.div>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}

@@ -138,7 +138,7 @@ export default function AboutPreview() {
                                 </motion.h2>
 
                                 <motion.p variants={item} className="text-lg md:text-xl text-slate-600 leading-relaxed font-medium max-w-xl">
-                                    A community designed to bridge the gap between academic theory and high-end engineering. We grow future leaders through community-driven excellence.
+                                    A community designed to bridge the gap between academic theory and high-end computing. We grow future leaders through community-driven excellence.
                                 </motion.p>
                             </div>
 

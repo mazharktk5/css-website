@@ -104,7 +104,7 @@ const Events = () => {
                 </div>
             </header>
 
-            {/* Toolbar - Precision Engineering */}
+            {/* Toolbar - Precision Computing */}
             <div className="sticky top-20 z-40 bg-white/80 backdrop-blur-2xl border-b border-slate-100 py-8">
                 <div className="max-w-7xl mx-auto px-6 flex flex-col xl:flex-row items-center justify-between gap-8">
                     {/* Search & Categories */}
@@ -277,7 +277,7 @@ const Events = () => {
                             <Zap className="w-16 h-16 text-slate-200" />
                         </div>
                         <h3 className="text-4xl font-black uppercase italic tracking-tighter text-slate-900">No Archives Found</h3>
-                        <p className="text-slate-500 max-w-md mt-4 font-medium leading-relaxed">The requested engineering records are not present in the current filtration parameters.</p>
+                        <p className="text-slate-500 max-w-md mt-4 font-medium leading-relaxed">The requested computing records are not present in the current filtration parameters.</p>
                         <button
                             onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}
                             className="mt-10 px-8 py-4 bg-[#1e3a8a] text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:scale-105 transition-all shadow-xl shadow-[#1e3a8a]/20"
