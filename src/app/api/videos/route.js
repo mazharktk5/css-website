@@ -14,27 +14,8 @@ function getYoutubeVideoId(url) {
 export async function GET(request) {
     try {
         await dbConnect();
-        const { searchParams } = new URL(request.url);
-        const page = parseInt(searchParams.get("page")) || 1;
-        const limit = parseInt(searchParams.get("limit")) || 9;
-        const skip = (page - 1) * limit;
-
-        const videos = await Video.find({})
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-
-        const total = await Video.countDocuments();
-
-        return NextResponse.json({
-            videos,
-            pagination: {
-                total,
-                page,
-                limit,
-                totalPages: Math.ceil(total / limit)
-            }
-        });
+        const videos = await Video.find({}).sort({ createdAt: -1 });
+        return NextResponse.json(videos);
     } catch (error) {
         return NextResponse.json({ error: "Failed to fetch videos" }, { status: 500 });
     }

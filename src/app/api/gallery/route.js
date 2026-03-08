@@ -7,40 +7,8 @@ import { verifyAuth, unauthorized } from "@/lib/auth";
 export async function GET(request) {
     try {
         await dbConnect();
-        const { searchParams } = new URL(request.url);
-        const page = parseInt(searchParams.get("page")) || 1;
-        const limit = parseInt(searchParams.get("limit")) || 12;
-        const category = searchParams.get("category");
-        const skip = (page - 1) * limit;
-
-        const query = {};
-        if (category && category !== "All") {
-            query.category = { $regex: new RegExp(`^${category}$`, 'i') };
-        }
-
-        const items = await GalleryItem.find(query)
-            .sort({ createdAt: -1 })
-            .skip(skip)
-            .limit(limit);
-
-        const total = await GalleryItem.countDocuments(query);
-
-        // Fetch all unique categories for the filter bar (normalized)
-        const rawCategories = await GalleryItem.distinct("category");
-        const normalizedCategories = ["All", ...new Set(rawCategories.map(c =>
-            c.charAt(0).toUpperCase() + c.slice(1).toLowerCase()
-        ))];
-
-        return NextResponse.json({
-            items,
-            categories: normalizedCategories,
-            pagination: {
-                total,
-                page,
-                limit,
-                totalPages: Math.ceil(total / limit)
-            }
-        });
+        const items = await GalleryItem.find({}).sort({ createdAt: -1 });
+        return NextResponse.json(items);
     } catch (error) {
         return NextResponse.json({ error: "Failed to fetch gallery items" }, { status: 500 });
     }

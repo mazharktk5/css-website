@@ -9,66 +9,52 @@ import ImageLightbox from '@/components/Gallery/ImageLightbox';
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState([]);
-    const [categories, setCategories] = useState(['All']);
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [loading, setLoading] = useState(true);
-    const [loadingMore, setLoadingMore] = useState(false);
     const [lightbox, setLightbox] = useState({ isOpen: false, index: 0 });
-    const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
-
-    const fetchGallery = async (pageNumber = 1, append = false, category = 'All') => {
-        if (pageNumber === 1) setLoading(true);
-        else setLoadingMore(true);
-
+    const fetchGallery = async () => {
+        setLoading(true);
         try {
-            const res = await fetch(`/api/gallery?page=${pageNumber}&limit=12&category=${category}`);
+            const res = await fetch(`/api/gallery`);
             const data = await res.json();
 
-            if (append) {
-                setGalleryData(prev => {
-                    const existingIds = new Set(prev.map(i => i._id));
-                    const newItems = (data.items || []).filter(i => !existingIds.has(i._id));
-                    return [...prev, ...newItems];
-                });
-            } else {
-                // Also deduplicate initial items just in case the API returns duplicates
-                const uniqueItems = [];
-                const seen = new Set();
-                (data.items || []).forEach(item => {
-                    if (!seen.has(item._id)) {
-                        seen.add(item._id);
-                        uniqueItems.push(item);
-                    }
-                });
-                setGalleryData(uniqueItems);
-            }
-
-            if (data.categories) {
-                setCategories(data.categories);
-            }
-            setPagination(data.pagination || { page: 1, totalPages: 1 });
+            // Deduplicate items just in case
+            const uniqueItems = [];
+            const seen = new Set();
+            (data || []).forEach(item => {
+                if (!seen.has(item._id)) {
+                    seen.add(item._id);
+                    uniqueItems.push(item);
+                }
+            });
+            setGalleryData(uniqueItems);
         } catch (err) {
             console.error("Failed to fetch gallery:", err);
         } finally {
             setLoading(false);
-            setLoadingMore(false);
         }
     };
 
     useEffect(() => {
-        fetchGallery(1, false, selectedCategory);
-    }, [selectedCategory]);
+        fetchGallery();
+    }, []);
 
-    const handleLoadMore = () => {
-        if (pagination.page < pagination.totalPages) {
-            fetchGallery(pagination.page + 1, true, selectedCategory);
-        }
-    };
+    const categories = useMemo(() =>
+        ["All", ...new Set(galleryData.map(item => item.category))],
+        [galleryData]
+    );
+
+    const filteredImages = useMemo(() =>
+        selectedCategory === "All"
+            ? galleryData
+            : galleryData.filter(item => item.category === selectedCategory),
+        [galleryData, selectedCategory]
+    );
 
     const openLightbox = (index) => setLightbox({ isOpen: true, index });
     const closeLightbox = () => setLightbox({ isOpen: false, index: 0 });
-    const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % galleryData.length }));
-    const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + galleryData.length) % galleryData.length }));
+    const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % filteredImages.length }));
+    const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + filteredImages.length) % filteredImages.length }));
 
     if (loading) {
         return (
@@ -120,7 +106,7 @@ const Gallery = () => {
 
                         <div className="flex items-center gap-6 bg-white/5 p-4 rounded-[2rem] border border-white/10 backdrop-blur-xl">
                             <div className="px-8 py-4">
-                                <div className="text-4xl font-black text-white tracking-tighter">{galleryData.length}</div>
+                                <div className="text-4xl font-black text-white tracking-tighter">{filteredImages.length}</div>
                                 <div className="text-[10px] font-black uppercase tracking-widest text-white/30">Total Assets</div>
                             </div>
                         </div>
@@ -150,7 +136,7 @@ const Gallery = () => {
                 {/* High Performance Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
                     <AnimatePresence mode="popLayout">
-                        {galleryData.map((item, idx) => (
+                        {filteredImages.map((item, idx) => (
                             <motion.div
                                 layout
                                 key={item._id || `gal-${idx}`}
@@ -201,34 +187,13 @@ const Gallery = () => {
                 </div>
 
                 {/* Empty State */}
-                {!loading && galleryData.length === 0 && (
+                {!loading && filteredImages.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-40 text-center grayscale opacity-40">
                         <div className="p-10 bg-slate-100/50 rounded-[3rem] border border-slate-200 mb-8">
                             <ImageIcon className="w-16 h-16 text-slate-400" />
                         </div>
                         <h3 className="text-3xl font-black text-slate-900 mb-3 uppercase italic tracking-tighter">Visual Silence</h3>
                         <p className="text-slate-500 font-medium max-w-sm">No captures found in this archival sector. Check back later.</p>
-                    </div>
-                )}
-                {/* Load More */}
-                {!loading && pagination.page < pagination.totalPages && (
-                    <div className="mt-20 flex justify-center">
-                        <button
-                            disabled={loadingMore}
-                            onClick={handleLoadMore}
-                            className="group relative px-12 py-4 bg-slate-900 border border-slate-800 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-white hover:bg-[#1e3a8a] hover:border-[#93c5fd]/30 transition-all active:scale-95 disabled:opacity-50 shadow-2xl shadow-blue-900/20"
-                        >
-                            <span className="relative z-10 flex items-center gap-3">
-                                {loadingMore ? (
-                                    <>
-                                        <div className="w-3 h-3 border-2 border-white/20 border-t-white rounded-full animate-spin" />
-                                        ARCHIVING MOMENTS...
-                                    </>
-                                ) : (
-                                    "Expand Visual Records"
-                                )}
-                            </span>
-                        </button>
                     </div>
                 )}
             </main>
@@ -241,7 +206,7 @@ const Gallery = () => {
                         <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Total Memories</div>
                     </div>
                     <div className="space-y-2">
-                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{categories.length > 1 ? categories.length - 1 : 0}</div>
+                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{categories.length > 0 ? categories.length - 1 : 0}</div>
                         <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Unique Categories</div>
                     </div>
                     <div className="space-y-2">
@@ -254,7 +219,7 @@ const Gallery = () => {
             {/* Lightbox Integration */}
             {lightbox.isOpen && (
                 <ImageLightbox
-                    images={galleryData}
+                    images={filteredImages}
                     currentIndex={lightbox.index}
                     onClose={closeLightbox}
                     onNext={nextImage}

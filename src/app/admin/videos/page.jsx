@@ -32,22 +32,12 @@ export default function AdminVideos() {
         fetchVideos();
     }, []);
 
-    const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
-    const [page, setPage] = useState(1);
-
-    const fetchVideos = async (pageNumber = 1, append = false) => {
+    const fetchVideos = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`/api/videos?page=${pageNumber}&limit=10`);
+            const res = await fetch(`/api/videos`);
             const data = await res.json();
-
-            if (append) {
-                setVideos(prev => [...prev, ...(data.videos || [])]);
-            } else {
-                setVideos(data.videos || []);
-            }
-
-            setPagination(data.pagination || { page: 1, totalPages: 1 });
+            setVideos(data || []);
         } catch (err) {
             console.error("Failed to fetch videos:", err);
         }
@@ -55,14 +45,8 @@ export default function AdminVideos() {
     };
 
     useEffect(() => {
-        fetchVideos(1);
+        fetchVideos();
     }, []);
-
-    const handleLoadMore = () => {
-        if (pagination.page < pagination.totalPages) {
-            fetchVideos(pagination.page + 1, true);
-        }
-    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -273,17 +257,6 @@ export default function AdminVideos() {
                         )}
                     </div>
 
-                    {/* Load More */}
-                    {!loading && pagination.page < pagination.totalPages && (
-                        <div className="p-4 flex justify-center bg-white/[0.01]">
-                            <button
-                                onClick={handleLoadMore}
-                                className="px-6 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-[#1e3a8a] bg-blue-500/5 hover:bg-blue-500/10 transition-all border border-blue-500/10"
-                            >
-                                LOAD MORE TRANSMISSIONS
-                            </button>
-                        </div>
-                    )}
                 </div>
             </div>
         </AdminLayout>

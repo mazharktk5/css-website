@@ -5,139 +5,114 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <section
-      className="relative min-h-screen bg-slate-50 overflow-hidden pt-32 pb-20 flex flex-col justify-center"
-    >
-      {/* Abstract Background Elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Soft Mesh Glows */}
-        <div className="absolute top-[-10%] right-[-5%] w-[800px] h-[800px] bg-[#1e3a8a]/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[#93c5fd]/5 rounded-full blur-[100px]" />
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-white pt-28">
 
-        {/* Subtle Grid Pattern */}
+      {/* Background */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+
+        <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-[#1e3a8a]/10 rounded-full blur-[140px]" />
+
+        <div className="absolute bottom-[-200px] left-[-200px] w-[500px] h-[500px] bg-[#1e3a8a]/5 rounded-full blur-[120px]" />
+
         <div
-          className="absolute inset-0 opacity-[0.03]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
-            backgroundImage: `radial-gradient(#0f172a 1px, transparent 1px)`,
-            backgroundSize: '40px 40px'
+            backgroundImage: "radial-gradient(#0f172a 1px, transparent 1px)",
+            backgroundSize: "36px 36px",
           }}
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12 w-full flex flex-col flex-grow">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-12 items-center my-auto">
+      <div className="max-w-7xl mx-auto px-6 lg:px-12 w-full">
+        <div className="grid lg:grid-cols-12 gap-16 items-center">
 
-          {/* Left Content */}
+          {/* LEFT CONTENT */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-7 space-y-12"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9 }}
+            className="lg:col-span-7 space-y-10"
           >
-            {/* Brand Tag */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center gap-4"
-            >
-              <span className="w-12 h-px bg-[#1e3a8a]" />
-              <p className="text-[10px] font-black tracking-[0.5em] uppercase text-[#1e3a8a]/60">
-                Computing Students Society // Digital Innovators
-              </p>
-            </motion.div>
 
-            <div className="space-y-10">
-              <motion.h1
-                initial="hidden"
-                animate="visible"
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      staggerChildren: 0.15,
-                      delayChildren: 0.3
-                    }
-                  }
-                }}
-                className="text-4xl sm:text-7xl lg:text-[7rem] font-extrabold text-slate-900 leading-[0.9] tracking-tight uppercase"
-              >
-                <motion.span
-                  variants={{
-                    hidden: { opacity: 0, y: 30 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="block"
-                >
-                  Connect.
-                </motion.span>
-                <motion.span
-                  variants={{
-                    hidden: { opacity: 0, y: 30 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="block"
-                >
-                  Code.
-                </motion.span>
-                <motion.span
-                  variants={{
-                    hidden: { opacity: 0, y: 30 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
-                  }}
-                  className="text-[#1e3a8a] italic inline-block"
-                >
-                  Create.
-                </motion.span>
-              </motion.h1>
+            {/* Label */}
+            <p className="uppercase tracking-[0.35em] text-xs font-bold text-[#1e3a8a]">
+              Computing Students Society
+            </p>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 1, delay: 0.8 }}
-                className="text-xl md:text-2xl text-slate-500 max-w-xl font-medium leading-tight"
+            {/* Heading */}
+            <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-[1.05] tracking-tight">
+
+              Building the Next Generation of
+
+              <span className="block text-[#1e3a8a]">
+                Developers & Innovators
+              </span>
+
+            </h1>
+
+            {/* Description */}
+            <p className="text-lg md:text-xl text-slate-600 max-w-2xl leading-relaxed">
+              A student-led computing community where passionate learners
+              explore technology together. Through workshops, hackathons,
+              collaborative projects, and mentorship, we help students build
+              practical skills and grow into future software engineers,
+              developers, and tech innovators.
+            </p>
+
+            {/* CTA */}
+            <div>
+              <Link
+                href="/events"
+                className="bg-[#1e3a8a] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#172e6b] transition"
               >
-                A high-end computing society where code meets purpose,
-                and students evolve into the leaders of tomorrow.
-              </motion.p>
+                Explore Events
+              </Link>
+            </div>
+
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 pt-6 max-w-xl">
 
               <div>
-                <Link
-                  href="/events"
-                  className="bg-slate-900 text-white px-10 py-5 rounded-full text-[11px] font-black uppercase tracking-[0.3em] hover:bg-[#1e3a8a] transition-all active:scale-95 shadow-2xl shadow-slate-200"
-                >
-                  Explore Archive
-                </Link>
+                <p className="text-3xl font-bold text-slate-900">200+</p>
+                <p className="text-sm text-slate-500">Members</p>
               </div>
+
+              <div>
+                <p className="text-3xl font-bold text-slate-900">30+</p>
+                <p className="text-sm text-slate-500">Events</p>
+              </div>
+
+              <div>
+                <p className="text-3xl font-bold text-slate-900">10+</p>
+                <p className="text-sm text-slate-500">Projects</p>
+              </div>
+
             </div>
+
           </motion.div>
 
-          {/* Right Visual Element */}
+          {/* RIGHT IMAGE */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, rotate: -5 }}
-            animate={{ opacity: 1, scale: 1, rotate: 0 }}
-            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="lg:col-span-5 hidden lg:block relative"
+            initial={{ opacity: 0, scale: 0.92 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1 }}
+            className="lg:col-span-5 hidden lg:block"
           >
-            <div className="relative aspect-[4/5] rounded-[4rem] overflow-hidden border-8 border-white shadow-[-40px_40px_80px_rgba(0,0,0,0.05)]">
+
+            <div className="relative rounded-[36px] overflow-hidden shadow-xl">
+
               <img
                 src="/images/gallery/heroimage.png"
-                alt="Computing Concept"
-                className="w-full h-full object-cover grayscale opacity-90 transition-all duration-1000 hover:grayscale-0 hover:scale-110"
+                alt="Computing students collaboration"
+                className="w-full h-[520px] object-cover"
               />
-              <div className="absolute inset-0 bg-blue-600/10 mix-blend-overlay" />
+
+              <div className="absolute inset-0 bg-[#1e3a8a]/10" />
+
             </div>
 
-            {/* Floating Chip - Repositioned to avoid overflow */}
-            <div className="absolute bottom-10 -left-12 bg-white p-6 rounded-3xl shadow-xl border border-slate-100 z-20">
-              <span className="block text-[10px] font-black text-[#1e3a8a] uppercase tracking-widest mb-1">Status</span>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                <span className="text-sm font-bold text-slate-900">SYSTEMS READY</span>
-              </div>
-            </div>
           </motion.div>
+
         </div>
       </div>
     </section>

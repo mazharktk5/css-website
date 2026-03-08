@@ -7,42 +7,23 @@ import { Play, X, Youtube, Share2, Info, Clock } from "lucide-react";
 export default function VideosPage() {
     const [videos, setVideos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [loadingMore, setLoadingMore] = useState(false);
     const [selectedVideo, setSelectedVideo] = useState(null);
-    const [pagination, setPagination] = useState({ page: 1, totalPages: 1 });
-
-    const fetchVideos = async (pageNumber = 1, append = false) => {
-        if (pageNumber === 1) setLoading(true);
-        else setLoadingMore(true);
-
+    const fetchVideos = async () => {
+        setLoading(true);
         try {
-            const res = await fetch(`/api/videos?page=${pageNumber}&limit=6`);
+            const res = await fetch(`/api/videos`);
             const data = await res.json();
-
-            if (append) {
-                setVideos(prev => [...prev, ...(data.videos || [])]);
-            } else {
-                setVideos(data.videos || []);
-            }
-
-            setPagination(data.pagination || { page: 1, totalPages: 1 });
+            setVideos(data || []);
         } catch (err) {
             console.error("Failed to fetch videos:", err);
         } finally {
             setLoading(false);
-            setLoadingMore(false);
         }
     };
 
     useEffect(() => {
-        fetchVideos(1);
+        fetchVideos();
     }, []);
-
-    const handleLoadMore = () => {
-        if (pagination.page < pagination.totalPages) {
-            fetchVideos(pagination.page + 1, true);
-        }
-    };
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -157,20 +138,6 @@ export default function VideosPage() {
                     </div>
                 )}
 
-                {/* Load More */}
-                {!loading && pagination.page < pagination.totalPages && (
-                    <div className="mt-16 flex justify-center">
-                        <button
-                            disabled={loadingMore}
-                            onClick={handleLoadMore}
-                            className="group relative px-12 py-4 bg-white/5 border border-white/10 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-white hover:bg-blue-600 hover:border-blue-400 transition-all active:scale-95 disabled:opacity-50"
-                        >
-                            <span className="relative z-10">
-                                {loadingMore ? "Synchronizing..." : "Load More Transmissions"}
-                            </span>
-                        </button>
-                    </div>
-                )}
             </div>
 
             {/* Video Modal Overlay */}

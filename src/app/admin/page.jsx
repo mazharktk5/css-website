@@ -24,10 +24,10 @@ export default function AdminDashboard() {
                     vidoesRes.json(),
                 ]);
                 setStats({
-                    events: events.pagination?.total || 0,
-                    gallery: gallery.pagination?.total || 0,
-                    team: Array.isArray(team) ? team.length : 0, // Team is not paginated yet
-                    videos: videos.pagination?.total || 0,
+                    events: Array.isArray(events) ? events.length : 0,
+                    gallery: Array.isArray(gallery) ? gallery.length : 0,
+                    team: Array.isArray(team) ? team.length : 0,
+                    videos: Array.isArray(videos) ? videos.length : 0,
                 });
             } catch (err) {
                 console.error("Failed to fetch stats:", err);
