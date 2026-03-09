@@ -41,12 +41,15 @@ const EventsPreview = () => {
                 {/* Header */}
                 <div className="max-w-2xl mb-14">
 
-                    <p className="text-sm font-semibold text-[#1e3a8a] uppercase tracking-wider mb-3">
-                        Events
-                    </p>
+                    <div className="flex items-center gap-4 mb-4 text-[#1e3a8a]">
+                        <span className="w-8 h-px bg-[#1e3a8a]" />
+                        <span className="text-xs text-[#1e3a8a] font-semibold uppercase tracking-[0.3em]">
+                            Events
+                        </span>
+                    </div>
 
                     <h2 className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
-                        Recent Activities
+                        Recent <span className="text-[#1e3a8a]"> Activities</span>
                     </h2>
 
                     <p className="mt-4 text-slate-600 text-lg">

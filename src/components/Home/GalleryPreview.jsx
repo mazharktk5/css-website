@@ -56,8 +56,8 @@ const GalleryPreview = () => {
                         viewport={{ once: true }}
                         className="flex items-center gap-4 mb-4 text-blue-700"
                     >
-                        <span className="w-8 h-px bg-blue-700" />
-                        <span className="text-xs font-semibold uppercase tracking-[0.3em]">
+                        <span className="w-8 h-px bg-[#1e3a8a]" />
+                        <span className="text-xs text-[#1e3a8a] font-semibold uppercase tracking-[0.3em]">
                             Highlights
                         </span>
                     </motion.div>
@@ -69,7 +69,7 @@ const GalleryPreview = () => {
                         className="text-4xl md:text-5xl font-bold text-slate-900 leading-tight"
                     >
                         Moments From Our
-                        <span className="text-blue-700"> Journey</span>
+                        <span className="text-[#1e3a8a]"> Journey</span>
                     </motion.h2>
 
                     <p className="mt-4 text-slate-500 text-sm leading-relaxed max-w-lg">
@@ -146,7 +146,7 @@ const GalleryPreview = () => {
 
                     <Link
                         href="/gallery"
-                        className="inline-flex items-center gap-3 px-8 py-4 bg-blue-700 text-white rounded-xl text-sm font-semibold hover:bg-blue-800 transition"
+                        className="inline-flex items-center gap-3 px-8 py-4 bg-[#1e3a8a] text-white rounded-xl text-sm font-semibold hover:bg-[#1e3a8a] transition"
                     >
                         Explore All Moments
                         <ArrowUpRight className="w-4 h-4 transition group-hover:-translate-y-1 group-hover:translate-x-1" />
