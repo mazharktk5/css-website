@@ -51,7 +51,7 @@ const EventsPreview = () => {
 
                     <p className="mt-4 text-slate-600 text-lg">
                         Workshops, sessions, and community events organized by the
-                        Computer Science Society.
+                        Computing Students  Society.
                     </p>
 
                 </div>

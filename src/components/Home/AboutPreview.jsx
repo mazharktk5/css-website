@@ -57,7 +57,7 @@ export default function AboutSection() {
                     </p>
 
                     <h2 className="text-4xl md:text-5xl font-black text-slate-900 mt-4">
-                        Computer Science Society
+                        Computing Students Society
                     </h2>
 
                     <p className="mt-6 text-lg text-slate-600 leading-relaxed">
