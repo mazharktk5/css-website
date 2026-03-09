@@ -26,7 +26,7 @@ export default function Home() {
           content="Workshops, hackathons, and a student-first tech community."
         />
         <meta property="og:image" content="/images/og/home.jpg" />
-        <link rel="canonical" href="https://yoursite.edu/" />
+        <link rel="canonical" href="https://cssuop.org" />
       </Head>
 
       <main className="pt-16">
