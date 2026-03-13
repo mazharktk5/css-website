@@ -4,86 +4,90 @@ import { motion } from "framer-motion";
 
 export default function AboutHero() {
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-slate-950">
-      {/* Background Image with Overlay */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/images/gallery/sportsweek3.JPG"
-          alt="Computing Students Society"
-          className="w-full h-full object-cover opacity-50 grayscale transition-opacity duration-700"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-transparent to-slate-950/80" />
+    <section className="relative py-32 bg-slate-50 overflow-hidden">
+
+      {/* subtle grid pattern */}
+      <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle,_#000_1px,_transparent_1px)] bg-[size:40px_40px]" />
+
+      {/* background glow shapes */}
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-[-120px] left-[20%] w-[500px] h-[500px] bg-[#1e3a8a]/15 blur-[120px] rounded-full" />
+        <div className="absolute bottom-[-120px] right-[20%] w-[500px] h-[500px] bg-blue-300/20 blur-[120px] rounded-full" />
       </div>
 
-      {/* Animated Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            opacity: [0.05, 0.1, 0.05]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 bg-[#1e3a8a] rounded-full blur-[120px]"
-        />
-        <motion.div
-          animate={{
-            scale: [1, 1.3, 1],
-            rotate: [0, -90, 0],
-            opacity: [0.05, 0.08, 0.05]
-          }}
-          transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
-          className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-[#93c5fd] rounded-full blur-[120px]"
-        />
-      </div>
+      <div className="max-w-6xl mx-auto px-6 text-center">
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 py-20 flex flex-col items-center text-center">
-        {/* Breadcrumb/Meta */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="mb-10"
+        {/* small label */}
+        <motion.span
+          initial={{ opacity: 0, y: -10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-sm text-[#1e3a8a] font-medium tracking-wide"
         >
-          <span className="px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-[#93c5fd] text-[9px] font-black tracking-[0.4em] uppercase">
-            High-Performance Community // Est. 2024
+          Computing Students Society
+        </motion.span>
+
+        {/* heading */}
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight"
+        >
+          About Our
+          <span className="block text-[#1e3a8a]">
+            Computing Students Society
           </span>
-        </motion.div>
+        </motion.h1>
 
-        {/* Hero Content */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.98 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          className="relative max-w-5xl"
+        {/* description */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed"
         >
-          <h1 className="text-6xl sm:text-8xl lg:text-[10rem] font-black text-white leading-[0.8] tracking-tighter mb-12 uppercase italic">
-            THE <br /> <span className="text-[#93c5fd] not-italic">INNOVATORS.</span>
-          </h1>
+          A community of students passionate about technology, programming,
+          and innovation. Through workshops, events, and collaborative
+          projects, we create opportunities for students to learn, build
+          real skills, and grow together.
+        </motion.p>
 
-          <p className="text-xl md:text-2xl text-blue-100/60 max-w-3xl mx-auto leading-relaxed font-medium">
-            Bridging the gap between academic theory and industry reality.
-            We build the skills, the culture, and the legacy of tomorrow&apos;s computing leaders.
-          </p>
+        {/* stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="mt-16 grid grid-cols-3 max-w-xl mx-auto gap-10 text-center"
+        >
+          <div>
+            <p className="text-3xl font-semibold text-[#1e3a8a]">20+</p>
+            <p className="text-sm text-slate-600">Events Organized</p>
+          </div>
 
-          <div className="mt-20 flex items-center justify-center gap-8">
-            <div className="h-[1px] w-16 bg-[#1e3a8a]" />
-            <p className="text-[#93c5fd] uppercase tracking-[0.5em] text-[10px] font-black">
-              Computing Excellence
-            </p>
-            <div className="h-[1px] w-16 bg-[#1e3a8a]" />
+          <div>
+            <p className="text-3xl font-semibold text-[#1e3a8a]">200+</p>
+            <p className="text-sm text-slate-600">Students Engaged</p>
+          </div>
+
+          <div>
+            <p className="text-3xl font-semibold text-[#1e3a8a]">5+</p>
+            <p className="text-sm text-slate-600">Workshops</p>
           </div>
         </motion.div>
 
-        {/* Scroll Indicator */}
+        {/* divider */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4"
+          whileInView={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="flex justify-center mt-16"
         >
-          <div className="w-px h-16 bg-gradient-to-b from-[#1e3a8a] to-transparent" />
-          <span className="text-[8px] text-white/20 uppercase tracking-[0.4em] font-black">Scroll Depth</span>
+          <div className="w-20 h-[2px] bg-[#1e3a8a]" />
         </motion.div>
+
       </div>
     </section>
   );
