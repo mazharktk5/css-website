@@ -11,20 +11,20 @@ const Events = () => {
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [loading, setLoading] = useState(true);
 
-    const fetchEvents = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch(`/api/events`);
-            const data = await res.json();
-            setAllEvents(data || []);
-        } catch (err) {
-            console.error("Failed to fetch events:", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchEvents = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/events`);
+                const data = await res.json();
+                setAllEvents(data || []);
+            } catch (err) {
+                console.error("Failed to fetch events:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchEvents();
     }, []);
 
@@ -33,9 +33,10 @@ const Events = () => {
         [allEvents]
     );
 
-    const filteredEvents = useMemo(() => {
-        return allEvents.filter((event) => selectedCategory === "All" || event.category === selectedCategory);
-    }, [allEvents, selectedCategory]);
+    const filteredEvents = useMemo(
+        () => allEvents.filter((event) => selectedCategory === "All" || event.category === selectedCategory),
+        [allEvents, selectedCategory]
+    );
 
     const displayedEvents = filteredEvents;
 
@@ -46,7 +47,7 @@ const Events = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -57,23 +58,48 @@ const Events = () => {
     }
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] pb-40">
+        <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] pb-40">
 
-            {/* Hero */}
+            {/* Hero Section */}
             <header className="relative pt-32 pb-16 bg-[#1e3a8a]/10">
                 <div className="max-w-5xl mx-auto px-6 text-center">
-                    <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight text-[#1e3a8a]">
+                    <motion.span
+                        initial={{ opacity: 0, y: -10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-sm text-[#1e3a8a] font-medium tracking-wide"
+                    >
                         Computing Students Society
-                        <span className="block text-slate-900 mt-2 text-3xl md:text-4xl font-bold">
-                            Explore, Learn & Build
-                        </span>
-                    </h1>
-                    <p className="mt-6 text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                    </motion.span>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight"
+                    >
+                        Explore, Learn & Build
+                        <span className="block text-[#1e3a8a]">Events & Workshops</span>
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed"
+                    >
                         A student-led community hosting workshops, hackathons, and collaborative projects. Browse past and upcoming events.
-                    </p>
+                    </motion.p>
 
                     {/* Stats Cards */}
-                    <div className="mt-10 flex justify-center gap-8 flex-wrap">
+                    <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-10 flex justify-center gap-8 flex-wrap"
+                    >
                         <div className="px-6 py-4 text-center bg-white/20 rounded-2xl border border-white/10 backdrop-blur-xl">
                             <p className="text-3xl font-black text-[#1e3a8a]">{filteredEvents.length}</p>
                             <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Filtered</span>
@@ -82,64 +108,37 @@ const Events = () => {
                             <p className="text-3xl font-black text-[#1e3a8a]">{allEvents.length}</p>
                             <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Total</span>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </header>
 
-            {/* Filters & View Switcher */}
+            {/* Filters */}
             <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 py-6">
-                <div className="max-w-7xl mx-auto px-6 flex flex-col xl:flex-row items-center justify-between gap-6">
-
-                    {/* Category Filters */}
-                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat}
-                                onClick={() => setSelectedCategory(cat)}
-                                className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all ${selectedCategory === cat
-                                    ? "bg-[#1e3a8a] text-white shadow-md"
-                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-                                    }`}
-                            >
-                                {cat}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* View Switcher */}
-                    <div className="flex items-center bg-slate-50 p-1 rounded-xl border border-slate-200">
+                <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center gap-4">
+                    {categories.map((cat) => (
                         <button
-                            onClick={() => setViewMode("grid")}
-                            className={`p-2 rounded-lg transition-all ${viewMode === "grid" ? "bg-white text-[#1e3a8a] shadow" : "text-slate-400 hover:text-slate-900"}`}
+                            key={cat}
+                            onClick={() => setSelectedCategory(cat)}
+                            className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all
+                ${selectedCategory === cat ? 'bg-[#1e3a8a] text-white shadow-lg' : 'text-slate-500 hover:text-[#1e3a8a] hover:bg-blue-50'}`}
                         >
-                            <LayoutGrid className="w-5 h-5" />
+                            {cat}
                         </button>
-                        <button
-                            onClick={() => setViewMode("list")}
-                            className={`p-2 rounded-lg transition-all ${viewMode === "list" ? "bg-white text-[#1e3a8a] shadow" : "text-slate-400 hover:text-slate-900"}`}
-                        >
-                            <List className="w-5 h-5" />
-                        </button>
-                    </div>
-
+                    ))}
                 </div>
             </div>
 
             {/* Events Grid/List */}
             <main className="max-w-7xl mx-auto px-6 mt-10">
                 <AnimatePresence mode="popLayout">
-                    {viewMode === "grid" ? (
+                    {displayedEvents.length > 0 ? (
                         <motion.div
-                            key="grid"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
                             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
                         >
                             {displayedEvents.map((event, idx) => (
                                 <motion.div
                                     layout
-                                    key={event._id || `grid-${idx}`}
+                                    key={event._id || idx}
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5, delay: idx * 0.05 }}
@@ -152,18 +151,16 @@ const Events = () => {
                                             fill
                                             className="object-cover transition-transform duration-500 group-hover:scale-105 rounded-t-2xl"
                                         />
-                                        <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 rounded-full text-[9px] font-bold uppercase text-[#1e3a8a] border border-slate-200">
+                                        <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 rounded-full text-[10px] font-bold uppercase text-[#1e3a8a] border border-slate-200">
                                             {event.category}
                                         </span>
                                     </div>
-
                                     <div className="p-4 flex flex-col flex-grow">
                                         <div className="flex items-center gap-2 mb-2 text-[#1e3a8a] text-[10px] font-bold uppercase">
                                             <Calendar className="w-3.5 h-3.5" /> {formatDate(event.date)}
                                         </div>
                                         <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2">{event.title}</h3>
                                         <p className="text-slate-500 text-[11px] font-medium line-clamp-3 flex-grow">{event.description}</p>
-
                                         <div className="flex items-center justify-between mt-4 pt-2 border-t border-slate-100">
                                             <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-slate-400">
                                                 <Users className="w-4 h-4 text-[#1e3a8a]" /> {event.participants || "ARCHIVED"}
@@ -177,54 +174,23 @@ const Events = () => {
                             ))}
                         </motion.div>
                     ) : (
-                        <motion.div
-                            key="list"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
-                            className="flex flex-col gap-4"
-                        >
-                            {displayedEvents.map((event, idx) => (
-                                <motion.div
-                                    layout
-                                    key={event._id || `list-${idx}`}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ duration: 0.4, delay: idx * 0.03 }}
-                                    className="group grid grid-cols-1 lg:grid-cols-12 gap-4 items-center bg-white border border-slate-200 rounded-2xl p-4 hover:shadow-md transition-all"
-                                >
-                                    <div className="col-span-2 text-[#1e3a8a] font-bold text-sm">{formatDate(event.date)}</div>
-                                    <div className="col-span-6">
-                                        <h3 className="font-bold text-slate-900">{event.title}</h3>
-                                        <p className="text-slate-500 text-xs truncate">{event.description}</p>
-                                    </div>
-                                    <div className="col-span-2 text-[10px] font-bold text-[#1e3a8a] uppercase">{event.category}</div>
-                                    <div className="col-span-2 text-[10px] font-bold text-slate-500 flex items-center justify-end gap-2">
-                                        <Users className="w-4 h-4 text-[#1e3a8a]" /> {event.participants || "ARCHIVED"}
-                                    </div>
-                                </motion.div>
-                            ))}
-                        </motion.div>
+                        <div className="flex flex-col items-center justify-center py-40 text-center">
+                            <div className="p-12 bg-slate-50 rounded-full border border-slate-200 mb-10">
+                                <Zap className="w-16 h-16 text-slate-300" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-slate-900">No Events Found</h3>
+                            <p className="text-slate-500 max-w-md mt-4 font-medium leading-relaxed">
+                                No events match your selected category.
+                            </p>
+                            <button
+                                onClick={() => setSelectedCategory("All")}
+                                className="mt-8 px-6 py-3 bg-[#1e3a8a] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:scale-105 transition-all shadow-md"
+                            >
+                                Clear Filters
+                            </button>
+                        </div>
                     )}
                 </AnimatePresence>
-
-                {filteredEvents.length === 0 && (
-                    <div className="flex flex-col items-center justify-center py-40 text-center">
-                        <div className="p-12 bg-slate-50 rounded-full border border-slate-200 mb-10">
-                            <Zap className="w-16 h-16 text-slate-300" />
-                        </div>
-                        <h3 className="text-3xl font-bold text-slate-900">No Archives Found</h3>
-                        <p className="text-slate-500 max-w-md mt-4 font-medium leading-relaxed">
-                            No events match your selected category.
-                        </p>
-                        <button
-                            onClick={() => setSelectedCategory("All")}
-                            className="mt-8 px-6 py-3 bg-[#1e3a8a] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:scale-105 transition-all shadow-md"
-                        >
-                            Clear Filters
-                        </button>
-                    </div>
-                )}
             </main>
         </div>
     );

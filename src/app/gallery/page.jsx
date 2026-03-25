@@ -12,19 +12,6 @@ const Gallery = () => {
     const [loading, setLoading] = useState(true);
     const [lightbox, setLightbox] = useState({ isOpen: false, index: 0 });
 
-    const fetchGallery = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch(`/api/gallery`);
-            const data = await res.json();
-            setGalleryData(Array.from(new Map((data || []).map(item => [item._id, item])).values()));
-        } catch (err) {
-            console.error("Failed to fetch gallery:", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
         const fetchGalleryData = async () => {
             setLoading(true);
@@ -38,25 +25,28 @@ const Gallery = () => {
                 setLoading(false);
             }
         };
-
         fetchGalleryData();
     }, []);
 
     const categories = useMemo(() => ['All', ...new Set(galleryData.map(i => i.category))], [galleryData]);
-    const filteredImages = useMemo(() =>
-        selectedCategory === 'All' ? galleryData : galleryData.filter(i => i.category === selectedCategory),
+    const filteredImages = useMemo(
+        () => selectedCategory === 'All' ? galleryData : galleryData.filter(i => i.category === selectedCategory),
         [galleryData, selectedCategory]
     );
 
-    const openLightbox = (idx) => setLightbox({ isOpen: true, index: idx });
+    const openLightbox = idx => setLightbox({ isOpen: true, index: idx });
     const closeLightbox = () => setLightbox({ isOpen: false, index: 0 });
     const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % filteredImages.length }));
     const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + filteredImages.length) % filteredImages.length }));
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-white flex items-center justify-center">
-                <div className="w-12 h-12 border-2 border-slate-100 border-t-[#1e3a8a] rounded-full animate-spin" />
+            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+                <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    className="w-12 h-12 border-2 border-slate-100 border-t-[#1e3a8a] rounded-full"
+                />
             </div>
         );
     }
@@ -64,21 +54,48 @@ const Gallery = () => {
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] pb-40 overflow-x-hidden">
 
-            {/* Hero */}
+            {/* Hero Section */}
             <header className="relative pt-32 pb-20 bg-[#1e3a8a]/10">
                 <div className="max-w-5xl mx-auto px-6 text-center">
-                    <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight text-[#1e3a8a]">
+                    <motion.span
+                        initial={{ opacity: 0, y: -10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-sm text-[#1e3a8a] font-medium tracking-wide"
+                    >
+                        Computing Students Society
+                    </motion.span>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight"
+                    >
                         DIGITAL GALLERY
-                        <span className="block text-slate-900 mt-2 text-3xl md:text-4xl font-bold">
+                        <span className="block text-[#1e3a8a] mt-2 text-3xl md:text-4xl font-bold">
                             Explore & Relive Our Moments
                         </span>
-                    </h1>
-                    <p className="mt-6 text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed"
+                    >
                         A curated collection of workshops, hackathons, and community projects. Browse, filter, and enjoy our most inspiring visuals.
-                    </p>
+                    </motion.p>
 
                     {/* Stats Cards */}
-                    <div className="mt-10 flex justify-center gap-8 flex-wrap">
+                    <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-10 flex justify-center gap-8 flex-wrap"
+                    >
                         <div className="px-6 py-4 text-center bg-white/20 rounded-2xl border border-white/10 backdrop-blur-xl">
                             <p className="text-3xl font-black text-[#1e3a8a]">{filteredImages.length}</p>
                             <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Filtered</span>
@@ -87,9 +104,10 @@ const Gallery = () => {
                             <p className="text-3xl font-black text-[#1e3a8a]">{galleryData.length}</p>
                             <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Total</span>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </header>
+
             {/* Categories */}
             <div className="sticky top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 py-6">
                 <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center gap-2">
@@ -98,7 +116,7 @@ const Gallery = () => {
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
                             className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all
-                                ${selectedCategory === cat ? 'bg-[#1e3a8a] text-white shadow-lg' : 'text-slate-500 hover:text-[#1e3a8a] hover:bg-blue-50'}`}
+                ${selectedCategory === cat ? 'bg-[#1e3a8a] text-white shadow-lg' : 'text-slate-500 hover:text-[#1e3a8a] hover:bg-blue-50'}`}
                         >
                             {cat}
                         </button>
@@ -126,9 +144,9 @@ const Gallery = () => {
                                             src={item.image}
                                             alt={item.eventName}
                                             fill
-                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                            className="object-cover transition-transform duration-500 group-hover:scale-110 rounded-2xl"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl">
                                             <div className="absolute bottom-4 left-4">
                                                 <span className="px-3 py-1 bg-[#1e3a8a]/30 text-white text-[10px] font-bold uppercase rounded-full">{item.category}</span>
                                                 <h3 className="mt-2 text-white font-black text-lg line-clamp-2">{item.eventName}</h3>

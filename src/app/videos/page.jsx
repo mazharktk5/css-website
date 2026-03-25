@@ -9,20 +9,19 @@ export default function VideosPage() {
     const [loading, setLoading] = useState(true);
     const [selectedVideo, setSelectedVideo] = useState(null);
 
-    const fetchVideos = async () => {
-        setLoading(true);
-        try {
-            const res = await fetch("/api/videos");
-            const data = await res.json();
-            setVideos(data || []);
-        } catch (err) {
-            console.error("Failed to fetch videos:", err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const fetchVideos = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch("/api/videos");
+                const data = await res.json();
+                setVideos(data || []);
+            } catch (err) {
+                console.error("Failed to fetch videos:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
         fetchVideos();
     }, []);
 
@@ -37,26 +36,55 @@ export default function VideosPage() {
     };
 
     return (
-        <div className="min-h-screen bg-white text-slate-900 pb-40 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a]">
+        <div className="min-h-screen bg-slate-50 text-slate-900 pb-40 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a]">
 
             {/* Hero */}
             <header className="relative pt-32 pb-20 bg-[#1e3a8a]/10">
                 <div className="max-w-5xl mx-auto px-6 text-center">
-                    <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight text-[#1e3a8a]">
+                    <motion.span
+                        initial={{ opacity: 0, y: -10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="text-sm text-[#1e3a8a] font-medium tracking-wide"
+                    >
+                        Computing Students Society
+                    </motion.span>
+
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight"
+                    >
                         CSS Video Library
-                        <span className="block text-slate-900 mt-2 text-3xl md:text-4xl font-bold">
+                        <span className="block text-[#1e3a8a] mt-2 text-3xl md:text-4xl font-bold">
                             Watch, Learn & Build
                         </span>
-                    </h1>
-                    <p className="mt-6 text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                    </motion.h1>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.2 }}
+                        className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed"
+                    >
                         Explore our collection of workshops, hackathons, and project recordings. Learn from the community and enhance your skills with real-world examples.
-                    </p>
-                    <div className="mt-10 flex justify-center gap-8">
+                    </motion.p>
+
+                    {/* Stats Card */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 15 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: 0.3 }}
+                        className="mt-10 flex justify-center gap-8 flex-wrap"
+                    >
                         <div className="px-6 py-4 text-center bg-white/20 rounded-2xl border border-white/10 backdrop-blur-xl">
                             <p className="text-3xl font-black text-[#1e3a8a]">{videos.length}</p>
                             <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Total Videos</span>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </header>
 
@@ -85,18 +113,12 @@ export default function VideosPage() {
                                         className="group relative cursor-pointer overflow-hidden rounded-2xl shadow-sm border border-slate-200 transition-all hover:shadow-lg"
                                         onClick={() => setSelectedVideo(video)}
                                     >
-                                        {/* Thumbnail with Play overlay */}
-                                        <div className="relative h-56 w-full">
+                                        {/* Thumbnail */}
+                                        <div className="relative h-56 w-full rounded-t-2xl overflow-hidden">
                                             <img
-                                                src={
-                                                    idx === 0
-                                                        ? "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg"
-                                                        : idx === 1
-                                                            ? "https://img.youtube.com/vi/3JZ_D3ELwOQ/hqdefault.jpg"
-                                                            : video.thumbnail
-                                                }
+                                                src={video.thumbnail}
                                                 alt={video.title}
-                                                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105 rounded-t-2xl"
+                                                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
                                             />
                                             <div className="absolute inset-0 flex items-center justify-center">
                                                 <div className="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center group-hover:bg-[#1e3a8a]/80 transition-all">
@@ -105,7 +127,7 @@ export default function VideosPage() {
                                             </div>
                                         </div>
 
-                                        {/* Video info */}
+                                        {/* Video Info */}
                                         <div className="p-4 bg-white flex flex-col">
                                             <span className="text-[10px] font-bold uppercase text-[#1e3a8a] mb-1">{video.category}</span>
                                             <h3 className="text-lg font-bold text-slate-900 mb-1 line-clamp-2">{video.title}</h3>
