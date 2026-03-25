@@ -3,12 +3,11 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Users, Search, LayoutGrid, List, ArrowUpRight, Zap } from "lucide-react";
+import { Calendar, Users, LayoutGrid, List, ArrowUpRight, Zap } from "lucide-react";
 
 const Events = () => {
     const [allEvents, setAllEvents] = useState([]);
     const [viewMode, setViewMode] = useState("grid"); // grid | list
-    const [searchQuery, setSearchQuery] = useState("");
     const [selectedCategory, setSelectedCategory] = useState("All");
     const [loading, setLoading] = useState(true);
 
@@ -35,14 +34,8 @@ const Events = () => {
     );
 
     const filteredEvents = useMemo(() => {
-        return allEvents.filter((event) => {
-            const matchesSearch =
-                event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                event.description.toLowerCase().includes(searchQuery.toLowerCase());
-            const matchesCategory = selectedCategory === "All" || event.category === selectedCategory;
-            return matchesSearch && matchesCategory;
-        });
-    }, [allEvents, searchQuery, selectedCategory]);
+        return allEvents.filter((event) => selectedCategory === "All" || event.category === selectedCategory);
+    }, [allEvents, selectedCategory]);
 
     const displayedEvents = filteredEvents;
 
@@ -53,7 +46,7 @@ const Events = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <div className="min-h-screen bg-white flex items-center justify-center">
                 <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -68,67 +61,49 @@ const Events = () => {
 
             {/* Hero */}
             <header className="relative pt-32 pb-16 bg-[#1e3a8a]/10">
-                <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
-                        <div className="max-w-3xl">
-                            <h1 className="text-5xl md:text-7xl font-black leading-tight tracking-tight text-[#1e3a8a]">
-                                Computing Students Society
-                                <span className="block text-slate-900 mt-2 text-3xl md:text-4xl font-bold">
-                                    Explore, Learn & Build
-                                </span>
-                            </h1>
-                            <p className="mt-6 text-slate-600 max-w-lg text-lg md:text-xl leading-relaxed">
-                                A student-led computing community hosting workshops, hackathons, and collaborative
-                                projects. Build skills, network, and grow as a future developer or tech innovator.
-                            </p>
-                        </div>
+                <div className="max-w-5xl mx-auto px-6 text-center">
+                    <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight text-[#1e3a8a]">
+                        Computing Students Society
+                        <span className="block text-slate-900 mt-2 text-3xl md:text-4xl font-bold">
+                            Explore, Learn & Build
+                        </span>
+                    </h1>
+                    <p className="mt-6 text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                        A student-led community hosting workshops, hackathons, and collaborative projects. Browse past and upcoming events.
+                    </p>
 
-                        <div className="flex gap-6 bg-white/20 p-4 rounded-2xl border border-white/10 backdrop-blur-xl">
-                            <div className="px-6 py-4 text-center">
-                                <p className="text-3xl font-black text-[#1e3a8a]">{filteredEvents.length}</p>
-                                <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Filtered</span>
-                            </div>
-                            <div className="w-[1px] h-12 bg-white/20" />
-                            <div className="px-6 py-4 text-center">
-                                <p className="text-3xl font-black text-[#1e3a8a]">{allEvents.length}</p>
-                                <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Total</span>
-                            </div>
+                    {/* Stats Cards */}
+                    <div className="mt-10 flex justify-center gap-8 flex-wrap">
+                        <div className="px-6 py-4 text-center bg-white/20 rounded-2xl border border-white/10 backdrop-blur-xl">
+                            <p className="text-3xl font-black text-[#1e3a8a]">{filteredEvents.length}</p>
+                            <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Filtered</span>
+                        </div>
+                        <div className="px-6 py-4 text-center bg-white/20 rounded-2xl border border-white/10 backdrop-blur-xl">
+                            <p className="text-3xl font-black text-[#1e3a8a]">{allEvents.length}</p>
+                            <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Total</span>
                         </div>
                     </div>
                 </div>
             </header>
 
-            {/* Toolbar */}
+            {/* Filters & View Switcher */}
             <div className="sticky top-20 z-40 bg-white/90 backdrop-blur-md border-b border-slate-100 py-6">
                 <div className="max-w-7xl mx-auto px-6 flex flex-col xl:flex-row items-center justify-between gap-6">
 
-                    {/* Search + Categories */}
-                    <div className="flex flex-col md:flex-row items-center gap-4 w-full xl:w-auto">
-                        <div className="relative w-full md:w-96 group">
-                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-[#1e3a8a] transition-colors" />
-                            <input
-                                type="text"
-                                placeholder="Search Events..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full bg-slate-50 border border-slate-200 rounded-xl py-3 pl-10 pr-4 text-sm font-semibold focus:outline-none focus:border-[#1e3a8a] focus:shadow-md focus:shadow-[#1e3a8a]/10 transition-all"
-                            />
-                        </div>
-
-                        <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 no-scrollbar w-full md:w-auto">
-                            {categories.map((cat) => (
-                                <button
-                                    key={cat}
-                                    onClick={() => setSelectedCategory(cat)}
-                                    className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all ${selectedCategory === cat
-                                        ? "bg-[#1e3a8a] text-white shadow-md"
-                                        : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
-                                        }`}
-                                >
-                                    {cat}
-                                </button>
-                            ))}
-                        </div>
+                    {/* Category Filters */}
+                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+                        {categories.map((cat) => (
+                            <button
+                                key={cat}
+                                onClick={() => setSelectedCategory(cat)}
+                                className={`px-4 py-2 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-all ${selectedCategory === cat
+                                    ? "bg-[#1e3a8a] text-white shadow-md"
+                                    : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
+                                    }`}
+                            >
+                                {cat}
+                            </button>
+                        ))}
                     </div>
 
                     {/* View Switcher */}
@@ -150,8 +125,8 @@ const Events = () => {
                 </div>
             </div>
 
+            {/* Events Grid/List */}
             <main className="max-w-7xl mx-auto px-6 mt-10">
-
                 <AnimatePresence mode="popLayout">
                     {viewMode === "grid" ? (
                         <motion.div
@@ -240,20 +215,16 @@ const Events = () => {
                         </div>
                         <h3 className="text-3xl font-bold text-slate-900">No Archives Found</h3>
                         <p className="text-slate-500 max-w-md mt-4 font-medium leading-relaxed">
-                            No events match your search or category filters.
+                            No events match your selected category.
                         </p>
                         <button
-                            onClick={() => {
-                                setSearchQuery("");
-                                setSelectedCategory("All");
-                            }}
+                            onClick={() => setSelectedCategory("All")}
                             className="mt-8 px-6 py-3 bg-[#1e3a8a] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:scale-105 transition-all shadow-md"
                         >
                             Clear Filters
                         </button>
                     </div>
                 )}
-
             </main>
         </div>
     );

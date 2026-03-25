@@ -2,9 +2,8 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Image as ImageIcon, Sparkles, Filter, ChevronRight, LayoutGrid, Zap } from 'lucide-react';
+import { Zap, LayoutGrid } from 'lucide-react';
 import ImageLightbox from '@/components/Gallery/ImageLightbox';
 
 const Gallery = () => {
@@ -12,22 +11,13 @@ const Gallery = () => {
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [loading, setLoading] = useState(true);
     const [lightbox, setLightbox] = useState({ isOpen: false, index: 0 });
+
     const fetchGallery = async () => {
         setLoading(true);
         try {
             const res = await fetch(`/api/gallery`);
             const data = await res.json();
-
-            // Deduplicate items just in case
-            const uniqueItems = [];
-            const seen = new Set();
-            (data || []).forEach(item => {
-                if (!seen.has(item._id)) {
-                    seen.add(item._id);
-                    uniqueItems.push(item);
-                }
-            });
-            setGalleryData(uniqueItems);
+            setGalleryData(Array.from(new Map((data || []).map(item => [item._id, item])).values()));
         } catch (err) {
             console.error("Failed to fetch gallery:", err);
         } finally {
@@ -35,188 +25,129 @@ const Gallery = () => {
         }
     };
 
-    useEffect(() => {
-        fetchGallery();
-    }, []);
+    useEffect(() => fetchGallery(), []);
 
-    const categories = useMemo(() =>
-        ["All", ...new Set(galleryData.map(item => item.category))],
-        [galleryData]
-    );
-
+    const categories = useMemo(() => ['All', ...new Set(galleryData.map(i => i.category))], [galleryData]);
     const filteredImages = useMemo(() =>
-        selectedCategory === "All"
-            ? galleryData
-            : galleryData.filter(item => item.category === selectedCategory),
+        selectedCategory === 'All' ? galleryData : galleryData.filter(i => i.category === selectedCategory),
         [galleryData, selectedCategory]
     );
 
-    const openLightbox = (index) => setLightbox({ isOpen: true, index });
+    const openLightbox = (idx) => setLightbox({ isOpen: true, index: idx });
     const closeLightbox = () => setLightbox({ isOpen: false, index: 0 });
     const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % filteredImages.length }));
     const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + filteredImages.length) % filteredImages.length }));
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-white pt-20 flex items-center justify-center">
-                <div className="relative">
-                    <div className="w-16 h-16 border-2 border-slate-100 rounded-full" />
-                    <div className="absolute inset-0 w-16 h-16 border-t-2 border-[#1e3a8a] rounded-full animate-spin" />
-                </div>
+            <div className="min-h-screen bg-white flex items-center justify-center">
+                <div className="w-12 h-12 border-2 border-slate-100 border-t-[#1e3a8a] rounded-full animate-spin" />
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] overflow-x-hidden">
-            {/* Soft Background Accents */}
-            <div className="fixed inset-0 pointer-events-none opacity-[0.03]">
-                <div className="absolute top-[10%] left-[5%] w-[30%] h-[30%] bg-[#1e3a8a] rounded-full blur-[120px]" />
-                <div className="absolute bottom-[10%] right-[5%] w-[30%] h-[30%] bg-[#93c5fd] rounded-full blur-[120px]" />
-            </div>
+        <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] pb-40 overflow-x-hidden">
 
-            {/* High Contrast Branding Header */}
-            <header className="relative pt-40 pb-20 overflow-hidden bg-slate-950">
-                <div className="absolute inset-0 z-0">
-                    <div className="absolute top-0 right-0 w-1/2 h-full bg-[#1e3a8a]/20 blur-[120px]" />
-                    <div className="absolute bottom-0 left-0 w-1/2 h-full bg-[#93c5fd]/10 blur-[120px]" />
-                </div>
+            {/* Hero */}
+            <header className="relative pt-32 pb-20 bg-[#1e3a8a]/10">
+                <div className="max-w-5xl mx-auto px-6 text-center">
+                    <h1 className="text-6xl md:text-7xl font-black leading-tight tracking-tight text-[#1e3a8a]">
+                        DIGITAL GALLERY
+                        <span className="block text-slate-900 mt-2 text-3xl md:text-4xl font-bold">
+                            Explore & Relive Our Moments
+                        </span>
+                    </h1>
+                    <p className="mt-6 text-slate-600 text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
+                        A curated collection of workshops, hackathons, and community projects. Browse, filter, and enjoy our most inspiring visuals.
+                    </p>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="max-w-7xl mx-auto px-6 relative z-10"
-                >
-                    <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-12">
-                        <div className="max-w-4xl">
-                            <div className="flex items-center gap-4 mb-8">
-                                <span className="w-12 h-[1px] bg-[#93c5fd]" />
-                                <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#93c5fd]">Visual Archive</span>
-                            </div>
-
-                            <h1 className="text-6xl md:text-8xl font-black mb-8 tracking-tighter uppercase italic leading-[0.85] text-white">
-                                DIGITAL <br /><span className="text-[#93c5fd] not-italic">GALLERY.</span>
-                            </h1>
-
-                            <p className="text-white/60 text-lg md:text-xl max-w-2xl leading-relaxed font-medium">
-                                A curated visual record of our computing mastery, innovation, and community impact.
-                                Exploring the moments that define our collective progress.
-                            </p>
+                    {/* Stats Cards */}
+                    <div className="mt-10 flex justify-center gap-8 flex-wrap">
+                        <div className="px-6 py-4 text-center bg-white/20 rounded-2xl border border-white/10 backdrop-blur-xl">
+                            <p className="text-3xl font-black text-[#1e3a8a]">{filteredImages.length}</p>
+                            <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Filtered</span>
                         </div>
-
-                        <div className="flex items-center gap-6 bg-white/5 p-4 rounded-[2rem] border border-white/10 backdrop-blur-xl">
-                            <div className="px-8 py-4">
-                                <div className="text-4xl font-black text-white tracking-tighter">{filteredImages.length}</div>
-                                <div className="text-[10px] font-black uppercase tracking-widest text-white/30">Total Assets</div>
-                            </div>
+                        <div className="px-6 py-4 text-center bg-white/20 rounded-2xl border border-white/10 backdrop-blur-xl">
+                            <p className="text-3xl font-black text-[#1e3a8a]">{galleryData.length}</p>
+                            <span className="text-xs font-bold uppercase tracking-widest text-slate-700">Total</span>
                         </div>
                     </div>
-                </motion.div>
+                </div>
             </header>
-
-            <main className="max-w-7xl mx-auto px-6 pb-40 -mt-8 relative z-20">
-                {/* Clean Filter Controls */}
-                <div className="sticky top-24 z-40 mb-12 flex flex-wrap items-center justify-center gap-2 p-2 bg-white/80 backdrop-blur-xl border border-gray-100 rounded-[2.5rem] shadow-xl shadow-blue-900/5">
-                    {categories.map((cat) => (
+            {/* Categories */}
+            <div className="sticky top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 py-6">
+                <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center gap-2">
+                    {categories.map(cat => (
                         <button
                             key={cat}
                             onClick={() => setSelectedCategory(cat)}
-                            className={`
-                                px-6 py-2.5 rounded-[2rem] text-xs font-black tracking-wider transition-all
-                                ${selectedCategory === cat
-                                    ? 'bg-[#1e3a8a] text-white shadow-lg shadow-blue-900/20'
-                                    : 'text-gray-500 hover:text-[#1e3a8a] hover:bg-blue-50'}
-                            `}
+                            className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all
+                                ${selectedCategory === cat ? 'bg-[#1e3a8a] text-white shadow-lg' : 'text-slate-500 hover:text-[#1e3a8a] hover:bg-blue-50'}`}
                         >
                             {cat}
                         </button>
                     ))}
                 </div>
+            </div>
 
-                {/* High Performance Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    <AnimatePresence mode="popLayout">
-                        {filteredImages.map((item, idx) => (
-                            <motion.div
-                                layout
-                                key={item._id || `gal-${idx}`}
-                                initial={{ opacity: 0, y: 30 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                exit={{ opacity: 0, scale: 0.95 }}
-                                transition={{ duration: 0.8, ease: [0.19, 1, 0.22, 1], delay: (idx % 3) * 0.1 }}
-                                className="group relative cursor-pointer"
-                                onClick={() => openLightbox(idx)}
-                            >
-                                <div className="relative rounded-[2.5rem] overflow-hidden bg-white border border-slate-100 shadow-sm transition-all duration-700 hover:shadow-[0_40px_80px_-20px_rgba(30,58,138,0.15)] hover:-translate-y-3 group-hover:border-blue-200/50">
-                                    {/* Image Container with Consistent Aspect Ratio */}
-                                    <div className="relative aspect-[4/5] overflow-hidden">
+            {/* Gallery Grid */}
+            <main className="max-w-7xl mx-auto px-6 mt-10">
+                <AnimatePresence mode="popLayout">
+                    {filteredImages.length > 0 ? (
+                        <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                            {filteredImages.map((item, idx) => (
+                                <motion.div
+                                    layout
+                                    key={item._id || idx}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: idx * 0.05 }}
+                                    className="group relative overflow-hidden rounded-2xl cursor-pointer shadow-lg hover:shadow-2xl transition-all"
+                                    onClick={() => openLightbox(idx)}
+                                >
+                                    <div className="relative aspect-[4/5]">
                                         <Image
                                             src={item.image}
                                             alt={item.eventName}
                                             fill
-                                            className="object-cover transition-transform duration-[1.5s] group-hover:scale-110"
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
                                         />
-
-                                        {/* Elegant Overlay */}
-                                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700">
-                                            <div className="absolute bottom-0 left-0 right-0 p-10 flex flex-col gap-3 translate-y-10 group-hover:translate-y-0 transition-transform duration-700 delay-100">
-                                                <div className="flex items-center gap-3">
-                                                    <span className="px-4 py-1.5 bg-blue-500/20 backdrop-blur-xl border border-blue-400/30 rounded-full text-[9px] font-black uppercase tracking-[2px] text-blue-100">
-                                                        {item.category}
-                                                    </span>
-                                                </div>
-                                                <h3 className="text-2xl font-black text-white leading-tight uppercase italic tracking-tighter">
-                                                    {item.eventName}
-                                                </h3>
-                                                <p className="text-blue-100/60 text-xs font-medium line-clamp-2 leading-relaxed">
-                                                    {item.description}
-                                                </p>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                            <div className="absolute bottom-4 left-4">
+                                                <span className="px-3 py-1 bg-[#1e3a8a]/30 text-white text-[10px] font-bold uppercase rounded-full">{item.category}</span>
+                                                <h3 className="mt-2 text-white font-black text-lg line-clamp-2">{item.eventName}</h3>
+                                                <p className="text-white/70 text-xs line-clamp-2 mt-1">{item.description}</p>
                                             </div>
                                         </div>
-
-                                        {/* Decorative Zoom Trigger */}
-                                        <div className="absolute top-8 right-8 w-14 h-14 flex items-center justify-center bg-white/10 backdrop-blur-2xl rounded-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 translate-x-10 group-hover:translate-x-0 border border-white/20">
-                                            <LayoutGrid className="w-5 h-5 text-white" />
+                                        <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500">
+                                            <LayoutGrid className="w-5 h-5" />
                                         </div>
                                     </div>
-                                </div>
-                            </motion.div>
-                        ))}
-                    </AnimatePresence>
-                </div>
-
-                {/* Empty State */}
-                {!loading && filteredImages.length === 0 && (
-                    <div className="flex flex-col items-center justify-center py-40 text-center grayscale opacity-40">
-                        <div className="p-10 bg-slate-100/50 rounded-[3rem] border border-slate-200 mb-8">
-                            <ImageIcon className="w-16 h-16 text-slate-400" />
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    ) : (
+                        <div className="flex flex-col items-center justify-center py-40 text-center">
+                            <div className="p-12 bg-slate-50 rounded-full border border-slate-200 mb-6">
+                                <Zap className="w-16 h-16 text-slate-300" />
+                            </div>
+                            <h3 className="text-3xl font-bold text-slate-900">No Images Found</h3>
+                            <p className="text-slate-500 max-w-md mt-2 font-medium leading-relaxed">
+                                No images match your selected category. Try another filter.
+                            </p>
+                            <button
+                                onClick={() => setSelectedCategory('All')}
+                                className="mt-6 px-6 py-3 bg-[#1e3a8a] text-white text-[10px] font-bold uppercase tracking-widest rounded-xl hover:scale-105 transition-all shadow-md"
+                            >
+                                Clear Filters
+                            </button>
                         </div>
-                        <h3 className="text-3xl font-black text-slate-900 mb-3 uppercase italic tracking-tighter">Visual Silence</h3>
-                        <p className="text-slate-500 font-medium max-w-sm">No captures found in this archival sector. Check back later.</p>
-                    </div>
-                )}
+                    )}
+                </AnimatePresence>
             </main>
 
-            {/* Premium Stats Grid */}
-            <section className="bg-white border-t border-gray-100 py-32">
-                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                    <div className="space-y-2">
-                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{galleryData.length}</div>
-                        <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Total Memories</div>
-                    </div>
-                    <div className="space-y-2">
-                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{categories.length > 0 ? categories.length - 1 : 0}</div>
-                        <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Unique Categories</div>
-                    </div>
-                    <div className="space-y-2">
-                        <div className="text-5xl font-black text-[#1e3a8a] tracking-tight">{new Date().getFullYear()}</div>
-                        <div className="text-xs uppercase font-bold tracking-[0.2em] text-gray-400">Archive Started</div>
-                    </div>
-                </div>
-            </section>
-
-            {/* Lightbox Integration */}
+            {/* Lightbox */}
             {lightbox.isOpen && (
                 <ImageLightbox
                     images={filteredImages}
@@ -226,39 +157,6 @@ const Gallery = () => {
                     onPrev={prevImage}
                 />
             )}
-
-            <style jsx global>{`
-                @keyframes spin-reverse {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(-360deg); }
-                }
-                .animate-spin-reverse {
-                    animation: spin-reverse 1.5s linear infinite;
-                }
-                .animate-pulse-slow {
-                    animation: pulse 8s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-                }
-            `}</style>
-        </div>
-    );
-};
-
-const StatCard = ({ value, label, icon, color }) => {
-    const colors = {
-        blue: "text-blue-400 bg-blue-400/5 border-blue-400/10",
-        indigo: "text-indigo-400 bg-indigo-400/5 border-indigo-400/10",
-        violet: "text-violet-400 bg-violet-400/5 border-violet-400/10"
-    };
-
-    return (
-        <div className={`p-8 rounded-[2rem] bg-white/[0.02] border border-white/[0.05] flex flex-col items-start gap-4 transition-all hover:bg-white/[0.04]`}>
-            <div className={`p-3 rounded-xl ${colors[color]} border font-bold`}>
-                {icon}
-            </div>
-            <div>
-                <div className="text-4xl font-black text-white tracking-tighter mb-1">{value}</div>
-                <div className="text-[10px] uppercase tracking-widest font-bold text-gray-500">{label}</div>
-            </div>
         </div>
     );
 };
