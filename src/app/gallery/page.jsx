@@ -25,7 +25,22 @@ const Gallery = () => {
         }
     };
 
-    useEffect(() => fetchGallery(), []);
+    useEffect(() => {
+        const fetchGalleryData = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(`/api/gallery`);
+                const data = await res.json();
+                setGalleryData(Array.from(new Map((data || []).map(item => [item._id, item])).values()));
+            } catch (err) {
+                console.error("Failed to fetch gallery:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchGalleryData();
+    }, []);
 
     const categories = useMemo(() => ['All', ...new Set(galleryData.map(i => i.category))], [galleryData]);
     const filteredImages = useMemo(() =>
