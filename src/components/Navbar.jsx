@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../public/images/logo/css-logo.jpg";
 
@@ -63,12 +63,10 @@ export default function Navbar() {
 
                     <Link
                         href="/contact"
-                        className="relative px-6 py-2 bg-white rounded-xl font-bold uppercase text-[#1e3a8a] tracking-widest overflow-hidden group"
+                        className="group inline-flex items-center gap-2 px-7 py-2.5 bg-white text-[#1e3a8a] rounded-full font-bold text-sm tracking-wide uppercase transition-all duration-300 hover:scale-105 shadow-md hover:shadow-white/30 active:scale-95"
                     >
-                        <span className="relative z-10 transition-colors group-hover:text-white">
-                            Contact
-                        </span>
-                        <div className="absolute inset-0 bg-[#1e3a8a] scale-y-0 origin-bottom group-hover:scale-y-100 transition-transform duration-300" />
+                        <span>Contact</span>
+                        <ArrowRight size={16} className="transform group-hover:translate-x-1 transition-transform duration-300" />
                     </Link>
                 </div>
 
@@ -105,10 +103,11 @@ export default function Navbar() {
                         ))}
                         <Link
                             href="/contact"
-                            className="px-10 py-4 bg-white rounded-xl font-bold uppercase text-[#1e3a8a] tracking-widest"
+                            className="group flex items-center justify-center gap-3 px-10 py-4 bg-white rounded-full font-bold text-[#1e3a8a] shadow-lg active:scale-95 transition-all w-full max-w-[280px]"
                             onClick={() => setOpen(false)}
                         >
-                            Contact
+                            <span className="uppercase tracking-widest text-sm">Contact</span>
+                            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                         </Link>
                     </motion.div>
                 )}
