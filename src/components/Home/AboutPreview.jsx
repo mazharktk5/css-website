@@ -81,11 +81,11 @@ export default function AboutSection() {
                         >
 
                             <div className={`${i % 2 === 1 ? "md:order-2" : ""}`}>
-                                <div className="rounded-2xl overflow-hidden shadow-md">
+                                <div className="max-w-[340px] mx-auto rounded-xl overflow-hidden shadow-lg ring-1 ring-slate-900/5 aspect-[3/4]">
                                     <img
                                         src={leader.img}
                                         alt={leader.name}
-                                        className="w-full h-[380px] object-cover"
+                                        className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
                                     />
                                 </div>
                             </div>

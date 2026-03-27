@@ -10,13 +10,13 @@ function MemberCard({ member }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="group relative w-full aspect-[4/5] overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500"
+            className="group relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 ring-1 ring-slate-900/5"
         >
             <Image
                 src={member.image || "/images/team/placeholder.jpg"}
                 alt={member.name}
                 fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
             />
 
             {/* Overlay */}
