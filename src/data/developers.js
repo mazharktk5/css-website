@@ -11,6 +11,20 @@ const developers = [
         image: "/images/developers/nida.png",
         linkedin: "https://www.linkedin.com/in/nida-khan106?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
+
+    {
+        name: "Qazi Qatadah Afridi",
+        role: "MERN Developer",
+        image: "/images/developers/Qazi.jpeg",
+        linkedin: "https://www.linkedin.com/in/nida-khan106?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+    },
+
+    {
+        name: "Qazi Farhan",
+        role: "MERN Developer",
+        image: "/images/developers/Qazi_Farhan.jpeg",
+        linkedin: "https://www.linkedin.com/in/qazi-farhan-ahmad-7a3b3432b/",
+    },
     // {
     //     name: "Musa",
     //     role: "MERN Developer",
