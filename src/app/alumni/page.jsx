@@ -108,50 +108,83 @@ function MemberCard({ member }) {
 export default function AlumniPage() {
     return (
         <main className="min-h-screen bg-slate-50">
-            <Navbar />
+            {/* <Navbar /> */}
 
-            {/* Hero Section */}
-            <section className="relative py-32 bg-slate-50 overflow-hidden">
-                {/* subtle grid pattern */}
+            <section className="relative py-28 bg-slate-50 overflow-hidden">
+                {/* background pattern */}
                 <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle,_#000_1px,_transparent_1px)] bg-[size:40px_40px]" />
 
-                {/* background glow shapes */}
-                <div className="absolute inset-0 -z-10 overflow-hidden">
-                    <div className="absolute top-[-120px] left-[20%] w-[500px] h-[500px] bg-[#1e3a8a]/15 blur-[120px] rounded-full" />
-                    <div className="absolute bottom-[-120px] right-[20%] w-[500px] h-[500px] bg-blue-300/20 blur-[120px] rounded-full" />
-                </div>
+                {/* glow */}
+                <div className="absolute top-[-100px] left-[10%] w-[400px] h-[400px] bg-[#1e3a8a]/20 blur-[120px] rounded-full" />
+                <div className="absolute bottom-[-100px] right-[10%] w-[400px] h-[400px] bg-blue-300/20 blur-[120px] rounded-full" />
 
-                <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+                <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+
+                    {/* LEFT CONTENT */}
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
                     >
-                        {/* small label */}
-                        <motion.span
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="text-sm text-[#1e3a8a] font-medium tracking-wide uppercase"
-                        >
+                        <span className="text-sm text-[#1e3a8a] font-semibold tracking-wider uppercase">
                             Computing Students Society
-                        </motion.span>
+                        </span>
 
-                        <h1 className="mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight">
-                            CSS
-                            <span className="block text-[#1e3a8a]">
-                                Alumni Society
-                            </span>
+                        <h1 className="mt-4 text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                            Our Alumni
+                            <span className="block text-[#1e3a8a]">Network</span>
                         </h1>
 
-                        <p className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                            Celebrating the legacy of the Computing Students Society. Meet the brilliant minds who shaped our first chapters and paved the way for future innovators.
+                        <p className="mt-6 text-lg text-slate-600 max-w-xl leading-relaxed">
+                            The people who built the foundation of CSS. Leaders, developers, and thinkers who shaped what we are today.
                         </p>
 
-                        {/* divider */}
-                        <div className="flex justify-center mt-16">
-                            <div className="w-20 h-[2px] bg-[#1e3a8a]" />
+                        {/* Stats */}
+                        <div className="flex gap-10 mt-10">
+                            <div>
+                                <h3 className="text-3xl font-bold text-slate-900">50+</h3>
+                                <p className="text-sm text-slate-500">Members</p>
+                            </div>
+                            <div>
+                                <h3 className="text-3xl font-bold text-slate-900">5+</h3>
+                                <p className="text-sm text-slate-500">Domains</p>
+                            </div>
+                            <div>
+                                <h3 className="text-3xl font-bold text-slate-900">2024</h3>
+                                <p className="text-sm text-slate-500">Founded</p>
+                            </div>
                         </div>
                     </motion.div>
+
+                    {/* RIGHT VISUAL */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                        className="relative"
+                    >
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="rounded-2xl overflow-hidden h-48">
+                                <Image src="/images/team/president.jpg" alt="" fill className="object-cover" />
+                            </div>
+                            <div className="rounded-2xl overflow-hidden h-60 mt-6">
+                                <Image src="/images/team/software-lead.jpg" alt="" fill className="object-cover" />
+                            </div>
+                            <div className="rounded-2xl overflow-hidden h-60">
+                                <Image src="/images/developers/mamoon.jpg" alt="" fill className="object-cover" />
+                            </div>
+                            <div className="rounded-2xl overflow-hidden h-48 mt-6">
+                                <Image src="/images/developers/safia.jpg" alt="" fill className="object-cover" />
+                            </div>
+                        </div>
+
+                        {/* floating badge */}
+                        <div className="absolute -bottom-6 -left-6 bg-white shadow-xl rounded-2xl px-6 py-4 border">
+                            <p className="text-sm text-slate-500">Since</p>
+                            <h4 className="text-xl font-bold text-slate-900">2024</h4>
+                        </div>
+                    </motion.div>
+
                 </div>
             </section>
 

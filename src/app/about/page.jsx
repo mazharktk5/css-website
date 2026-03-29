@@ -3,7 +3,6 @@ import Hero from "../../components/About/AboutHero";
 import MissionVision from "../../components/About/MissionVision";
 import OurTeam from "../../components/About/OurTeam";
 // import OurStory from "../../components/About/OurStory";
-
 import History from "../../components/About/History";
 // import CTA from "../../components/About/CTA";
 
