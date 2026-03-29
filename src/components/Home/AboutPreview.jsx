@@ -34,7 +34,7 @@ const leaders = [
     {
         name: "Fatima",
         role: "Female Vice President",
-        img: "/images/team/fatima.png",
+        img: "/images/team/management-lead.jpg",
         message:
             "I aim to encourage greater participation in technology and help create an inclusive environment where every student feels confident to learn and contribute."
     }
