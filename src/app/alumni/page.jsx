@@ -189,7 +189,6 @@ export default function AlumniPage() {
                 </div>
             </section>
 
-            <Footer />
         </main>
     );
 }
