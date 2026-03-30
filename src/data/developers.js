@@ -1,7 +1,7 @@
 const developers = [
     {
         name: "Mazhar Ahmad",
-        role: "Lead / Supervisor",
+        role: "Lead / Full Stack Developer",
         image: "/images/developers/mazhar.jpg",
         linkedin: "https://www.linkedin.com/in/mazhar-ahmad78?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
     },
@@ -16,7 +16,7 @@ const developers = [
         name: "Qazi Qatadah Afridi",
         role: "MERN Developer",
         image: "/images/developers/Qazi.jpeg",
-        linkedin: "https://www.linkedin.com/in/nida-khan106?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        linkedin: "https://www.linkedin.com/in/qazi-qataadah-9072b5382",
     },
 
     {

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const history = [
   {
-    year: "Sept 2024",
+    year: "Nov 2024",
     title: "Foundation",
     description:
       "Computing Students Society was founded to empower students through innovation.",

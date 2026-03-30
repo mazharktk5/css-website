@@ -9,15 +9,23 @@ const alumniData = [
         chapter: "2024-25",
         members: [
             {
-                name: "Muhammad Ilyas",
-                role: "Ex-AI & DS Lead",
-                image: "/images/team/president.jpg",
+                name: "Muhammad Jawad",
+                role: "Ex-Vice President",
+                image: "/images/team/jawad.png",
                 chapter: "2024-25"
             },
+
             {
                 name: "Abdullah Ahmad",
                 role: "Ex-Information Secretary",
                 image: "/images/team/vp.jpg",
+                chapter: "2024-25"
+            },
+
+            {
+                name: "Hashir Ahmad",
+                role: "Ex-Chief Secretary",
+                image: "/images/team/cyber-lead.jpg",
                 chapter: "2024-25"
             },
 
@@ -29,9 +37,42 @@ const alumniData = [
             },
 
             {
+                name: "Hanzallah Khan",
+                role: "Ex-Management Co-ordinator",
+                image: "/images/developers/hanzala.jpg",
+                chapter: "2024-25"
+            },
+
+
+            {
                 name: "Safia Zulfiqar",
                 role: "Ex-Management Member",
                 image: "/images/developers/safia.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Muhammad Ilyas",
+                role: "Ex-AI & DS Lead",
+                image: "/images/team/president.jpg",
+                chapter: "2024-25"
+            },
+
+            {
+                name: "Aamna Malik",
+                role: "Ex-AI & DS Member",
+                image: "/images/team/amna_malik.PNG",
+                chapter: "2024-25"
+            },
+            {
+                name: "Hazrat Umer",
+                role: "Ex-AI & DS Member",
+                image: "/images/team/Hazrat_umer.jpeg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Mamoon Khan",
+                role: "Ex-Software Lead",
+                image: "/images/developers/mamoon.jpg",
                 chapter: "2024-25"
             },
             {
@@ -41,24 +82,8 @@ const alumniData = [
                 chapter: "2024-25"
             },
 
-            {
-                name: "Mamoon Khan",
-                role: "Ex-Software Lead",
-                image: "/images/developers/mamoon.jpg",
-                chapter: "2024-25"
-            },
-            {
-                name: "Hanzallah Khan",
-                role: "Ex-Management Co-ordinator",
-                image: "/images/developers/hanzala.jpg",
-                chapter: "2024-25"
-            },
-            {
-                name: "Hashir Ahmad",
-                role: "Ex-Chief Secretary",
-                image: "/images/team/cyber-lead.jpg",
-                chapter: "2024-25"
-            }
+
+
         ]
     }
 ];
@@ -114,9 +139,9 @@ export default function AlumniPage() {
                 {/* background pattern */}
                 <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle,_#000_1px,_transparent_1px)] bg-[size:40px_40px]" />
 
-                {/* glow */}
-                <div className="absolute top-[-100px] left-[10%] w-[400px] h-[400px] bg-[#1e3a8a]/20 blur-[120px] rounded-full" />
-                <div className="absolute bottom-[-100px] right-[10%] w-[400px] h-[400px] bg-blue-300/20 blur-[120px] rounded-full" />
+                {/* subtle glow */}
+                <div className="absolute top-[-100px] left-[10%] w-[400px] h-[400px] bg-[#1e3a8a]/10 blur-[100px] rounded-full" />
+                <div className="absolute bottom-[-100px] right-[10%] w-[400px] h-[400px] bg-blue-300/10 blur-[100px] rounded-full" />
 
                 <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
 
@@ -130,7 +155,7 @@ export default function AlumniPage() {
                             Computing Students Society
                         </span>
 
-                        <h1 className="mt-4 text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
+                        <h1 className="mt-4 text-5xl lg:text-6xl font-bold text-slate-900 leading-[1.1] tracking-tight">
                             Our Alumni
                             <span className="block text-[#1e3a8a]">Network</span>
                         </h1>
@@ -161,35 +186,72 @@ export default function AlumniPage() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8 }}
-                        className="relative"
+                        className="relative flex justify-center lg:justify-end items-center"
                     >
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="rounded-2xl overflow-hidden h-48">
-                                <Image src="/images/team/president.jpg" alt="" fill className="object-cover" />
-                            </div>
-                            <div className="rounded-2xl overflow-hidden h-60 mt-6">
-                                <Image src="/images/team/software-lead.jpg" alt="" fill className="object-cover" />
-                            </div>
-                            <div className="rounded-2xl overflow-hidden h-60">
-                                <Image src="/images/developers/mamoon.jpg" alt="" fill className="object-cover" />
-                            </div>
-                            <div className="rounded-2xl overflow-hidden h-48 mt-6">
-                                <Image src="/images/developers/safia.jpg" alt="" fill className="object-cover" />
-                            </div>
-                        </div>
+                        <div className="relative group max-w-[420px] w-full">
 
-                        {/* floating badge */}
-                        <div className="absolute -bottom-6 -left-6 bg-white shadow-xl rounded-2xl px-6 py-4 border">
-                            <p className="text-sm text-slate-500">Since</p>
-                            <h4 className="text-xl font-bold text-slate-900">2024</h4>
+                            <div className="relative aspect-[4/5] rounded-[2.5rem] overflow-hidden bg-slate-950 shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-slate-800 transition-all duration-700">
+
+                                {/* subtle background glow */}
+                                <div className="absolute inset-0 opacity-20 blur-2xl scale-125">
+                                    <Image
+                                        src="/images/team/ex-president.jpeg"
+                                        alt=""
+                                        fill
+                                        className="object-cover"
+                                    />
+                                </div>
+
+                                {/* main image */}
+                                <Image
+                                    src="/images/team/ex-president.jpeg"
+                                    alt="Ex President"
+                                    fill
+                                    className="object-cover relative z-10 transition-transform duration-700 group-hover:scale-[1.03]"
+                                    priority
+                                />
+
+                                {/* cleaner overlay */}
+                                <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+
+                                {/* bottom label */}
+                                <div className="absolute bottom-0 inset-x-0 z-30 pt-10 pb-8 px-6 text-center">
+                                    <div className="flex flex-col items-center gap-3">
+                                        <div className="flex items-center gap-3 w-full justify-center">
+                                            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
+                                            <span className="text-white text-[10px] font-black tracking-[0.35em] uppercase">
+                                                Ex President
+                                            </span>
+                                            <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-blue-400/50 to-transparent" />
+                                        </div>
+                                        <h3 className="text-white text-lg font-semibold tracking-tight">
+                                            CSS Foundation
+                                        </h3>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* badge (fixed position) */}
+                            <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-xl shadow-xl rounded-xl px-4 py-2 border border-white/50 z-40">
+                                <p className="text-[10px] text-slate-400 font-bold tracking-widest uppercase">
+                                    Leadership
+                                </p>
+                                <h4 className="text-sm font-bold text-[#1e3a8a]">
+                                    2024-25
+                                </h4>
+                            </div>
+
+                            {/* subtle decorative blobs */}
+                            <div className="absolute -z-10 -top-6 -right-6 w-28 h-28 bg-blue-600/10 blur-2xl rounded-full" />
+                            <div className="absolute -z-10 -bottom-6 -left-6 w-28 h-28 bg-indigo-600/10 blur-2xl rounded-full" />
                         </div>
                     </motion.div>
 
                 </div>
-            </section>
+            </section >
 
             {/* Alumni List */}
-            <section className="py-24">
+            < section className="py-24" >
                 <div className="max-w-7xl mx-auto px-6">
                     {alumniData.map((section) => (
                         <div key={section.chapter} className="mb-32 last:mb-0">
@@ -220,8 +282,8 @@ export default function AlumniPage() {
                         </p>
                     </div>
                 </div>
-            </section>
+            </section >
 
-        </main>
+        </main >
     );
 }
