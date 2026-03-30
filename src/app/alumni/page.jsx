@@ -11,7 +11,7 @@ const alumniData = [
             {
                 name: "Muhammad Jawad",
                 role: "Ex-Vice President",
-                image: "/images/team/jawad.png",
+                image: "/images/team/jawad.jpg",
                 chapter: "2024-25"
             },
 
