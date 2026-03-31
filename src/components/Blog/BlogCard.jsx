@@ -13,6 +13,9 @@ export default function BlogCard({ post }) {
     const [comments, setComments] = useState(post.comments || []);
     const [newComment, setNewComment] = useState("");
     const [submitting, setSubmitting] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+    const textLimit = 150;
+    const isLongText = (post.content?.length || 0) > textLimit;
 
     useEffect(() => {
         const likedPosts = JSON.parse(localStorage.getItem("liked_posts") || "[]");
@@ -136,9 +139,20 @@ export default function BlogCard({ post }) {
             {/* Post Content (Text) */}
             {post.content && (
                 <div className="px-4 pb-3">
-                    <p className="text-[15px] text-slate-800 leading-normal whitespace-pre-wrap">
-                        {post.content}
-                    </p>
+                    <div className="text-[15px] text-slate-800 leading-normal whitespace-pre-wrap">
+                        {isExpanded || !isLongText 
+                            ? post.content 
+                            : `${post.content.substring(0, textLimit)}...`}
+                        
+                        {isLongText && (
+                            <button 
+                                onClick={() => setIsExpanded(!isExpanded)}
+                                className="ml-1 text-[#1e3a8a] font-black hover:underline cursor-pointer"
+                            >
+                                {isExpanded ? " See less" : " See more"}
+                            </button>
+                        )}
+                    </div>
                 </div>
             )}
 
