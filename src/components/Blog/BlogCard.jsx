@@ -1,19 +1,20 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, MessageCircle, Share2, MoreHorizontal, Send, Trash2, X } from "lucide-react";
+import { Heart, MessageCircle, Share2, MoreHorizontal, Send, User } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import logo from "../../../public/images/logo/css-logo.jpg";
 
 export default function BlogCard({ post }) {
-    const [likes, setLikes] = useState(post.likes);
+    const [likes, setLikes] = useState(post.likes || 0);
     const [isLiked, setIsLiked] = useState(false);
     const [showComments, setShowComments] = useState(false);
     const [comments, setComments] = useState(post.comments || []);
     const [newComment, setNewComment] = useState("");
     const [submitting, setSubmitting] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
+
     const textLimit = 150;
     const isLongText = (post.content?.length || 0) > textLimit;
 
@@ -73,7 +74,6 @@ export default function BlogCard({ post }) {
             }
         } catch (error) {
             console.error("Failed to add comment:", error);
-            alert("An error occurred while posting your comment.");
         }
         setSubmitting(false);
     };
@@ -119,12 +119,7 @@ export default function BlogCard({ post }) {
             <div className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden border border-slate-100">
-                        <Image
-                            src={logo}
-                            alt="CSS Logo"
-                            fill
-                            className="object-cover"
-                        />
+                        <Image src={logo} alt="CSS Logo" fill className="object-cover" />
                     </div>
                     <div>
                         <h3 className="text-sm font-bold text-slate-900 leading-tight">Computing Students Society</h3>
@@ -136,19 +131,13 @@ export default function BlogCard({ post }) {
                 </button>
             </div>
 
-            {/* Post Content (Text) */}
+            {/* Post Content */}
             {post.content && (
                 <div className="px-4 pb-3">
                     <div className="text-[15px] text-slate-800 leading-normal whitespace-pre-wrap">
-                        {isExpanded || !isLongText 
-                            ? post.content 
-                            : `${post.content.substring(0, textLimit)}...`}
-                        
+                        {isExpanded || !isLongText ? post.content : `${post.content.substring(0, textLimit)}...`}
                         {isLongText && (
-                            <button 
-                                onClick={() => setIsExpanded(!isExpanded)}
-                                className="ml-1 text-[#1e3a8a] font-black hover:underline cursor-pointer"
-                            >
+                            <button onClick={() => setIsExpanded(!isExpanded)} className="ml-1 text-[#1e3a8a] font-black hover:underline cursor-pointer">
                                 {isExpanded ? " See less" : " See more"}
                             </button>
                         )}
@@ -156,14 +145,10 @@ export default function BlogCard({ post }) {
                 </div>
             )}
 
-            {/* Post Media (Image) */}
+            {/* Post Media */}
             {post.image && (
                 <div className="relative w-full bg-slate-50 border-y border-slate-100 overflow-hidden">
-                    <img 
-                        src={post.image} 
-                        alt="Post media" 
-                        className="w-full h-auto max-h-[600px] object-contain mx-auto"
-                    />
+                    <img src={post.image} alt="Post media" className="w-full h-auto max-h-[600px] object-contain mx-auto" />
                 </div>
             )}
 
@@ -189,15 +174,10 @@ export default function BlogCard({ post }) {
                 <button
                     onClick={handleLike}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md transition-all font-semibold text-sm ${
-                        isLiked 
-                        ? "text-blue-600 bg-blue-50/50" 
-                        : "text-slate-600 hover:bg-slate-100"
+                        isLiked ? "text-blue-600 bg-blue-50/50" : "text-slate-600 hover:bg-slate-100"
                     }`}
                 >
-                    <Heart 
-                        size={18} 
-                        className={isLiked ? "fill-blue-600 stroke-blue-600" : ""}
-                    />
+                    <Heart size={18} className={isLiked ? "fill-blue-600 stroke-blue-600" : ""} />
                     <span>Like</span>
                 </button>
 
@@ -228,32 +208,24 @@ export default function BlogCard({ post }) {
                         className="overflow-hidden bg-slate-50 border-t border-slate-100"
                     >
                         <div className="p-4 space-y-4">
-                            {/* Comment Input */}
                             <form onSubmit={handleComment} className="flex gap-2">
                                 <div className="relative flex-1">
                                     <input
-                                        type="text"
-                                        value={newComment}
-                                        onChange={(e) => setNewComment(e.target.value)}
+                                        type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)}
                                         placeholder="Write a comment..."
                                         className="w-full bg-white border border-slate-200 rounded-full py-2 px-4 text-sm focus:outline-none focus:border-blue-500 transition-all shadow-sm"
                                     />
                                 </div>
-                                <button
-                                    type="submit"
-                                    disabled={!newComment.trim() || submitting}
-                                    className="p-2 bg-blue-600 text-white rounded-full disabled:bg-slate-300 transition-all hover:bg-blue-700 active:scale-95"
-                                >
+                                <button type="submit" disabled={!newComment.trim() || submitting} className="p-2 bg-blue-600 text-white rounded-full disabled:bg-slate-300 transition-all hover:bg-blue-700 active:scale-95">
                                     <Send size={18} />
                                 </button>
                             </form>
 
-                            {/* Comments List */}
                             <div className="space-y-3">
                                 {comments.map((comment) => (
                                     <div key={comment._id} className="flex gap-3">
                                         <div className="w-8 h-8 rounded-full bg-slate-200 shrink-0 flex items-center justify-center text-slate-400">
-                                            <div className="text-[10px] font-bold">U</div>
+                                            <User size={14} />
                                         </div>
                                         <div className="flex-1">
                                             <div className="bg-white border border-slate-100 rounded-2xl px-3 py-2 shadow-sm">

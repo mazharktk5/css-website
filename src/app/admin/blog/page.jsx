@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
 import ImageUpload from "@/components/Admin/ImageUpload";
-import { Trash2, Plus, MessageSquare, Image as ImageIcon, Loader2, ChevronDown, ChevronUp, User } from "lucide-react";
+import ConfirmModal from "@/components/Admin/ConfirmModal";
+import { Trash2, Plus, MessageSquare, Image as ImageIcon, Loader2, ChevronDown, ChevronUp, User, Edit2 } from "lucide-react";
 
 export default function AdminBlogPage() {
     const [posts, setPosts] = useState([]);
@@ -11,7 +12,17 @@ export default function AdminBlogPage() {
     const [showModal, setShowModal] = useState(false);
     const [saving, setSaving] = useState(false);
     const [expandedPost, setExpandedPost] = useState(null);
-    
+    const [editingPost, setEditingPost] = useState(null);
+
+    // Confirm Modal state
+    const [confirmModal, setConfirmModal] = useState({
+        isOpen: false,
+        title: "",
+        message: "",
+        confirmText: "Delete",
+        onConfirm: () => { },
+    });
+
     const [formData, setFormData] = useState({
         content: "",
         image: ""
@@ -33,6 +44,21 @@ export default function AdminBlogPage() {
         fetchPosts();
     }, []);
 
+    const handleEdit = (post) => {
+        setEditingPost(post);
+        setFormData({
+            content: post.content || "",
+            image: post.image || ""
+        });
+        setShowModal(true);
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+        setEditingPost(null);
+        setFormData({ content: "", image: "" });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!formData.content && !formData.image) {
@@ -44,8 +70,11 @@ export default function AdminBlogPage() {
         const token = localStorage.getItem("admin_token");
 
         try {
-            const res = await fetch("/api/posts", {
-                method: "POST",
+            const url = editingPost ? `/api/posts/${editingPost._id}` : "/api/posts";
+            const method = editingPost ? "PATCH" : "POST";
+
+            const res = await fetch(url, {
+                method,
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`
@@ -54,12 +83,11 @@ export default function AdminBlogPage() {
             });
 
             if (res.ok) {
-                setShowModal(false);
-                setFormData({ content: "", image: "" });
+                handleCloseModal();
                 fetchPosts();
             } else {
                 const err = await res.json();
-                alert(err.error || "Failed to create post");
+                alert(err.error || "Failed to save post");
             }
         } catch (error) {
             alert("An error occurred while saving.");
@@ -67,9 +95,7 @@ export default function AdminBlogPage() {
         setSaving(false);
     };
 
-    const handleDelete = async (id) => {
-        if (!confirm("Are you sure you want to delete this announcement?")) return;
-
+    const deletePost = async (id) => {
         const token = localStorage.getItem("admin_token");
         try {
             const res = await fetch(`/api/posts/${id}`, {
@@ -87,9 +113,7 @@ export default function AdminBlogPage() {
         }
     };
 
-    const handleDeleteComment = async (postId, commentId) => {
-        if (!confirm("Delete this comment?")) return;
-
+    const deleteComment = async (postId, commentId) => {
         const token = localStorage.getItem("admin_token");
         try {
             const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
@@ -98,7 +122,6 @@ export default function AdminBlogPage() {
             });
 
             if (res.ok) {
-                // Update local state to remove comment
                 setPosts(posts.map(post => {
                     if (post._id === postId) {
                         return {
@@ -114,6 +137,26 @@ export default function AdminBlogPage() {
         } catch (error) {
             alert("An error occurred while deleting.");
         }
+    };
+
+    const triggerDeletePost = (id) => {
+        setConfirmModal({
+            isOpen: true,
+            title: "Delete Announcement",
+            message: "Are you sure you want to permanently remove this announcement? This action cannot be undone.",
+            confirmText: "Delete Post",
+            onConfirm: () => deletePost(id)
+        });
+    };
+
+    const triggerDeleteComment = (postId, commentId) => {
+        setConfirmModal({
+            isOpen: true,
+            title: "Delete Comment",
+            message: "This comment will be removed permanently. Proceed?",
+            confirmText: "Delete Comment",
+            onConfirm: () => deleteComment(postId, commentId)
+        });
     };
 
     return (
@@ -165,7 +208,7 @@ export default function AdminBlogPage() {
                                         </p>
                                         <div className="flex items-center gap-6 mt-2">
                                             <div className="flex items-center gap-1.5 text-xs font-medium text-gray-500 underline underline-offset-4 decoration-blue-500/20">
-                                                <span>{post.likes} Likes</span>
+                                                <span>{post.likes || 0} Likes</span>
                                             </div>
                                             <button 
                                                 onClick={() => setExpandedPost(expandedPost === post._id ? null : post._id)}
@@ -179,7 +222,14 @@ export default function AdminBlogPage() {
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <button
-                                            onClick={() => handleDelete(post._id)}
+                                            onClick={() => handleEdit(post)}
+                                            className="p-3 bg-blue-500/10 text-blue-500 hover:bg-blue-500 hover:text-white rounded-xl transition-all shadow-sm"
+                                            title="Edit Post"
+                                        >
+                                            <Edit2 size={18} />
+                                        </button>
+                                        <button
+                                            onClick={() => triggerDeletePost(post._id)}
                                             className="p-3 bg-red-500/10 text-red-500 hover:bg-red-500 hover:text-white rounded-xl transition-all shadow-sm"
                                             title="Delete Post"
                                         >
@@ -206,7 +256,7 @@ export default function AdminBlogPage() {
                                                             </div>
                                                         </div>
                                                         <button 
-                                                            onClick={() => handleDeleteComment(post._id, comment._id)}
+                                                            onClick={() => triggerDeleteComment(post._id, comment._id)}
                                                             className="p-2 text-gray-600 hover:text-red-400 transition-colors"
                                                             title="Delete Comment"
                                                         >
@@ -229,15 +279,17 @@ export default function AdminBlogPage() {
                     )}
                 </div>
 
-                {/* Create Modal */}
+                {/* Create/Edit Modal */}
                 {showModal && (
                     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
                         <div 
                             className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-                            onClick={() => !saving && setShowModal(false)}
+                            onClick={() => !saving && handleCloseModal()}
                         />
                         <div className="relative w-full max-w-xl bg-[#0d1220] border border-white/[0.08] rounded-3xl p-8 shadow-2xl">
-                            <h3 className="text-xl font-bold text-white mb-6">Create Announcement</h3>
+                            <h3 className="text-xl font-bold text-white mb-6">
+                                {editingPost ? "Edit Announcement" : "Create Announcement"}
+                            </h3>
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <ImageUpload 
                                     label="Announcement Poster (Optional)"
@@ -258,7 +310,7 @@ export default function AdminBlogPage() {
                                 <div className="flex gap-4 pt-4">
                                     <button
                                         type="button"
-                                        onClick={() => setShowModal(false)}
+                                        onClick={handleCloseModal}
                                         disabled={saving}
                                         className="flex-1 py-3 bg-white/[0.05] hover:bg-white/[0.1] text-white rounded-xl font-bold text-sm transition-all border border-white/[0.05]"
                                     >
@@ -272,15 +324,25 @@ export default function AdminBlogPage() {
                                         {saving ? (
                                             <>
                                                 <Loader2 size={18} className="animate-spin" />
-                                                Publishing...
+                                                Saving...
                                             </>
-                                        ) : "Publish Now"}
+                                        ) : (editingPost ? "Save Changes" : "Publish Now")}
                                     </button>
                                 </div>
                             </form>
                         </div>
                     </div>
                 )}
+                
+                {/* Confirmation Modal */}
+                <ConfirmModal 
+                    isOpen={confirmModal.isOpen}
+                    onClose={() => setConfirmModal(prev => ({ ...prev, isOpen: false }))}
+                    onConfirm={confirmModal.onConfirm}
+                    title={confirmModal.title}
+                    message={confirmModal.message}
+                    confirmText={confirmModal.confirmText}
+                />
             </div>
         </AdminLayout>
     );

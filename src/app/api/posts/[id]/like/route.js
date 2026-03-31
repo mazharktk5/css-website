@@ -2,18 +2,20 @@ import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import BlogPost from "@/models/BlogPost";
 
-// PATCH increment/decrement likes
+// PATCH update like status (Anonymous)
 export async function PATCH(request, { params }) {
     const { id } = await params;
-    const body = await request.json();
-    const { action } = body; // "like" or "unlike"
+    const { action } = await request.json(); // "like" or "unlike"
 
     try {
         await dbConnect();
         
-        const update = action === "unlike" 
-            ? { $inc: { likes: -1 } } 
-            : { $inc: { likes: 1 } };
+        let update;
+        if (action === "unlike") {
+            update = { $inc: { likes: -1 } };
+        } else {
+            update = { $inc: { likes: 1 } };
+        }
 
         const post = await BlogPost.findByIdAndUpdate(
             id,

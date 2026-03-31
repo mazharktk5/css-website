@@ -19,14 +19,9 @@ const BlogPostSchema = new mongoose.Schema({
 let BlogPost;
 
 if (mongoose.models[modelName]) {
-    // If we're in dev mode and the model doesn't have the comments path, 
-    // it's stale and should be re-compiled.
-    if (!mongoose.models[modelName].schema.paths.comments) {
-        delete mongoose.models[modelName];
-        BlogPost = mongoose.model(modelName, BlogPostSchema);
-    } else {
-        BlogPost = mongoose.model(modelName);
-    }
+    // Force re-compilation to ensure updated paths are recognized.
+    delete mongoose.models[modelName];
+    BlogPost = mongoose.model(modelName, BlogPostSchema);
 } else {
     BlogPost = mongoose.model(modelName, BlogPostSchema);
 }
