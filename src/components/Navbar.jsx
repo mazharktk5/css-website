@@ -23,6 +23,7 @@ export default function Navbar() {
         { name: "Events", href: "/events" },
         { name: "Gallery", href: "/gallery" },
         { name: "Alumni", href: "/alumni" },
+        { name: "Blog", href: "/blog" },
         { name: "Watch", href: "/videos" },
     ];
 

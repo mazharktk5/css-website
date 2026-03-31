@@ -15,12 +15,14 @@ import {
     Shield,
     ChevronRight,
     Youtube,
+    MessageSquare,
 } from "lucide-react";
 
 const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Events", href: "/admin/events", icon: CalendarDays },
     { name: "Registrations", href: "/admin/registrations", icon: Bell },
+    { name: "Blog", href: "/admin/blog", icon: MessageSquare },
     { name: "Gallery", href: "/admin/gallery", icon: Image },
     { name: "Videos", href: "/admin/videos", icon: Youtube },
     { name: "Team", href: "/admin/team", icon: Users },
