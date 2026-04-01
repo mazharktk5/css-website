@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Users, LayoutGrid, List, ArrowUpRight, Zap } from "lucide-react";
+import { Calendar, Users, LayoutGrid, List, Zap } from "lucide-react";
 
 const Events = () => {
     const [allEvents, setAllEvents] = useState([]);
@@ -137,12 +137,11 @@ const Events = () => {
                         >
                             {displayedEvents.map((event, idx) => (
                                 <motion.div
-                                    layout
                                     key={event._id || idx}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: idx * 0.05 }}
-                                    className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-500 flex flex-col"
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ duration: 0.3, delay: idx * 0.05 }}
+                                    className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col"
                                 >
                                     <div className="relative h-48 w-full">
                                         <Image
@@ -164,9 +163,6 @@ const Events = () => {
                                         <div className="flex items-center justify-between mt-4 pt-2 border-t border-slate-100">
                                             <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-slate-400">
                                                 <Users className="w-4 h-4 text-[#1e3a8a]" /> {event.participants || "ARCHIVED"}
-                                            </div>
-                                            <div className="w-8 h-8 rounded-full bg-[#1e3a8a]/10 flex items-center justify-center text-[#1e3a8a] group-hover:bg-[#1e3a8a] group-hover:text-white transition-all duration-300">
-                                                <ArrowUpRight className="w-4 h-4" />
                                             </div>
                                         </div>
                                     </div>

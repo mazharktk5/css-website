@@ -3,16 +3,26 @@
 import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { MotionConfig } from "framer-motion";
+import { useEffect, useState } from "react";
 
 export default function ClientLayout({ children }) {
     const pathname = usePathname();
     const isAdminRoute = pathname.startsWith("/admin");
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => window.removeEventListener("resize", checkMobile);
+    }, []);
 
     return (
-        <>
+        <MotionConfig reducedMotion={isMobile ? "always" : "user"}>
             {!isAdminRoute && <Navbar />}
             {children}
             {!isAdminRoute && <Footer />}
-        </>
+        </MotionConfig>
     );
 }
