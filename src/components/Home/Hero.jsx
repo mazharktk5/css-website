@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
@@ -101,9 +102,12 @@ export default function Hero() {
 
             <div className="relative rounded-[36px] overflow-hidden shadow-xl">
 
-              <img
+              <Image
                 src="/images/gallery/heroimage.png"
                 alt="Computing students collaboration"
+                width={800}
+                height={520}
+                priority
                 className="w-full h-[520px] object-cover"
               />
 

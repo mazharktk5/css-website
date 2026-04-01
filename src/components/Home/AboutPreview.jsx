@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 const leaders = [
@@ -81,11 +82,13 @@ export default function AboutSection() {
                         >
 
                             <div className={`${i % 2 === 1 ? "md:order-2" : ""}`}>
-                                <div className="max-w-[340px] mx-auto rounded-xl overflow-hidden shadow-lg ring-1 ring-slate-900/5 aspect-[3/4]">
-                                    <img
+                                <div className="relative max-w-[340px] mx-auto rounded-xl overflow-hidden shadow-lg ring-1 ring-slate-900/5 aspect-[3/4]">
+                                    <Image
                                         src={leader.img}
                                         alt={leader.name}
-                                        className="w-full h-full object-cover object-top transition-transform duration-500 hover:scale-105"
+                                        fill
+                                        sizes="(max-width: 768px) 100vw, 340px"
+                                        className="object-cover object-top transition-transform duration-500 hover:scale-105"
                                     />
                                 </div>
                             </div>
