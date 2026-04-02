@@ -128,10 +128,8 @@ export default function VideosPage() {
                                         </div>
 
                                         {/* Video Info */}
-                                        <div className="p-4 bg-white flex flex-col">
-                                            <span className="text-[10px] font-bold uppercase text-[#1e3a8a] mb-1">{video.category}</span>
+                                        <div className="p-4 bg-white flex flex-col justify-center min-h-[4rem]">
                                             <h3 className="text-lg font-bold text-slate-900 mb-1 line-clamp-2">{video.title}</h3>
-                                            <p className="text-slate-500 text-[11px] font-medium line-clamp-3 flex-grow">{video.description}</p>
                                         </div>
                                     </motion.div>
                                 ))}

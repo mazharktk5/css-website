@@ -29,7 +29,7 @@ export async function POST(request) {
     try {
         await dbConnect();
         const body = await request.json();
-        const { title, youtubeUrl, description, category } = body;
+        const { title, youtubeUrl } = body;
 
         if (!title || !youtubeUrl) {
             return NextResponse.json({ error: "Title and YouTube URL are required" }, { status: 400 });
@@ -47,14 +47,50 @@ export async function POST(request) {
             youtubeUrl,
             videoId,
             thumbnail,
-            description,
-            category: category || "Computing",
         });
 
         return NextResponse.json(video, { status: 201 });
     } catch (error) {
         console.error("Video creation error:", error);
         return NextResponse.json({ error: "Failed to create video" }, { status: 500 });
+    }
+}
+
+// PUT update video (auth required)
+export async function PUT(request) {
+    const user = verifyAuth(request);
+    if (!user) return unauthorized();
+
+    try {
+        await dbConnect();
+        const body = await request.json();
+        const { _id, title, youtubeUrl } = body;
+
+        if (!_id || !title || !youtubeUrl) {
+            return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+        }
+
+        const videoId = getYoutubeVideoId(youtubeUrl);
+        if (!videoId) {
+            return NextResponse.json({ error: "Invalid YouTube URL" }, { status: 400 });
+        }
+
+        const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
+        const video = await Video.findByIdAndUpdate(
+            _id,
+            { title, youtubeUrl, videoId, thumbnail },
+            { new: true }
+        );
+
+        if (!video) {
+            return NextResponse.json({ error: "Video not found" }, { status: 404 });
+        }
+
+        return NextResponse.json(video);
+    } catch (error) {
+        console.error("Video update error:", error);
+        return NextResponse.json({ error: "Failed to update video" }, { status: 500 });
     }
 }
 
