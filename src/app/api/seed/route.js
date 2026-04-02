@@ -13,9 +13,12 @@ export async function POST() {
 
         // --- Seed Admin ---
         const existingAdmin = await Admin.findOne({ email: "admin@css.uop.edu.pk" });
+        const hashedPassword = await bcrypt.hash("cssuop@admin781", 10);
         if (!existingAdmin) {
-            const hashedPassword = await bcrypt.hash("admin123", 10);
             await Admin.create({ email: "admin@css.uop.edu.pk", password: hashedPassword });
+        } else {
+            existingAdmin.password = hashedPassword;
+            await existingAdmin.save();
         }
 
         // --- Seed Events ---
