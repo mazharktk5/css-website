@@ -12,7 +12,12 @@ export async function PUT(request, { params }) {
         await dbConnect();
         const { id } = await params;
         const body = await request.json();
-        const member = await TeamMember.findByIdAndUpdate(id, body, { new: true });
+        const { _id, ...updateData } = body;
+        
+        // Prevent NoSQL operator injection
+        Object.keys(updateData).forEach(key => key.startsWith('$') && delete updateData[key]);
+
+        const member = await TeamMember.findByIdAndUpdate(id, { $set: updateData }, { new: true });
         if (!member) return NextResponse.json({ error: "Team member not found" }, { status: 404 });
         return NextResponse.json(member);
     } catch (error) {

@@ -9,8 +9,8 @@ export async function POST(request) {
         await dbConnect();
         const { email, password } = await request.json();
 
-        if (!email || !password) {
-            return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
+        if (!email || !password || typeof email !== "string" || typeof password !== "string") {
+            return NextResponse.json({ error: "Valid admin credentials are required" }, { status: 400 });
         }
 
         // Find Admin

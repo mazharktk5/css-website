@@ -12,7 +12,12 @@ export async function PUT(request, { params }) {
         await dbConnect();
         const { id } = await params;
         const body = await request.json();
-        const event = await Event.findByIdAndUpdate(id, body, { new: true });
+        const { _id, ...updateData } = body;
+        
+        // Prevent NoSQL operator injection
+        Object.keys(updateData).forEach(key => key.startsWith('$') && delete updateData[key]);
+        
+        const event = await Event.findByIdAndUpdate(id, { $set: updateData }, { new: true });
         if (!event) return NextResponse.json({ error: "Event not found" }, { status: 404 });
         return NextResponse.json(event);
     } catch (error) {

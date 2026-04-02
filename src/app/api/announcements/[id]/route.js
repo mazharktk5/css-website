@@ -16,7 +16,10 @@ export async function PUT(request, { params }) {
         // Remove _id from body if it exists to avoid Mongoose immutable field error
         const { _id, ...updateData } = body;
 
-        const announcement = await Announcement.findByIdAndUpdate(id, updateData, { new: true });
+        // Prevent NoSQL operator injection
+        Object.keys(updateData).forEach(key => key.startsWith('$') && delete updateData[key]);
+
+        const announcement = await Announcement.findByIdAndUpdate(id, { $set: updateData }, { new: true });
 
         if (!announcement) {
             return NextResponse.json({ error: "Announcement not found" }, { status: 404 });

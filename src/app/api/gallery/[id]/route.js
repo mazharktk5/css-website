@@ -12,7 +12,12 @@ export async function PUT(request, { params }) {
         await dbConnect();
         const { id } = await params;
         const body = await request.json();
-        const item = await GalleryItem.findByIdAndUpdate(id, body, { new: true });
+        const { _id, ...updateData } = body;
+        
+        // Prevent NoSQL operator injection
+        Object.keys(updateData).forEach(key => key.startsWith('$') && delete updateData[key]);
+
+        const item = await GalleryItem.findByIdAndUpdate(id, { $set: updateData }, { new: true });
         if (!item) return NextResponse.json({ error: "Gallery item not found" }, { status: 404 });
         return NextResponse.json(item);
     } catch (error) {
