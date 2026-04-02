@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Facebook, Instagram, Mail, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
-import logo from "../../public/images/logo/css-logo.jpg";
+import logo from "../../public/images/logo/cssfinallogo.jpeg";
 
 export default function Footer() {
     const currentYear = new Date().getFullYear();
@@ -24,6 +24,7 @@ export default function Footer() {
                 { name: "Alumni", href: "/alumni" },
                 { name: "Watch", href: "/videos" },
                 { name: "Contact", href: "/contact" },
+                { name: "Blog", href: "/blog" },
                 // { name: "Join Society", href: "/join" },
             ],
         },

@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Menu, X, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../../public/images/logo/css-logo.jpg";
+import logo from "../../public/images/logo/cssfinallogo.jpeg";
 
 export default function Navbar() {
     const [open, setOpen] = useState(false);
