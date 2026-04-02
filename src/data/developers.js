@@ -26,11 +26,18 @@ const developers = [
         linkedin: "https://www.linkedin.com/in/qazi-farhan-ahmad-7a3b3432b/",
     },
     {
+        name: "Muhammad Musa",
+        role: "MERN Developer",
+        image: "/images/developers/musa.jpeg",
+        linkedin: "https://www.linkedin.com/in/muhammad-musa-se",
+    },
+    {
         name: "Mahin Arshad",
         role: "Frontend Developer",
         image: "/images/developers/mahin.jpg",
         linkedin: "https://www.linkedin.com/in/mahin-arshad-5bb521356?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
     },
+
     // {
     //     name: "Musa",
     //     role: "MERN Developer",
