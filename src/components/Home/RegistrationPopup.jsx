@@ -28,15 +28,15 @@ export default function RegistrationPopup() {
     if (!announcement || !isVisible) return null;
 
     return (
-        <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-[999] p-0 pointer-events-none animate-in slide-in-from-right-10 fade-in duration-500">
-            <div className="bg-[#111827] border border-white/10 rounded-3xl w-full max-w-[calc(100vw-2rem)] sm:max-w-[320px] overflow-hidden shadow-2xl shadow-blue-500/20 pointer-events-auto transform hover:scale-[1.02] transition-transform duration-300 relative">
+        <div className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:bottom-6 sm:right-6 z-[999] p-0 pointer-events-none animate-in slide-in-from-bottom-10 sm:slide-in-from-right-10 fade-in duration-500">
+            <div className="bg-[#111827] border border-white/10 rounded-3xl w-full sm:max-w-[320px] mx-auto sm:mx-0 overflow-hidden shadow-2xl shadow-blue-500/20 pointer-events-auto transform hover:scale-[1.02] transition-transform duration-300 relative">
                 {/* Close Button */}
                 <button
                     onClick={() => setIsVisible(false)}
                     aria-label="Close Announcement"
-                    className="absolute top-4 right-4 z-20 p-2 bg-black/20 hover:bg-black/40 text-white/70 hover:text-white rounded-full backdrop-blur-md transition-all border border-white/10"
+                    className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2.5 sm:p-2 bg-black/40 hover:bg-black/60 text-white rounded-full backdrop-blur-md transition-all border border-white/10 shadow-lg"
                 >
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-3 sm:h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
@@ -60,7 +60,7 @@ export default function RegistrationPopup() {
                         {announcement.title}
                     </h2>
 
-                    <p className="text-gray-300 text-[10px] sm:text-xs leading-relaxed mb-4 sm:mb-5 line-clamp-2 sm:line-clamp-3">
+                    <p className="text-gray-300 text-[11px] sm:text-xs leading-relaxed mb-4 sm:mb-5 line-clamp-2 sm:line-clamp-3">
                         {announcement.description}
                     </p>
 
@@ -71,16 +71,22 @@ export default function RegistrationPopup() {
                             rel="noopener noreferrer"
                             className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 bg-white text-black font-black text-sm rounded-xl hover:bg-blue-50 transition-all shadow-xl shadow-white/5 group"
                         >
-                            Register
+                            Register Now
                             <ExternalLink className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                         </a>
                     </div>
                 </div>
 
                 {/* Expiry Badge */}
-                <div className="px-6 py-3 bg-white/[0.02] border-t border-white/5">
+                <div className="px-6 py-3 bg-white/[0.02] border-t border-white/5 flex items-center justify-between">
                     <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold">
-                        Ends: {new Date(announcement.expiryDate).toLocaleDateString()}
+                        Ends: {new Date(announcement.expiryDate).toLocaleDateString(undefined, {
+                            month: 'short',
+                            day: 'numeric',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: true
+                        })}
                     </p>
                 </div>
             </div>

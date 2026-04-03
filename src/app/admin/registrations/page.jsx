@@ -58,18 +58,23 @@ export default function AdminRegistrations() {
     const handleSave = async () => {
         setSaving(true);
         try {
+            const body = {
+                ...form,
+                expiryDate: new Date(form.expiryDate).toISOString(),
+            };
+
             let res;
             if (editing) {
                 res = await fetch(`/api/announcements/${editing}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-                    body: JSON.stringify(form),
+                    body: JSON.stringify(body),
                 });
             } else {
                 res = await fetch("/api/announcements", {
                     method: "POST",
                     headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-                    body: JSON.stringify(form),
+                    body: JSON.stringify(body),
                 });
             }
 
@@ -149,9 +154,16 @@ export default function AdminRegistrations() {
                                         return (
                                             <tr key={ann._id} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
                                                 <td className="px-6 py-4 text-white font-semibold">{ann.title}</td>
-                                                <td className="px-6 py-4 text-gray-400">
-                                                    {new Date(ann.expiryDate).toLocaleString()}
-                                                </td>
+                                                 <td className="px-6 py-4 text-gray-400">
+                                                    {new Date(ann.expiryDate).toLocaleString(undefined, {
+                                                        year: 'numeric',
+                                                        month: 'short',
+                                                        day: 'numeric',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                        hour12: true
+                                                    })}
+                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <span className={`px-3 py-1 rounded-full text-xs font-bold ${isExpired
                                                         ? "bg-red-500/10 text-red-400 border border-red-500/20"
