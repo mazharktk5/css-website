@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function MissionVision() {
   return (
@@ -13,10 +14,12 @@ export default function MissionVision() {
           {/* Vision */}
           <div className="flex flex-col">
             <div className="relative h-[350px] overflow-hidden">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=1200"
                 alt="Students collaborating"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-[#1e3a8a]/20" />
             </div>
@@ -67,10 +70,12 @@ export default function MissionVision() {
             </div>
 
             <div className="relative h-[350px] overflow-hidden order-1 lg:order-2">
-              <img
+              <Image
                 src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=1200"
                 alt="Student projects"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
               />
               <div className="absolute inset-0 bg-[#1e3a8a]/20" />
             </div>

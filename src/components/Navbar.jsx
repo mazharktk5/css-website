@@ -85,6 +85,7 @@ export default function Navbar() {
                 {/* MOBILE MENU TOGGLE - Cleaner Style */}
                 <button
                     onClick={() => setOpen(!open)}
+                    aria-label="Toggle Navigation Menu"
                     className="lg:hidden relative z-[150] p-2 text-white bg-white/10 hover:bg-white/20 rounded-full transition-all active:scale-90"
                 >
                     {open ? <X size={24} /> : <Menu size={24} />}
@@ -148,13 +149,13 @@ export default function Navbar() {
                                     </Link>
 
                                     {/* Simple Social Row */}
-                                    <div className="flex justify-center gap-8 mt-10 text-white/40">
+                                    <div className="flex justify-center gap-8 mt-10 text-white/70">
                                         <Instagram size={20} />
                                         <Linkedin size={20} />
                                         <Mail size={20} />
                                     </div>
 
-                                    <p className="text-center text-[8px] text-white/20 mt-6 tracking-[0.3em] uppercase font-bold">
+                                    <p className="text-center text-[8px] text-white/50 mt-6 tracking-[0.3em] uppercase font-bold">
                                         Computing Students Society
                                     </p>
                                 </div>

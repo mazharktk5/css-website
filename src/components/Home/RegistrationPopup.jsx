@@ -33,6 +33,7 @@ export default function RegistrationPopup() {
                 {/* Close Button */}
                 <button
                     onClick={() => setIsVisible(false)}
+                    aria-label="Close Announcement"
                     className="absolute top-4 right-4 z-20 p-2 bg-black/20 hover:bg-black/40 text-white/70 hover:text-white rounded-full backdrop-blur-md transition-all border border-white/10"
                 >
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,11 +56,11 @@ export default function RegistrationPopup() {
                         Registration Active
                     </div>
 
-                    <h3 className="text-base sm:text-lg font-black text-white mb-2 line-clamp-2">
+                    <h2 className="text-base sm:text-lg font-black text-white mb-2 line-clamp-2">
                         {announcement.title}
-                    </h3>
+                    </h2>
 
-                    <p className="text-gray-400 text-[10px] sm:text-xs leading-relaxed mb-4 sm:mb-5 line-clamp-2 sm:line-clamp-3">
+                    <p className="text-gray-300 text-[10px] sm:text-xs leading-relaxed mb-4 sm:mb-5 line-clamp-2 sm:line-clamp-3">
                         {announcement.description}
                     </p>
 
@@ -78,7 +79,7 @@ export default function RegistrationPopup() {
 
                 {/* Expiry Badge */}
                 <div className="px-6 py-3 bg-white/[0.02] border-t border-white/5">
-                    <p className="text-[9px] text-gray-600 uppercase tracking-widest font-bold">
+                    <p className="text-[9px] text-gray-400 uppercase tracking-widest font-bold">
                         Ends: {new Date(announcement.expiryDate).toLocaleDateString()}
                     </p>
                 </div>

@@ -213,6 +213,7 @@ export default function BlogCard({ post }) {
                                     <input
                                         type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)}
                                         placeholder="Write a comment..."
+                                        aria-label="Write a comment"
                                         className="w-full bg-white border border-slate-200 rounded-full py-2 px-4 text-sm focus:outline-none focus:border-blue-500 transition-all shadow-sm"
                                     />
                                 </div>
