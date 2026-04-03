@@ -34,7 +34,7 @@ const developers = [
     {
         name: "Mahin Arshad",
         role: "Frontend Developer",
-        image: "/images/developers/mahin.jpg",
+        image: "/images/developers/mahin.jpeg",
         linkedin: "https://www.linkedin.com/in/mahin-arshad-5bb521356?utm_source=share_via&utm_content=profile&utm_medium=member_ios",
     },
 
