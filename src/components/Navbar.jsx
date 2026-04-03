@@ -34,13 +34,14 @@ export default function Navbar() {
     ];
 
     return (
-        <nav
-            className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${scrolled
-                ? "bg-[#1e3a8a]/90 backdrop-blur-md py-3 shadow-xl"
-                : "bg-[#1e3a8a] py-5"
-                }`}
-        >
-            <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+        <>
+            <nav
+                className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${scrolled
+                    ? "bg-[#1e3a8a]/90 backdrop-blur-md py-3 shadow-xl"
+                    : "bg-[#1e3a8a] py-5"
+                    }`}
+            >
+                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
 
                 {/* LOGO SECTION */}
                 <Link href="/" className="flex items-center gap-3 group shrink-0">
@@ -89,6 +90,7 @@ export default function Navbar() {
                     {open ? <X size={24} /> : <Menu size={24} />}
                 </button>
             </div>
+            </nav>
 
 
 
@@ -102,7 +104,7 @@ export default function Navbar() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setOpen(false)}
-                            className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[130] lg:hidden"
+                            className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[98] lg:hidden"
                         />
 
                         {/* Side Drawer */}
@@ -111,7 +113,7 @@ export default function Navbar() {
                             animate={{ x: 0 }}
                             exit={{ x: "100%" }}
                             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="fixed right-0 top-0 h-full w-[80%] max-w-[320px] bg-[#1e3a8a] z-[140] lg:hidden flex flex-col shadow-2xl"
+                            className="fixed right-0 top-0 h-full w-[80%] max-w-[320px] bg-[#1e3a8a] z-[99] lg:hidden flex flex-col shadow-2xl"
                         >
                             <div className="flex flex-col h-full pt-32 px-6 pb-12">
 
@@ -161,6 +163,6 @@ export default function Navbar() {
                     </>
                 )}
             </AnimatePresence>
-        </nav>
+        </>
     );
 }
