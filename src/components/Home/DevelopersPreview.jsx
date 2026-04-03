@@ -70,6 +70,7 @@ export default function DevelopersPreview() {
                                     alt={dev.name}
                                     fill
                                     className="object-cover transition duration-500 group-hover:scale-105"
+                                    sizes="(max-width: 768px) 150px, 150px"
                                 />
 
                             </div>

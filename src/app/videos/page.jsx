@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Play, X, Youtube } from "lucide-react";
+import Image from "next/image";
 
 export default function VideosPage() {
     const [videos, setVideos] = useState([]);
@@ -115,10 +116,12 @@ export default function VideosPage() {
                                     >
                                         {/* Thumbnail */}
                                         <div className="relative h-56 w-full rounded-t-2xl overflow-hidden">
-                                            <img
+                                            <Image
                                                 src={video.thumbnail}
                                                 alt={video.title}
-                                                className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                                                fill
+                                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                                             />
                                             <div className="absolute inset-0 flex items-center justify-center">
                                                 <div className="w-16 h-16 bg-white/30 rounded-full flex items-center justify-center group-hover:bg-[#1e3a8a]/80 transition-all">
@@ -129,7 +132,7 @@ export default function VideosPage() {
 
                                         {/* Video Info */}
                                         <div className="p-4 bg-white flex flex-col justify-center min-h-[4rem]">
-                                            <h3 className="text-lg font-bold text-slate-900 mb-1 line-clamp-2">{video.title}</h3>
+                                            <h2 className="text-lg font-bold text-slate-900 mb-1 line-clamp-2">{video.title}</h2>
                                         </div>
                                     </motion.div>
                                 ))}
@@ -139,7 +142,7 @@ export default function VideosPage() {
                                 <div className="p-12 bg-slate-50 rounded-full border border-slate-200 mb-10">
                                     <Youtube className="w-16 h-16 text-slate-300" />
                                 </div>
-                                <h3 className="text-3xl font-bold text-slate-900">No Videos Found</h3>
+                                <h2 className="text-3xl font-bold text-slate-900">No Videos Found</h2>
                                 <p className="text-slate-500 max-w-md mt-4 font-medium leading-relaxed">
                                     No videos are available at the moment. Please check back later.
                                 </p>
@@ -162,6 +165,7 @@ export default function VideosPage() {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             onClick={() => setSelectedVideo(null)}
+                            aria-label="Close Video Player"
                             className="absolute top-8 right-8 w-12 h-12 rounded-full bg-white/20 border border-slate-200 flex items-center justify-center text-[#1e3a8a] hover:bg-[#1e3a8a] hover:text-white transition-all z-50"
                         >
                             <X size={24} />

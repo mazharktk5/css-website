@@ -72,7 +72,8 @@ export default function Footer() {
                             {socialLinks.map((social, i) => (
                                 <motion.a
                                     key={i}
-                                    href={social.href}
+                                    href={social.icon.name === 'Linkedin' ? 'https://www.linkedin.com/company/computing-students-society/' : social.href}
+                                    aria-label={social.icon.name || "Social Link"}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     whileHover={{ y: -3, scale: 1.1 }}
@@ -87,9 +88,9 @@ export default function Footer() {
                     {/* Links Columns */}
                     {sections.map((section) => (
                         <div key={section.title} className="lg:col-span-2 space-y-6 pt-2">
-                            <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
+                            <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
                                 {section.title}
-                            </h4>
+                            </h3>
                             <ul className="space-y-4">
                                 {section.links.map((link) => (
                                     <li key={link.name}>
@@ -108,9 +109,9 @@ export default function Footer() {
 
                     {/* Contact Column */}
                     <div className="lg:col-span-4 space-y-6 pt-2">
-                        <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
+                        <h3 className="text-xs font-bold uppercase tracking-[0.2em] text-blue-300">
                             Reach Out
-                        </h4>
+                        </h3>
                         <div className="space-y-4 text-sm text-white/70">
                             <div className="flex items-start gap-3">
                                 <MapPin size={18} className="text-blue-300 shrink-0 mt-0.5" />
@@ -125,7 +126,7 @@ export default function Footer() {
                 </div>
 
                 {/* Bottom Bar */}
-                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-widest opacity-50">
+                <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-bold uppercase tracking-widest opacity-70">
                     <p>© {currentYear} CSS Society. All rights reserved.</p>
                     <div className="flex items-center gap-2">
                         <span>Built with love by</span>

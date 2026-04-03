@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Heart, MessageCircle, Share2, MoreHorizontal, Send, User } from "lucide-react";
+import { Heart, MessageCircle, Share2, MoreHorizontal, Send, User, Maximize2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import logo from "../../../public/images/logo/css-logo.jpg";
@@ -126,7 +126,10 @@ export default function BlogCard({ post }) {
                         <p className="text-[11px] text-slate-500 font-medium">{formatDate(post.createdAt)}</p>
                     </div>
                 </div>
-                <button className="text-slate-400 hover:text-slate-600 transition-colors">
+                <button 
+                    aria-label="More Options"
+                    className="text-slate-400 hover:text-slate-600 transition-colors"
+                >
                     <MoreHorizontal size={20} />
                 </button>
             </div>
@@ -147,8 +150,14 @@ export default function BlogCard({ post }) {
 
             {/* Post Media */}
             {post.image && (
-                <div className="relative w-full bg-slate-50 border-y border-slate-100 overflow-hidden">
-                    <img src={post.image} alt="Post media" className="w-full h-auto max-h-[600px] object-contain mx-auto" />
+                <div className="relative w-full bg-slate-50 border-y border-slate-100 overflow-hidden aspect-video">
+                    <Image 
+                        src={post.image} 
+                        alt="Post media" 
+                        fill
+                        className="object-contain"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 750px"
+                    />
                 </div>
             )}
 
@@ -173,6 +182,7 @@ export default function BlogCard({ post }) {
             <div className="px-2 py-1 flex items-center gap-1">
                 <button
                     onClick={handleLike}
+                    aria-label={isLiked ? "Unlike Post" : "Like Post"}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-md transition-all font-semibold text-sm ${
                         isLiked ? "text-blue-600 bg-blue-50/50" : "text-slate-600 hover:bg-slate-100"
                     }`}
@@ -183,6 +193,7 @@ export default function BlogCard({ post }) {
 
                 <button 
                     onClick={() => setShowComments(!showComments)}
+                    aria-label="View Comments"
                     className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-slate-600 hover:bg-slate-100 transition-colors font-semibold text-sm"
                 >
                     <MessageCircle size={18} />
@@ -191,6 +202,7 @@ export default function BlogCard({ post }) {
 
                 <button 
                     onClick={handleShare}
+                    aria-label="Share Post"
                     className="flex-1 flex items-center justify-center gap-2 py-2 rounded-md text-slate-600 hover:bg-slate-100 transition-colors font-semibold text-sm"
                 >
                     <Share2 size={18} />
@@ -217,7 +229,12 @@ export default function BlogCard({ post }) {
                                         className="w-full bg-white border border-slate-200 rounded-full py-2 px-4 text-sm focus:outline-none focus:border-blue-500 transition-all shadow-sm"
                                     />
                                 </div>
-                                <button type="submit" disabled={!newComment.trim() || submitting} className="p-2 bg-blue-600 text-white rounded-full disabled:bg-slate-300 transition-all hover:bg-blue-700 active:scale-95">
+                                <button 
+                                    type="submit" 
+                                    disabled={!newComment.trim() || submitting} 
+                                    aria-label="Post Comment"
+                                    className="p-2 bg-blue-600 text-white rounded-full disabled:bg-slate-300 transition-all hover:bg-blue-700 active:scale-95"
+                                >
                                     <Send size={18} />
                                 </button>
                             </form>

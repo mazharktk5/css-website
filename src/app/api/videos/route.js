@@ -40,7 +40,7 @@ export async function POST(request) {
             return NextResponse.json({ error: "Invalid YouTube URL" }, { status: 400 });
         }
 
-        const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
         const video = await Video.create({
             title,
@@ -75,7 +75,7 @@ export async function PUT(request) {
             return NextResponse.json({ error: "Invalid YouTube URL" }, { status: 400 });
         }
 
-        const thumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        const thumbnail = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
 
         const video = await Video.findByIdAndUpdate(
             _id,

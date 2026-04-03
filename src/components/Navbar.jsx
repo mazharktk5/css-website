@@ -150,9 +150,15 @@ export default function Navbar() {
 
                                     {/* Simple Social Row */}
                                     <div className="flex justify-center gap-8 mt-10 text-white/70">
-                                        <Instagram size={20} />
-                                        <Linkedin size={20} />
-                                        <Mail size={20} />
+                                        <a href="https://www.instagram.com/css.dcs.uop" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                            <Instagram size={20} />
+                                        </a>
+                                        <a href="https://www.linkedin.com/company/computing-students-society/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                            <Linkedin size={20} />
+                                        </a>
+                                        <a href="mailto:computing.society@uop.edu.pk" aria-label="Email">
+                                            <Mail size={20} />
+                                        </a>
                                     </div>
 
                                     <p className="text-center text-[8px] text-white/50 mt-6 tracking-[0.3em] uppercase font-bold">

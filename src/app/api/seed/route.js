@@ -94,7 +94,7 @@ export async function POST() {
                     title: "Inside a Google Data Center",
                     youtubeUrl: "https://www.youtube.com/watch?v=kd33UVZhnAA",
                     videoId: "kd33UVZhnAA",
-                    thumbnail: "https://img.youtube.com/vi/kd33UVZhnAA/maxresdefault.jpg",
+                    thumbnail: "https://img.youtube.com/vi/kd33UVZhnAA/hqdefault.jpg",
                     description: "Take a 360-degree tour of a Google data center and see the infrastructure that powers the internet.",
                     category: "Computing"
                 },
@@ -102,7 +102,7 @@ export async function POST() {
                     title: "The Code That Took Humans to the Moon",
                     youtubeUrl: "https://www.youtube.com/watch?v=P_1N6_n0uic",
                     videoId: "P_1N6_n0uic",
-                    thumbnail: "https://img.youtube.com/vi/P_1N6_n0uic/maxresdefault.jpg",
+                    thumbnail: "https://img.youtube.com/vi/P_1N6_n0uic/hqdefault.jpg",
                     description: "Exploring the legendary software engineering behind the Apollo 11 mission.",
                     category: "Programming"
                 },
@@ -110,7 +110,7 @@ export async function POST() {
                     title: "AlphaGo - The Movie",
                     youtubeUrl: "https://www.youtube.com/watch?v=WXuK6gekU1Y",
                     videoId: "WXuK6gekU1Y",
-                    thumbnail: "https://img.youtube.com/vi/WXuK6gekU1Y/maxresdefault.jpg",
+                    thumbnail: "https://img.youtube.com/vi/WXuK6gekU1Y/hqdefault.jpg",
                     description: "The story of how artificial intelligence took on the world's most complex game.",
                     category: "AI"
                 }

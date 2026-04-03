@@ -109,6 +109,7 @@ export default function Hero() {
                 height={520}
                 priority
                 className="w-full h-[520px] object-cover"
+                sizes="(max-width: 1024px) 100vw, 800px"
               />
 
               <div className="absolute inset-0 bg-[#1e3a8a]/10" />

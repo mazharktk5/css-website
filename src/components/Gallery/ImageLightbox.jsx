@@ -37,9 +37,9 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNext, o
                 <div className="absolute top-6 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 pointer-events-none">
                     <div className="flex items-center gap-4 pointer-events-auto">
                         <div className="text-white/80">
-                            <h4 className="font-bold text-sm md:text-base truncate max-w-[200px] md:max-w-md">
+                            <h2 className="font-bold text-sm md:text-base truncate max-w-[200px] md:max-w-md">
                                 {currentImage.eventName}
-                            </h4>
+                            </h2>
                             <p className="text-[10px] md:text-xs text-blue-400 font-medium uppercase tracking-widest">
                                 {currentImage.category}
                             </p>
@@ -49,12 +49,14 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNext, o
                     <div className="flex items-center gap-2 md:gap-4 pointer-events-auto">
                         <button
                             onClick={(e) => { e.stopPropagation(); setIsZoomed(!isZoomed); }}
+                            aria-label={isZoomed ? "Zoom Out" : "Zoom In"}
                             className="p-3 bg-white/5 hover:bg-white/10 rounded-full text-white/70 hover:text-white transition-all backdrop-blur-md border border-white/10"
                         >
                             <Maximize2 className="w-5 h-5" />
                         </button>
                         <button
                             onClick={onClose}
+                            aria-label="Close Lightbox"
                             className="p-3 bg-white/5 hover:bg-blue-600/50 rounded-full text-white/70 hover:text-white transition-all backdrop-blur-md border border-white/10"
                         >
                             <X className="w-5 h-5" />
@@ -65,12 +67,14 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNext, o
                 {/* Navigation Buttons */}
                 <button
                     onClick={(e) => { e.stopPropagation(); onPrev(); }}
+                    aria-label="Previous Image"
                     className="absolute left-4 md:left-10 z-50 p-4 bg-white/5 hover:bg-white/10 rounded-full text-white/50 hover:text-white transition-all backdrop-blur-md border border-white/10 group"
                 >
                     <ChevronLeft className="w-6 h-6 md:w-8 md:h-8 group-hover:-translate-x-1 transition-transform" />
                 </button>
                 <button
                     onClick={(e) => { e.stopPropagation(); onNext(); }}
+                    aria-label="Next Image"
                     className="absolute right-4 md:right-10 z-50 p-4 bg-white/5 hover:bg-white/10 rounded-full text-white/50 hover:text-white transition-all backdrop-blur-md border border-white/10 group"
                 >
                     <ChevronRight className="w-6 h-6 md:w-8 md:h-8 group-hover:translate-x-1 transition-transform" />
