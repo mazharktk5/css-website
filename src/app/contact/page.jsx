@@ -101,9 +101,9 @@ export default function ContactPage() {
             </div>
 
             <div className="flex gap-4 mt-10">
-              <a href="#" className="p-3 bg-white/10 rounded-full hover:bg-[#93c5fd] hover:text-[#1e3a8a] transition"><Instagram /></a>
-              <a href="#" className="p-3 bg-white/10 rounded-full hover:bg-[#93c5fd] hover:text-[#1e3a8a] transition"><Linkedin /></a>
-              <a href="#" className="p-3 bg-white/10 rounded-full hover:bg-[#93c5fd] hover:text-[#1e3a8a] transition"><Facebook /></a>
+              <a href="https://www.instagram.com/css.dcs.uop?igsh=Yjh6a2EyZWRjbHRp" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-[#93c5fd] hover:text-[#1e3a8a] transition"><Instagram /></a>
+              <a href="https://www.linkedin.com/company/computing-students-society/" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-[#93c5fd] hover:text-[#1e3a8a] transition"><Linkedin /></a>
+              <a href="https://www.facebook.com/share/1GSrotfswb/" target="_blank" rel="noopener noreferrer" className="p-3 bg-white/10 rounded-full hover:bg-[#93c5fd] hover:text-[#1e3a8a] transition"><Facebook /></a>
             </div>
           </div>
 
