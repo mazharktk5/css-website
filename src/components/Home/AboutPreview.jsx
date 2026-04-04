@@ -19,21 +19,21 @@ const leaders = [
             "The society bridges academic learning with practical experience through workshops, hackathons, and collaborative technology initiatives."
     },
     {
-        name: "Ilyas",
+        name: "Muhammad Ilyas",
         role: "President",
         img: "/images/team/president.jpg",
         message:
             "We believe in empowering students to become creators of technology rather than just consumers of it."
     },
     {
-        name: "Abdullah",
+        name: "Abdullah Ahmad",
         role: "Vice President",
         img: "/images/team/vp.jpg",
         message:
             "My goal is to support students in exploring new technologies and creating opportunities where they can grow their technical and leadership skills."
     },
     {
-        name: "Fatima",
+        name: "Fatima Ijaz",
         role: "Female Vice President",
         img: "/images/team/management-lead.jpg",
         message:
