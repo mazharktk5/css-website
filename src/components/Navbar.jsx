@@ -24,13 +24,13 @@ export default function Navbar() {
     }, [open]);
 
     const navLinks = [
-        { name: "Home", href: "/" },
         { name: "About", href: "/about" },
         { name: "Events", href: "/events" },
         { name: "Gallery", href: "/gallery" },
         { name: "Alumni", href: "/alumni" },
         { name: "Blog", href: "/blog" },
         { name: "Watch", href: "/videos" },
+        { name: "Certificates", href: "/certificates" },
     ];
 
     return (
@@ -41,10 +41,10 @@ export default function Navbar() {
                     : "bg-[#1e3a8a] py-5"
                     }`}
             >
-                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-6 flex items-center justify-between gap-12">
 
                 {/* LOGO SECTION */}
-                <Link href="/" className="flex items-center gap-3 group shrink-0">
+                <Link href="/" className="flex items-center gap-2 group shrink-0">
                     <div className="relative w-11 h-11 transition-transform duration-300 group-hover:scale-105">
                         <Image
                             src={logo}
@@ -61,7 +61,7 @@ export default function Navbar() {
                 </Link>
 
                 {/* Desktop Links (No changes here, kept as you liked them) */}
-                <div className="hidden lg:flex items-center space-x-10">
+                <div className="hidden lg:flex items-center space-x-8">
                     {navLinks.map((link) => (
                         <Link
                             key={link.name}

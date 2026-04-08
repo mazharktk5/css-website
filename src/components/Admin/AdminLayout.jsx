@@ -16,6 +16,7 @@ import {
     ChevronRight,
     Youtube,
     MessageSquare,
+    FileCheck,
 } from "lucide-react";
 
 const navItems = [
@@ -26,6 +27,7 @@ const navItems = [
     { name: "Gallery", href: "/admin/gallery", icon: Image },
     { name: "Videos", href: "/admin/videos", icon: Youtube },
     { name: "Team", href: "/admin/team", icon: Users },
+    { name: "Certificates", href: "/admin/certificates", icon: FileCheck },
 ];
 
 export default function AdminLayout({ children }) {
