@@ -25,6 +25,7 @@ export default function Footer() {
                 { name: "Watch", href: "/videos" },
                 { name: "Contact", href: "/contact" },
                 { name: "Blog", href: "/blog" },
+                { name: "Certificates", href: "/certificates" },
                 // { name: "Join Society", href: "/join" },
             ],
         },
