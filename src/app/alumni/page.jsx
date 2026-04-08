@@ -82,6 +82,12 @@ const alumniData = [
                 chapter: "2024-25"
             },
             {
+                name: "Mustafa Zahid Shahsawar",
+                role: "Ex-AI & DS Member",
+                image: "/images/team/mustafa.jpeg",
+                chapter: "2024-25"
+            },
+            {
                 name: "Hazrat Umer",
                 role: "Ex-AI & DS Member",
                 image: "/images/team/Hazrat_umer.jpeg",
