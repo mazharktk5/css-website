@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 import ClientLayout from "./ClientLayout";   // IMPORTANT
 
 const geistSans = Geist({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }) {
       >
         <ClientLayout>
           {children}
+          <Analytics />
         </ClientLayout>
       </body>
     </html>
