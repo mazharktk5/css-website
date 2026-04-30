@@ -1,8 +1,10 @@
 import Hero from "../components/Home/Hero";
-import AboutPreview from "../components/Home/AboutPreview";
-import Highlights from "../components/Home/EventsPreview";
-import GalleryPreview from "../components/Home/GalleryPreview";
-import DevelopersPreview from "@/components/Home/DevelopersPreview";
+import dynamic from "next/dynamic";
+
+const AboutPreview = dynamic(() => import("../components/Home/AboutPreview"), { loading: () => <div className="h-96" /> });
+const Highlights = dynamic(() => import("../components/Home/EventsPreview"), { loading: () => <div className="h-96" /> });
+const GalleryPreview = dynamic(() => import("../components/Home/GalleryPreview"), { loading: () => <div className="h-96" /> });
+const DevelopersPreview = dynamic(() => import("@/components/Home/DevelopersPreview"), { loading: () => <div className="h-96" /> });
 import PopupWrapper from "@/components/Home/PopupWrapper";
 
 export const metadata = {

@@ -2,7 +2,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Facebook, Instagram, Mail, MapPin } from "lucide-react";
-import { motion } from "framer-motion";
 import logo from "../../public/images/logo/cssfinallogo.jpeg";
 
 export default function Footer() {
@@ -26,15 +25,14 @@ export default function Footer() {
                 { name: "Contact", href: "/contact" },
                 { name: "Blog", href: "/blog" },
                 { name: "Certificates", href: "/certificates" },
-                // { name: "Join Society", href: "/join" },
             ],
         },
     ];
 
     const socialLinks = [
-        { icon: Linkedin, href: "https://www.linkedin.com/company/computing-students-society/" },
-        { icon: Facebook, href: "https://www.facebook.com/share/1GSrotfswb/" },
-        { icon: Instagram, href: "https://www.instagram.com/css.dcs.uop?igsh=Yjh6a2EyZWRjbHRp" },
+        { icon: Linkedin, name: 'Linkedin', href: "https://www.linkedin.com/company/computing-students-society/" },
+        { icon: Facebook, name: 'Facebook', href: "https://www.facebook.com/share/1GSrotfswb/" },
+        { icon: Instagram, name: 'Instagram', href: "https://www.instagram.com/css.dcs.uop?igsh=Yjh6a2EyZWRjbHRp" },
     ];
 
     return (
@@ -71,17 +69,16 @@ export default function Footer() {
                         </p>
                         <div className="flex gap-3">
                             {socialLinks.map((social, i) => (
-                                <motion.a
+                                <a
                                     key={i}
-                                    href={social.icon.name === 'Linkedin' ? 'https://www.linkedin.com/company/computing-students-society/' : social.href}
-                                    aria-label={social.icon.name || "Social Link"}
+                                    href={social.href}
+                                    aria-label={social.name}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    whileHover={{ y: -3, scale: 1.1 }}
-                                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-[#1e3a8a] transition-all"
+                                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:bg-white hover:text-[#1e3a8a] hover:-translate-y-1 transition-all duration-300"
                                 >
                                     <social.icon size={18} />
-                                </motion.a>
+                                </a>
                             ))}
                         </div>
                     </div>
