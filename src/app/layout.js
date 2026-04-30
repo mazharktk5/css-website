@@ -37,10 +37,24 @@ export const metadata = {
   alternates: {
     canonical: '/',
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     title: "Computing Students Society",
     description: "Workshops, hackathons, and a student-first tech community.",
-    images: ['/images/og/home.jpg'],
+    url: 'https://cssuop.org',
+    siteName: 'CSS UOP',
+    images: [
+      {
+        url: '/images/og/home.jpg',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
   },
 };
 
