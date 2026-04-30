@@ -1,7 +1,5 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { AnimatedLeader } from "./AboutClient";
 
 const leaders = [
     {
@@ -41,11 +39,6 @@ const leaders = [
     }
 ];
 
-// const team = [
-//     { name: "Abdullah", role: "Vice President", img: "/images/team/vp.jpg" },
-//     { name: "Fatima", role: "Female Vice President", img: "/images/team/fatima.png" }
-// ];
-
 export default function AboutSection() {
     return (
         <section className="py-20 bg-white">
@@ -71,16 +64,8 @@ export default function AboutSection() {
 
                 {/* Main Leaders */}
                 <div className="space-y-14">
-
                     {leaders.map((leader, i) => (
-                        <motion.div
-                            key={i}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                            className="grid md:grid-cols-2 gap-10 items-center"
-                        >
-
+                        <AnimatedLeader key={i} index={i}>
                             <div className={`${i % 2 === 1 ? "md:order-2" : ""}`}>
                                 <div className="relative max-w-[340px] mx-auto rounded-xl overflow-hidden shadow-lg ring-1 ring-slate-900/5 aspect-[3/4]">
                                     <Image
@@ -106,46 +91,10 @@ export default function AboutSection() {
                                     {leader.message}
                                 </p>
                             </div>
-
-                        </motion.div>
+                        </AnimatedLeader>
                     ))}
-
                 </div>
-
-                {/* Remaining Leadership */}
-                {/* <div className="mt-16 grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-
-                    {team.map((member, i) => (
-                        <motion.div
-                            key={i}
-                            whileHover={{ y: -6 }}
-                            className="bg-white rounded-2xl shadow-md overflow-hidden border"
-                        >
-
-                            <img
-                                src={member.img}
-                                alt={member.name}
-                                className="w-full h-64 object-cover"
-                            />
-
-                            <div className="p-5 text-center">
-
-                                <h4 className="font-semibold text-lg text-slate-900">
-                                    {member.name}
-                                </h4>
-
-                                <p className="text-sm text-[#1e3a8a] font-medium">
-                                    {member.role}
-                                </p>
-
-                            </div>
-
-                        </motion.div>
-                    ))}
-
-                </div> */}
-
             </div>
         </section>
     );
-}
+}

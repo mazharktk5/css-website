@@ -1,8 +1,6 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { HeroContent, HeroImage } from "./HeroClient";
 
 export default function Hero() {
   return (
@@ -28,13 +26,7 @@ export default function Hero() {
         <div className="grid lg:grid-cols-12 gap-16 items-center">
 
           {/* LEFT CONTENT */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9 }}
-            className="lg:col-span-7 space-y-10"
-          >
-
+          <HeroContent>
             {/* Label */}
             <p className="uppercase tracking-[0.35em] text-xs font-bold text-[#1e3a8a]">
               Computing Students Society
@@ -42,13 +34,10 @@ export default function Hero() {
 
             {/* Heading */}
             <h1 className="text-5xl md:text-7xl font-black text-slate-900 leading-[1.05] tracking-tight">
-
               Building the Next Generation of
-
               <span className="block text-[#1e3a8a]">
                 Developers & Innovators
               </span>
-
             </h1>
 
             {/* Description */}
@@ -64,7 +53,7 @@ export default function Hero() {
             <div>
               <Link
                 href="/events"
-                className="bg-[#1e3a8a] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#172e6b] transition"
+                className="bg-[#1e3a8a] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#172e6b] transition inline-block"
               >
                 Explore Events
               </Link>
@@ -72,7 +61,6 @@ export default function Hero() {
 
             {/* Stats */}
             <div className="grid grid-cols-3 gap-6 pt-6 max-w-xl">
-
               <div>
                 <p className="text-3xl font-bold text-slate-900">200+</p>
                 <p className="text-sm text-slate-500">Members</p>
@@ -87,21 +75,12 @@ export default function Hero() {
                 <p className="text-3xl font-bold text-slate-900">10+</p>
                 <p className="text-sm text-slate-500">Projects</p>
               </div>
-
             </div>
-
-          </motion.div>
+          </HeroContent>
 
           {/* RIGHT IMAGE */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.92 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1 }}
-            className="lg:col-span-5 hidden lg:block"
-          >
-
+          <HeroImage>
             <div className="relative rounded-[36px] overflow-hidden shadow-xl">
-
               <Image
                 src="/images/gallery/heroimage.png"
                 alt="Computing students collaboration"
@@ -111,15 +90,12 @@ export default function Hero() {
                 className="w-full h-[520px] object-cover"
                 sizes="(max-width: 1024px) 100vw, 800px"
               />
-
               <div className="absolute inset-0 bg-[#1e3a8a]/10" />
-
             </div>
-
-          </motion.div>
+          </HeroImage>
 
         </div>
       </div>
     </section>
   );
-}
+}
