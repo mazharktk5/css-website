@@ -201,7 +201,6 @@ export default function CertificateCanvas({
                 // Lowered by 45px from 0.81 to sit closer to the line
                 ctx.drawImage(leadImg, canvas.width * 0.72 - sWidth / 2, (canvas.height * 0.81 + 45) - sHeight, sWidth, sHeight);
             } else {
-                if (leadSignatureUrl) console.log("DEBUG: leadSignatureUrl is present but image failed to load:", leadSignatureUrl);
                 await document.fonts.load("400 110px 'Mrs Saint Delafield'");
                 ctx.font = "400 110px 'Mrs Saint Delafield', cursive";
                 ctx.fillStyle = "#1e40af";

@@ -17,12 +17,6 @@ export async function POST(request) {
         const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
 
-        console.log("Cloudinary Config Check:", {
-            cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? "Set" : "Missing",
-            api_key: process.env.CLOUDINARY_API_KEY ? "Set" : "Missing",
-            api_secret: process.env.CLOUDINARY_API_SECRET ? "Set" : "Missing",
-        });
-
         const uploadResponse = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
                 {

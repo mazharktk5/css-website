@@ -13,7 +13,7 @@ export default function Navbar() {
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener("scroll", handleScroll);
+        window.addEventListener("scroll", handleScroll, { passive: true });
         // Prevent scrolling when mobile menu is open
         if (open) {
             document.body.style.overflow = "hidden";

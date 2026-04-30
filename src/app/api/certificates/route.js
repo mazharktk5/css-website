@@ -31,7 +31,7 @@ export async function GET(request) {
                 { $sort: { lastUpdated: -1 } }
             ]);
             
-            console.log(`FETCH_BATCHES: Found ${batches.length} groups.`);
+
             return NextResponse.json(batches);
         }
 
@@ -104,7 +104,7 @@ export async function DELETE(request) {
 
         if (clearAll) {
             const result = await CertificateRecord.deleteMany({});
-            console.log("CLEAR_ALL_RESULT:", result);
+
             return NextResponse.json({ message: "Database cleared successfully" });
         }
 
@@ -112,7 +112,7 @@ export async function DELETE(request) {
             // Match exactly or if it was unnamed
             const filter = eventName === "UNNAMED_EVENT" ? { eventName: { $in: [null, ""] } } : { eventName };
             const result = await CertificateRecord.deleteMany(filter);
-            console.log(`DELETE_BATCH_RESULT (${eventName}):`, result);
+
             return NextResponse.json({ message: "Batch deleted" });
         }
 
