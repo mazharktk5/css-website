@@ -144,6 +144,7 @@ const Gallery = () => {
                                             src={item.image}
                                             alt={item.eventName}
                                             fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
                                             className="object-cover transition-transform duration-500 group-hover:scale-110 rounded-2xl"
                                         />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl">

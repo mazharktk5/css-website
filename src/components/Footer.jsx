@@ -51,6 +51,7 @@ export default function Footer() {
                                     src={logo}
                                     alt="CSS Logo"
                                     fill
+                                    sizes="48px"
                                     className="object-cover"
                                 />
                             </div>

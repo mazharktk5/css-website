@@ -176,6 +176,7 @@ export default function CertificateSearch() {
                                         src="/images/logo/cssfinallogo.jpeg"
                                         alt="CSS Logo"
                                         fill
+                                        sizes="288px"
                                         className="object-cover"
                                     />
                                 </div>

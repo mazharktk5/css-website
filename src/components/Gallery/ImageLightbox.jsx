@@ -94,6 +94,7 @@ export default function ImageLightbox({ images, currentIndex, onClose, onNext, o
                             src={currentImage.image}
                             alt={currentImage.eventName}
                             fill
+                            sizes="100vw"
                             className="object-contain"
                             priority
                         />

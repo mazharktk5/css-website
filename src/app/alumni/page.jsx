@@ -125,6 +125,7 @@ function MemberCard({ member }) {
                 src={member.image || "/images/team/placeholder.jpg"}
                 alt={member.name}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
                 className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
             />
 
@@ -233,6 +234,7 @@ export default function AlumniPage() {
                                         src="/images/logo/cssfinallogo.jpeg"
                                         alt="CSS Logo"
                                         fill
+                                        sizes="288px"
                                         className="object-cover"
                                     />
                                 </div>
@@ -282,6 +284,7 @@ export default function AlumniPage() {
                                     src={founder.image}
                                     alt={founder.name}
                                     fill
+                                    sizes="(max-width: 768px) 100vw, 350px"
                                     className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
                                 />
 

@@ -80,14 +80,13 @@ export default function Hero() {
 
           {/* RIGHT IMAGE */}
           <HeroImage>
-            <div className="relative rounded-[36px] overflow-hidden shadow-xl">
+            <div className="relative rounded-[36px] overflow-hidden shadow-xl h-[520px]">
               <Image
                 src="/images/team/core.jpeg"
                 alt="Computing students collaboration"
-                width={800}
-                height={520}
+                fill
                 priority
-                className="w-full h-[520px] object-cover"
+                className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 800px"
               />
               <div className="absolute inset-0 bg-[#1e3a8a]/10" />

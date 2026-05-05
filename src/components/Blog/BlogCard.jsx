@@ -119,7 +119,7 @@ export default function BlogCard({ post }) {
             <div className="p-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <div className="relative w-10 h-10 rounded-full overflow-hidden border border-slate-100">
-                        <Image src={logo} alt="CSS Logo" fill className="object-cover" />
+                        <Image src={logo} alt="CSS Logo" fill sizes="40px" className="object-cover" />
                     </div>
                     <div>
                         <h3 className="text-sm font-bold text-slate-900 leading-tight">Computing Students Society</h3>

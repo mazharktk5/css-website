@@ -16,6 +16,7 @@ function MemberCard({ member }) {
                 src={member.image || "/images/team/placeholder.jpg"}
                 alt={member.name}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
                 className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
             />
 
