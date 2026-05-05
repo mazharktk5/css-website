@@ -82,7 +82,7 @@ export default function Hero() {
           <HeroImage>
             <div className="relative rounded-[36px] overflow-hidden shadow-xl">
               <Image
-                src="/images/gallery/heroimage.png"
+                src="/images/team/core.jpeg"
                 alt="Computing students collaboration"
                 width={800}
                 height={520}
@@ -98,4 +98,4 @@ export default function Hero() {
       </div>
     </section>
   );
-}
+}
