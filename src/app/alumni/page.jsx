@@ -8,7 +8,7 @@ const foundersData = [
     {
         name: "Dr. Waheed ur Rehman",
         role: "Cheif organizer & Co-Founder",
-        image: "/images/founders/coordinator.jpg",
+        image: "/images/team/coordinator.jpeg",
     },
     {
         name: "Abubakar Sadiq",
