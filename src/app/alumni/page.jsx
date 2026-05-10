@@ -126,7 +126,7 @@ function MemberCard({ member }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="group relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-500 ring-1 ring-slate-900/5 group"
+            className="group relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-500 ring-1 ring-slate-900/5 group flex flex-col justify-between"
         >
             <Image
                 src={member.image || "/images/team/placeholder.jpg"}
