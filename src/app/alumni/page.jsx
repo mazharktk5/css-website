@@ -141,12 +141,12 @@ function MemberCard({ member }) {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:opacity-0 transition-opacity duration-500 z-10" />
 
             {/* Content */}
-            <div className="absolute inset-x-0 bottom-0 p-8 text-center transform transition-transform duration-500 group-hover:-translate-y-2 z-20">
-                <h3 className="text-xl font-bold text-white mb-2 leading-tight">
+            <div className="absolute inset-x-0 bottom-0 h-28 p-6 flex flex-col items-center justify-end text-center transform transition-transform duration-500 group-hover:-translate-y-2 z-20">
+                <h3 className="text-lg font-bold text-white leading-tight line-clamp-2">
                     {member.name}
                 </h3>
-                <div className="w-12 h-0.5 bg-white/30 mx-auto mb-3 transition-colors group-hover:bg-[#93c5fd]" />
-                <p className="text-blue-200 group-hover:text-white text-xs font-bold tracking-[0.15em] uppercase transition-colors">
+                <div className="w-10 h-0.5 bg-white/30 mx-auto my-2 transition-colors group-hover:bg-[#93c5fd]" />
+                <p className="text-blue-200 group-hover:text-white text-[10px] font-bold tracking-[0.15em] uppercase transition-colors line-clamp-1">
                     {member.role}
                 </p>
             </div>
