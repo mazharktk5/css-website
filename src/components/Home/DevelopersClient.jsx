@@ -1,17 +1,11 @@
 "use client";
-import { motion } from "framer-motion";
+import FadeIn from "@/components/FadeIn";
 import Image from "next/image";
 import { Linkedin } from "lucide-react";
 
 export function DeveloperCard({ dev, index }) {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: index * 0.1 }}
-      className="text-center group"
-    >
+    <FadeIn delay={index * 100} className="text-center group">
       <div className="relative w-36 h-36 mx-auto mb-6 overflow-hidden rounded-2xl shadow-sm">
         <Image
           src={dev.image}
@@ -41,6 +35,6 @@ export function DeveloperCard({ dev, index }) {
           LinkedIn
         </a>
       </div>
-    </motion.div>
+    </FadeIn>
   );
 }

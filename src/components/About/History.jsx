@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import FadeIn from "@/components/FadeIn";
 import { useEffect, useState } from "react";
 
 const history = [
@@ -47,7 +47,7 @@ export default function History() {
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
     checkMobile();
-    window.addEventListener("resize", checkMobile);
+    window.addEventListener("resize", checkMobile, { passive: true });
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
@@ -57,17 +57,12 @@ export default function History() {
 
         {/* Title */}
         <div className="flex flex-col items-center mb-24">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
+          <FadeIn className="text-center">
             <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 mb-6">
               Our <span className="text-[#1e3a8a]">Journey</span>
             </h2>
             <div className="w-24 h-[2px] bg-[#1e3a8a]" />
-          </motion.div>
+          </FadeIn>
         </div>
 
         <div className="relative">
@@ -90,10 +85,7 @@ export default function History() {
                     {/* Top */}
                     <div className="h-1/2 flex flex-col justify-end pb-10 w-full text-center px-6">
                       {event.position === "top" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: -20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                        >
+                        <FadeIn>
                           <span className="text-[#1e3a8a] text-sm font-medium block mb-2">
                             {event.year}
                           </span>
@@ -105,27 +97,21 @@ export default function History() {
                           <p className="text-sm text-slate-600 leading-relaxed max-w-[220px] mx-auto">
                             {event.description}
                           </p>
-                        </motion.div>
+                        </FadeIn>
                       )}
                     </div>
 
                     {/* Dot */}
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      transition={{ delay: idx * 0.1 }}
+                    <div
                       className="w-10 h-10 rounded-full border border-slate-200 bg-white shadow-md flex items-center justify-center relative z-20"
                     >
                       <div className="w-2.5 h-2.5 rounded-full bg-[#1e3a8a]" />
-                    </motion.div>
+                    </div>
 
                     {/* Bottom */}
                     <div className="h-1/2 flex flex-col justify-start pt-10 w-full text-center px-6">
                       {event.position === "bottom" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                        >
+                        <FadeIn>
                           <span className="text-[#1e3a8a] text-sm font-medium block mb-2">
                             {event.year}
                           </span>
@@ -137,7 +123,7 @@ export default function History() {
                           <p className="text-sm text-slate-600 leading-relaxed max-w-[220px] mx-auto">
                             {event.description}
                           </p>
-                        </motion.div>
+                        </FadeIn>
                       )}
                     </div>
 
@@ -148,19 +134,13 @@ export default function History() {
                 {isMobile && (
                   <div className="flex gap-6">
 
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
+                    <div
                       className="shrink-0 w-14 h-14 rounded-full border border-slate-200 bg-white shadow flex items-center justify-center"
                     >
                       <div className="w-2.5 h-2.5 rounded-full bg-[#1e3a8a]" />
-                    </motion.div>
+                    </div>
 
-                    <motion.div
-                      initial={{ opacity: 0, x: 20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      className="flex-1 pb-12"
-                    >
+                    <div className="flex-1 pb-12">
                       <span className="text-[#1e3a8a] text-sm font-medium block mb-1">
                         {event.year}
                       </span>
@@ -172,7 +152,7 @@ export default function History() {
                       <p className="text-sm text-slate-600 leading-relaxed">
                         {event.description}
                       </p>
-                    </motion.div>
+                    </div>
 
                   </div>
                 )}

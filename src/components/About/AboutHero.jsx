@@ -1,7 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
-
 export default function AboutHero() {
   return (
     <section className="relative py-32 bg-slate-50 overflow-hidden">
@@ -18,49 +14,35 @@ export default function AboutHero() {
       <div className="max-w-6xl mx-auto px-6 text-center">
 
         {/* small label */}
-        <motion.span
-          initial={{ opacity: 0, y: -10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-sm text-[#1e3a8a] font-medium tracking-wide"
+        <span
+          className="text-sm text-[#1e3a8a] font-medium tracking-wide animate-[fadeInUp_0.6s_ease_both]"
         >
           Computing Students Society
-        </motion.span>
+        </span>
 
         {/* heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight"
+        <h1
+          className="mt-4 text-4xl md:text-5xl lg:text-6xl font-semibold text-slate-900 leading-tight animate-[fadeInUp_0.7s_ease_0.1s_both]"
         >
           About Our
           <span className="block text-[#1e3a8a]">
             Computing Students Society
           </span>
-        </motion.h1>
+        </h1>
 
         {/* description */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed"
+        <p
+          className="mt-6 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto leading-relaxed animate-[fadeIn_0.8s_ease_0.2s_both]"
         >
           A community of students passionate about technology, programming,
           and innovation. Through workshops, events, and collaborative
           projects, we create opportunities for students to learn, build
           real skills, and grow together.
-        </motion.p>
+        </p>
 
         {/* stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-16 grid grid-cols-3 max-w-xl mx-auto gap-10 text-center"
+        <div
+          className="mt-16 grid grid-cols-3 max-w-xl mx-auto gap-10 text-center animate-[fadeInUp_0.7s_ease_0.3s_both]"
         >
           <div>
             <p className="text-3xl font-semibold text-[#1e3a8a]">20+</p>
@@ -76,17 +58,14 @@ export default function AboutHero() {
             <p className="text-3xl font-semibold text-[#1e3a8a]">5+</p>
             <p className="text-sm text-slate-600">Workshops</p>
           </div>
-        </motion.div>
+        </div>
 
         {/* divider */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="flex justify-center mt-16"
+        <div
+          className="flex justify-center mt-16 animate-[fadeIn_0.6s_ease_0.5s_both]"
         >
           <div className="w-20 h-[2px] bg-[#1e3a8a]" />
-        </motion.div>
+        </div>
 
       </div>
     </section>

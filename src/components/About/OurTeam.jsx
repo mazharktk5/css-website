@@ -1,45 +1,43 @@
 "use client";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import FadeIn from "@/components/FadeIn";
 import Image from "next/image";
 
 function MemberCard({ member }) {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="group relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 ring-1 ring-slate-900/5"
-        >
-            <Image
-                src={member.image || "/images/team/placeholder.jpg"}
-                alt={member.name}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
-                className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
-            />
+        <FadeIn>
+            <div
+                className="group relative w-full aspect-[3/4] overflow-hidden rounded-xl bg-white border border-slate-200 shadow-sm hover:shadow-xl transition-all duration-500 ring-1 ring-slate-900/5"
+            >
+                <Image
+                    src={member.image || "/images/team/placeholder.jpg"}
+                    alt={member.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
+                    className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                />
 
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                {/* Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-            {/* Content */}
-            <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                <h3 className="text-lg font-semibold text-white leading-tight mb-1">
-                    {member.name}
-                </h3>
+                {/* Content */}
+                <div className="absolute inset-0 p-6 flex flex-col justify-end">
+                    <h3 className="text-lg font-semibold text-white leading-tight mb-1">
+                        {member.name}
+                    </h3>
 
-                <p className="text-sm text-blue-200 font-medium">
-                    {member.role}
-                </p>
-
-                {member.subRole && (
-                    <p className="text-xs text-white/70 mt-2 leading-relaxed">
-                        {member.subRole}
+                    <p className="text-sm text-blue-200 font-medium">
+                        {member.role}
                     </p>
-                )}
+
+                    {member.subRole && (
+                        <p className="text-xs text-white/70 mt-2 leading-relaxed">
+                            {member.subRole}
+                        </p>
+                    )}
+                </div>
             </div>
-        </motion.div>
+        </FadeIn>
     );
 }
 
@@ -99,11 +97,7 @@ export default function OurTeam() {
 
                 {/* Header */}
                 <div className="max-w-3xl mb-20">
-                    <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                    >
+                    <FadeIn>
                         <h2 className="text-4xl md:text-5xl font-semibold text-slate-900 mb-6">
                             Meet Our <span className="text-[#1e3a8a]">Team</span>
                         </h2>
@@ -114,15 +108,13 @@ export default function OurTeam() {
                             opportunities for learning and collaboration within the
                             computing community.
                         </p>
-                    </motion.div>
+                    </FadeIn>
                 </div>
 
                 {loading ? (
                     <div className="flex justify-center py-32">
-                        <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            className="w-10 h-10 border-2 border-slate-200 border-t-[#1e3a8a] rounded-full"
+                        <div
+                            className="w-10 h-10 border-2 border-slate-200 border-t-[#1e3a8a] rounded-full animate-spin"
                         />
                     </div>
                 ) : (

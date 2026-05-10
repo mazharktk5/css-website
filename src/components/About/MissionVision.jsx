@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import FadeIn from "@/components/FadeIn";
 import Image from "next/image";
 
 export default function MissionVision() {
@@ -25,12 +25,7 @@ export default function MissionVision() {
             </div>
 
             <div className="p-12 flex flex-col justify-center">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-
+              <FadeIn>
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                   Our Vision
                 </h2>
@@ -40,8 +35,7 @@ export default function MissionVision() {
                   explore technology, collaborate on ideas, and develop the
                   skills needed to succeed in the digital world.
                 </p>
-
-              </motion.div>
+              </FadeIn>
             </div>
           </div>
 
@@ -49,13 +43,7 @@ export default function MissionVision() {
           <div className="flex flex-col border-l border-slate-200">
 
             <div className="p-12 flex flex-col justify-center order-2 lg:order-1">
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-              >
-
+              <FadeIn>
                 <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">
                   Our Mission
                 </h2>
@@ -65,8 +53,7 @@ export default function MissionVision() {
                   industry talks, hackathons, and collaborative projects
                   that encourage learning, creativity, and leadership.
                 </p>
-
-              </motion.div>
+              </FadeIn>
             </div>
 
             <div className="relative h-[350px] overflow-hidden order-1 lg:order-2">

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import HeroVisual from "./HeroVisual";
-import FadeIn from "./FadeIn";
+import FadeIn from "@/components/FadeIn";
 
 const foundersData = [
     {

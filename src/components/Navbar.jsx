@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, X, ArrowRight, Instagram, Linkedin, Mail } from "lucide-react"; // Added icons for flair
-import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ArrowRight, Instagram, Linkedin, Mail } from "lucide-react";
 import logo from "../../public/images/logo/cssfinallogo.jpeg";
 
 export default function Navbar() {
@@ -96,81 +95,66 @@ export default function Navbar() {
 
 
 
-            {/* MOBILE NAV OVERLAY - Centered Minimalist Version */}
-            <AnimatePresence>
-                {open && (
-                    <>
-                        {/* Soft Backdrop */}
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            exit={{ opacity: 0 }}
+            {/* MOBILE NAV — CSS transitions instead of framer-motion */}
+            {/* Soft Backdrop */}
+            <div
+                onClick={() => setOpen(false)}
+                className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[98] lg:hidden transition-opacity duration-300 ${
+                    open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                }`}
+            />
+
+            {/* Side Drawer */}
+            <div
+                className={`fixed right-0 top-0 h-full w-[80%] max-w-[320px] bg-[#1e3a8a] z-[99] lg:hidden flex flex-col shadow-2xl transition-transform duration-300 ease-out ${
+                    open ? "translate-x-0" : "translate-x-full"
+                }`}
+            >
+                <div className="flex flex-col h-full pt-32 px-6 pb-12">
+
+                    {/* Nav Links - Centered and Spaced */}
+                    <div className="flex flex-col items-center space-y-8">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className="text-2xl font-extrabold text-white uppercase tracking-[0.15em] hover:text-blue-300 transition-all active:scale-95"
+                                onClick={() => setOpen(false)}
+                            >
+                                {link.name}
+                            </Link>
+                        ))}
+                    </div>
+
+                    {/* Bottom Section */}
+                    <div className="mt-auto">
+                        <Link
+                            href="/contact"
+                            className="flex items-center justify-center gap-2 w-full py-4 bg-white text-[#1e3a8a] rounded-full font-black uppercase tracking-widest text-xs shadow-xl transition-transform active:scale-95"
                             onClick={() => setOpen(false)}
-                            className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[98] lg:hidden"
-                        />
-
-                        {/* Side Drawer */}
-                        <motion.div
-                            initial={{ x: "100%" }}
-                            animate={{ x: 0 }}
-                            exit={{ x: "100%" }}
-                            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                            className="fixed right-0 top-0 h-full w-[80%] max-w-[320px] bg-[#1e3a8a] z-[99] lg:hidden flex flex-col shadow-2xl"
                         >
-                            <div className="flex flex-col h-full pt-32 px-6 pb-12">
+                            Contact Us <ArrowRight size={16} />
+                        </Link>
 
-                                {/* Nav Links - Centered and Spaced */}
-                                <div className="flex flex-col items-center space-y-8">
-                                    {navLinks.map((link, i) => (
-                                        <motion.div
-                                            key={link.name}
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{ delay: i * 0.05 }}
-                                        >
-                                            <Link
-                                                href={link.href}
-                                                className="text-2xl font-extrabold text-white uppercase tracking-[0.15em] hover:text-blue-300 transition-all active:scale-95"
-                                                onClick={() => setOpen(false)}
-                                            >
-                                                {link.name}
-                                            </Link>
-                                        </motion.div>
-                                    ))}
-                                </div>
+                        {/* Simple Social Row */}
+                        <div className="flex justify-center gap-8 mt-10 text-white/70">
+                            <a href="https://www.instagram.com/css.dcs.uop" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                <Instagram size={20} />
+                            </a>
+                            <a href="https://www.linkedin.com/company/computing-students-society/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                                <Linkedin size={20} />
+                            </a>
+                            <a href="mailto:computing.society@uop.edu.pk" aria-label="Email">
+                                <Mail size={20} />
+                            </a>
+                        </div>
 
-                                {/* Bottom Section */}
-                                <div className="mt-auto">
-                                    <Link
-                                        href="/contact"
-                                        className="flex items-center justify-center gap-2 w-full py-4 bg-white text-[#1e3a8a] rounded-full font-black uppercase tracking-widest text-xs shadow-xl transition-transform active:scale-95"
-                                        onClick={() => setOpen(false)}
-                                    >
-                                        Contact Us <ArrowRight size={16} />
-                                    </Link>
-
-                                    {/* Simple Social Row */}
-                                    <div className="flex justify-center gap-8 mt-10 text-white/70">
-                                        <a href="https://www.instagram.com/css.dcs.uop" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                                            <Instagram size={20} />
-                                        </a>
-                                        <a href="https://www.linkedin.com/company/computing-students-society/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-                                            <Linkedin size={20} />
-                                        </a>
-                                        <a href="mailto:computing.society@uop.edu.pk" aria-label="Email">
-                                            <Mail size={20} />
-                                        </a>
-                                    </div>
-
-                                    <p className="text-center text-[8px] text-white/50 mt-6 tracking-[0.3em] uppercase font-bold">
-                                        Computing Students Society
-                                    </p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </>
-                )}
-            </AnimatePresence>
+                        <p className="text-center text-[8px] text-white/50 mt-6 tracking-[0.3em] uppercase font-bold">
+                            Computing Students Society
+                        </p>
+                    </div>
+                </div>
+            </div>
         </>
     );
 }
