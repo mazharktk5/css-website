@@ -106,6 +106,13 @@ const alumniData = [
                 chapter: "2024-25"
             },
 
+            {
+                name: "Muhammad Hasnain",
+                role: "Ex-Software Member",
+                image: "/images/team/Hasnain.jpeg",
+                chapter: "2024-25"
+            },
+
 
 
         ]
