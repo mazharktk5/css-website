@@ -1,7 +1,7 @@
 export function HeroContent({ children }) {
   return (
     <div
-      className="lg:col-span-7 space-y-10 animate-[fadeInUp_0.9s_ease_both]"
+      className="lg:col-span-7 space-y-10 md:animate-[fadeInUp_0.6s_ease_both] animate-none"
     >
       {children}
     </div>

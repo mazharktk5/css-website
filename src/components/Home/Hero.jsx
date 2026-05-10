@@ -4,10 +4,10 @@ import { HeroContent, HeroImage } from "./HeroClient";
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-white pt-28">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-white pt-20 md:pt-28">
 
       {/* Background */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+      <div className="absolute inset-0 -z-10 overflow-hidden hidden md:block">
 
         <div className="absolute top-[-200px] right-[-200px] w-[600px] h-[600px] bg-[#1e3a8a]/10 rounded-full blur-[140px]" />
 
@@ -85,7 +85,6 @@ export default function Hero() {
                 src="/images/team/core.jpeg"
                 alt="Computing students collaboration"
                 fill
-                priority
                 className="object-cover"
                 sizes="(max-width: 1024px) 100vw, 800px"
               />

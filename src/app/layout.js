@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono, Inter, Mrs_Saint_Delafield } from "next/font/google";
+import { Geist, Inter } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import ClientLayout from "./ClientLayout";
@@ -11,24 +11,13 @@ const geistSans = Geist({
   display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  display: 'swap',
-});
-
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
   display: 'swap',
 });
 
-const mrsSaint = Mrs_Saint_Delafield({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-mrs-saint",
-  display: 'swap',
-});
+
 
 export const metadata = {
   title: "Computing Students Society | University of Peshawar",
@@ -66,7 +55,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${mrsSaint.variable} antialiased`}
+        className={`${geistSans.variable} ${inter.variable} antialiased`}
       >
         <ClientLayout>
           {children}
