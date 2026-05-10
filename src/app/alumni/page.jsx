@@ -126,37 +126,29 @@ function MemberCard({ member }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="group relative w-full aspect-[3/4] overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-500 ring-1 ring-slate-900/5 group flex flex-col justify-between"
+            className="group relative w-full aspect-[4/5] overflow-hidden rounded-[2rem] bg-slate-100 shadow-xl hover:shadow-2xl transition-all duration-500 border-4 border-white ring-1 ring-slate-900/5"
         >
             <Image
                 src={member.image || "/images/team/placeholder.jpg"}
                 alt={member.name}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
-                className="object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
             />
 
             {/* Premium Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-[#1e3a8a]/90 via-[#1e3a8a]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-100 group-hover:opacity-0 transition-opacity duration-500" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1e3a8a]/90 via-[#1e3a8a]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent group-hover:opacity-0 transition-opacity duration-500 z-10" />
 
             {/* Content */}
-            <div className="absolute inset-0 p-6 flex flex-col justify-end transform transition-transform duration-500 group-hover:translate-y-[-8px]">
-                <div className="overflow-hidden">
-                    <motion.h3 className="text-xl font-bold text-white leading-tight mb-1">
-                        {member.name}
-                    </motion.h3>
-                </div>
-
-                <p className="text-sm text-blue-300 font-semibold tracking-wider uppercase">
+            <div className="absolute inset-x-0 bottom-0 p-8 text-center transform transition-transform duration-500 group-hover:-translate-y-2 z-20">
+                <h3 className="text-xl font-bold text-white mb-2 leading-tight">
+                    {member.name}
+                </h3>
+                <div className="w-12 h-0.5 bg-white/30 mx-auto mb-3 transition-colors group-hover:bg-[#93c5fd]" />
+                <p className="text-blue-200 group-hover:text-white text-xs font-bold tracking-[0.15em] uppercase transition-colors">
                     {member.role}
                 </p>
-
-                <div className="mt-4 pt-4 border-t border-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="text-[10px] font-bold text-white/60 tracking-[0.2em] uppercase">
-                        Chapter {member.chapter}
-                    </span>
-                </div>
             </div>
         </motion.div>
     );
