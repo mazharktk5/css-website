@@ -30,6 +30,9 @@ export const metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: "ldZlwQNWsZI7VkfH99Nu_NyMiB3TSuf_vD3JJ_u2Pco",
+  },
   openGraph: {
     title: "Computing Students Society",
     description: "Workshops, hackathons, and a student-first tech community.",
