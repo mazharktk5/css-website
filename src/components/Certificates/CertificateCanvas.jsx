@@ -71,13 +71,20 @@ export default function CertificateCanvas({
             const roleLower = (rightSignatureRole || "").toLowerCase();
             let matchedFile = null;
             
-            if (roleLower.includes("se")) matchedFile = "se_club_lead.jpeg";
-            else if (roleLower.includes("ai")) matchedFile = "ai_club_lead.jpeg";
-            // ... Add more keywords here as you add more leads (e.g., cyber)
-            else {
-                // Specific normalization if no keyword matches
-                matchedFile = roleLower.trim().replace(/\s+/g, "_") + ".jpeg";
+            if (roleLower.includes("se club") || (roleLower.includes("se") && roleLower.includes("lead"))) {
+                matchedFile = "se_club_lead.jpeg";
+            } else if (roleLower.includes("ai club") || (roleLower.includes("ai") && roleLower.includes("lead"))) {
+                matchedFile = "ai_club_lead.jpeg";
+            } else if (
+                roleLower.includes("chief") ||
+                roleLower.includes("organizer") ||
+                roleLower.includes("general") ||
+                roleLower === "css"
+            ) {
+                // General CSS event — use Chief Organizer signature
+                matchedFile = "cheif-organizer.jpeg";
             }
+            // matchedFile stays null if no keyword matches (will fall through to dynamic upload or cursive text)
 
             // Load signatures in parallel
             // 1. President (Fixed)
