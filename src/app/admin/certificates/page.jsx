@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
-import { Upload, Trash2, Search, FileText, Download, CheckCircle, XCircle, AlertCircle } from "lucide-react";
+import { Upload, Trash2, Search, FileText, Download, CheckCircle, XCircle, AlertCircle, Trophy } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import ImageUpload from "@/components/Admin/ImageUpload";
 
@@ -13,12 +13,25 @@ export default function AdminCertificates() {
     const [deleteModal, setDeleteModal] = useState({ open: false, eventName: null });
     const [status, setStatus] = useState(null); // { type: 'success' | 'error', message: '' }
 
+    // Kahoot section state
+    const [kahootBatches, setKahootBatches] = useState([]);
+    const [kahootLoading, setKahootLoading] = useState(true);
+    const [kahootImporting, setKahootImporting] = useState(false);
+    const [kahootStatus, setKahootStatus] = useState(null);
+    const [kahootSessionName, setKahootSessionName] = useState("");
+    const [kahootSessionDate, setKahootSessionDate] = useState("");
+    const [kahootWinners, setKahootWinners] = useState([
+        { name: "", email: "" },
+        { name: "", email: "" },
+        { name: "", email: "" },
+    ]);
+
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
     const fetchBatches = async () => {
         setLoading(true);
         try {
-            const res = await fetch("/api/certificates", {
+            const res = await fetch("/api/certificates?adminType=session", {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -27,8 +40,21 @@ export default function AdminCertificates() {
         setLoading(false);
     };
 
+    const fetchKahootBatches = async () => {
+        setKahootLoading(true);
+        try {
+            const res = await fetch("/api/certificates?adminType=kahoot", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const data = await res.json();
+            setKahootBatches(Array.isArray(data) ? data : []);
+        } catch { /* ignore */ }
+        setKahootLoading(false);
+    };
+
     useEffect(() => {
         fetchBatches();
+        fetchKahootBatches();
     }, []);
 
     const [eventTitle, setEventTitle] = useState("");
@@ -126,7 +152,7 @@ export default function AdminCertificates() {
         try {
             const url = deleteModal.type === 'all'
                 ? "/api/certificates?clearAll=true"
-                : `/api/certificates?eventName=${encodeURIComponent(deleteModal.eventName)}`;
+                : `/api/certificates?eventName=${encodeURIComponent(deleteModal.eventName)}&type=${encodeURIComponent(deleteModal.certType || 'session')}`;
 
             const res = await fetch(url, {
                 method: "DELETE",
@@ -136,8 +162,8 @@ export default function AdminCertificates() {
             if (res.ok) {
                 const result = await res.json();
                 setStatus({ type: "success", message: result.message || "Deletion successful" });
-                // Force a fresh fetch from server to be 100% sure
                 await fetchBatches();
+                await fetchKahootBatches();
                 setDeleteModal({ open: false, eventName: null, type: null });
             } else {
                 const err = await res.json();
@@ -147,6 +173,60 @@ export default function AdminCertificates() {
             console.error("DELETE_CONFIRM_ERROR:", err);
             alert("An error occurred during deletion.");
         }
+    };
+
+    // ── Kahoot submit handler ──────────────────────────────────────────────────
+    const handleKahootSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!kahootSessionName || !kahootSessionDate) {
+            setKahootStatus({ type: "error", message: "Please fill in Session Name and Session Date." });
+            return;
+        }
+
+        const filled = kahootWinners.filter(w => w.name.trim() && w.email.trim());
+        if (filled.length === 0) {
+            setKahootStatus({ type: "error", message: "Enter at least one winner's name and email." });
+            return;
+        }
+
+        setKahootImporting(true);
+        setKahootStatus(null);
+
+        const formattedRecords = filled.map((w, i) => ({
+            fullName: w.name.trim(),
+            email: w.email.trim().toLowerCase(),
+            eventName: kahootSessionName.trim(),
+            description: "",
+            type: "kahoot",
+            position: i + 1,
+            sessionDate: kahootSessionDate,
+        }));
+
+        try {
+            const res = await fetch("/api/certificates", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ records: formattedRecords }),
+            });
+
+            if (res.ok) {
+                setKahootStatus({ type: "success", message: `${formattedRecords.length} winner record(s) saved successfully!` });
+                setKahootSessionName("");
+                setKahootSessionDate("");
+                setKahootWinners([{ name: "", email: "" }, { name: "", email: "" }, { name: "", email: "" }]);
+                fetchKahootBatches();
+            } else {
+                const error = await res.json();
+                setKahootStatus({ type: "error", message: error.error || "Failed to save records" });
+            }
+        } catch (err) {
+            setKahootStatus({ type: "error", message: err.message || "Network error." });
+        }
+        setKahootImporting(false);
     };
 
     return (
@@ -345,6 +425,180 @@ export default function AdminCertificates() {
                             The certificate text and signatures are set above for the whole batch.
                         </p>
                     </div>
+                </div>
+
+                {/* ── KAHOOT WINNERS SECTION ─────────────────────────────────────────── */}
+                <div className="pt-6 border-t border-white/[0.06]">
+                    <div className="flex items-center gap-3 mb-6">
+                        <div className="w-8 h-8 bg-yellow-500/10 rounded-xl flex items-center justify-center">
+                            <Trophy className="w-4 h-4 text-yellow-400" />
+                        </div>
+                        <div>
+                            <h2 className="text-xl font-black text-white">Kahoot Winners</h2>
+                            <p className="text-gray-500 text-sm mt-0.5">Enter top-3 winners per session. Certificate text is auto-generated.</p>
+                        </div>
+                    </div>
+
+                    {/* Kahoot Form */}
+                    <form onSubmit={handleKahootSubmit}>
+                        <div className="bg-white/[0.03] border border-white/[0.06] p-6 rounded-2xl mb-6 space-y-6">
+                            {/* Session Details */}
+                            <div className="grid md:grid-cols-2 gap-6">
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Session Name</label>
+                                    <input
+                                        type="text"
+                                        placeholder='e.g. Turn Your Skills Into Income'
+                                        value={kahootSessionName}
+                                        onChange={(e) => setKahootSessionName(e.target.value)}
+                                        className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                        required
+                                    />
+                                </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Session Date</label>
+                                    <input
+                                        type="date"
+                                        value={kahootSessionDate}
+                                        onChange={(e) => setKahootSessionDate(e.target.value)}
+                                        className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Winner Inputs */}
+                            <div className="space-y-4">
+                                {["🥇 1st Place", "🥈 2nd Place", "🥉 3rd Place"].map((label, i) => (
+                                    <div key={i} className="grid md:grid-cols-2 gap-4 p-4 bg-white/[0.02] border border-white/[0.05] rounded-xl">
+                                        <div className="md:col-span-2">
+                                            <span className="text-xs font-black uppercase tracking-widest text-yellow-400">{label}</span>
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Full Name</label>
+                                            <input
+                                                type="text"
+                                                placeholder="Winner's full name"
+                                                value={kahootWinners[i].name}
+                                                onChange={(e) => {
+                                                    const updated = [...kahootWinners];
+                                                    updated[i] = { ...updated[i], name: e.target.value };
+                                                    setKahootWinners(updated);
+                                                }}
+                                                className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                            />
+                                        </div>
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Email</label>
+                                            <input
+                                                type="email"
+                                                placeholder="winner@example.com"
+                                                value={kahootWinners[i].email}
+                                                onChange={(e) => {
+                                                    const updated = [...kahootWinners];
+                                                    updated[i] = { ...updated[i], email: e.target.value };
+                                                    setKahootWinners(updated);
+                                                }}
+                                                className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                            />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
+                            <div className="flex justify-end">
+                                <button
+                                    type="submit"
+                                    disabled={kahootImporting}
+                                    className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 disabled:opacity-50 text-black font-black px-8 py-3 rounded-xl transition-all shadow-lg shadow-yellow-500/20 text-sm uppercase tracking-widest"
+                                >
+                                    <Trophy className="w-4 h-4" />
+                                    {kahootImporting ? "Saving..." : "Save Winners"}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    {/* Kahoot Status */}
+                    {kahootStatus && (
+                        <div className={`p-4 rounded-xl flex items-start gap-3 border mb-4 ${kahootStatus.type === "success"
+                                ? "bg-green-500/10 border-green-500/20 text-green-400"
+                                : "bg-red-500/10 border-red-500/20 text-red-400"
+                            }`}>
+                            {kahootStatus.type === "success" ? <CheckCircle className="w-5 h-5 mt-0.5" /> : <XCircle className="w-5 h-5 mt-0.5" />}
+                            <div>
+                                <p className="text-sm font-bold">{kahootStatus.type === "success" ? "Success" : "Error"}</p>
+                                <p className="text-xs opacity-80">{kahootStatus.message}</p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Kahoot Batches Table */}
+                    <div className="bg-white/[0.03] border border-white/[0.06] rounded-2xl overflow-hidden">
+                        <div className="p-4 border-b border-white/[0.06] flex items-center gap-3">
+                            <h3 className="text-sm font-bold text-white px-2">Uploaded Kahoot Winner Batches</h3>
+                            <span className="text-[10px] text-gray-500 bg-white/5 px-2 py-1 rounded-full uppercase tracking-tighter">
+                                {kahootBatches.length} Session(s)
+                            </span>
+                        </div>
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm">
+                                <thead>
+                                    <tr className="border-b border-white/[0.06] bg-white/[0.02]">
+                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Session Name</th>
+                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Winners</th>
+                                        <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Last Updated</th>
+                                        <th className="text-right px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {kahootLoading ? (
+                                        <tr>
+                                            <td colSpan="4" className="p-12 text-center">
+                                                <div className="w-6 h-6 border-2 border-yellow-500/30 border-t-yellow-500 rounded-full animate-spin mx-auto" />
+                                            </td>
+                                        </tr>
+                                    ) : kahootBatches.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="4" className="p-12 text-center text-gray-500">
+                                                <Trophy className="w-8 h-8 mx-auto mb-2 opacity-20" />
+                                                No kahoot winner batches yet.
+                                            </td>
+                                        </tr>
+                                    ) : (
+                                        kahootBatches.map((batch) => (
+                                            <tr key={batch._id} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <Trophy className="w-4 h-4 text-yellow-400 flex-shrink-0" />
+                                                        <span className="text-white font-bold">{batch._id}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className="bg-yellow-500/10 text-yellow-400 text-[10px] font-bold px-3 py-1 rounded-full border border-yellow-500/20">
+                                                        {batch.count} Winner(s)
+                                                    </span>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <span className="text-gray-500 text-xs">{new Date(batch.lastUpdated).toLocaleDateString()}</span>
+                                                </td>
+                                                <td className="px-6 py-4 text-right">
+                                                    <button
+                                                        onClick={() => setDeleteModal({ open: true, eventName: batch._id, type: 'batch', certType: 'kahoot' })}
+                                                        className="p-2 rounded-lg hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-colors flex items-center gap-2 text-xs font-bold ml-auto"
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                        <span className="hidden md:inline">Delete Batch</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 

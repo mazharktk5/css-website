@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Search, Download, Award, Loader2, ArrowRight } from "lucide-react";
+import { Search, Download, Award, Loader2, ArrowRight, Trophy } from "lucide-react";
 import CertificateCanvas from "@/components/Certificates/CertificateCanvas";
+import KahootCertificateCanvas from "@/components/Certificates/KahootCertificateCanvas";
 
 function CertificateResultCard({ cert }) {
     const [previewDataUrl, setPreviewDataUrl] = useState(null);
@@ -19,6 +20,8 @@ function CertificateResultCard({ cert }) {
         document.body.removeChild(link);
     };
 
+    const isKahoot = cert.type === "kahoot";
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -31,20 +34,37 @@ function CertificateResultCard({ cert }) {
             <div className="relative aspect-[16/11] bg-slate-100 overflow-hidden border-b border-slate-100">
                 <div className="absolute inset-0 flex items-center justify-center p-4">
                     <div className="relative w-full h-full shadow-lg rounded-sm overflow-hidden group-hover:scale-[1.02] transition-transform duration-500 text-slate-800">
-                        <CertificateCanvas
-                            {...cert}
-                            isPreview={true}
-                            onReady={(url) => setPreviewDataUrl(url)}
-                        />
+                        {isKahoot ? (
+                            <KahootCertificateCanvas
+                                fullName={cert.fullName}
+                                position={cert.position}
+                                sessionName={cert.eventName}
+                                sessionDate={cert.sessionDate}
+                                isPreview={true}
+                                onReady={(url) => setPreviewDataUrl(url)}
+                            />
+                        ) : (
+                            <CertificateCanvas
+                                {...cert}
+                                isPreview={true}
+                                onReady={(url) => setPreviewDataUrl(url)}
+                            />
+                        )}
                         <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-all duration-500" />
                     </div>
                 </div>
 
-                {/* Status Badge */}
+                {/* Status / Type Badge */}
                 <div className="absolute top-4 right-4 z-10">
-                    <span className="text-[10px] font-bold text-[#1e3a8a] bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100 shadow-sm uppercase tracking-widest">
-                        Verified
-                    </span>
+                    {isKahoot ? (
+                        <span className="text-[10px] font-bold text-yellow-700 bg-yellow-50 px-3 py-1.5 rounded-full border border-yellow-200 shadow-sm uppercase tracking-widest flex items-center gap-1">
+                            <Trophy className="w-3 h-3" /> Kahoot Winner
+                        </span>
+                    ) : (
+                        <span className="text-[10px] font-bold text-[#1e3a8a] bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100 shadow-sm uppercase tracking-widest">
+                            Verified
+                        </span>
+                    )}
                 </div>
             </div>
 
@@ -83,6 +103,7 @@ export default function CertificateSearch() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState(null);
+    const [activeTab, setActiveTab] = useState("session"); // "session" | "kahoot"
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -93,7 +114,11 @@ export default function CertificateSearch() {
         try {
             const res = await fetch(`/api/certificates?email=${email.toLowerCase()}`);
             const data = await res.json();
-            setResults(Array.isArray(data) ? data : []);
+            const arr = Array.isArray(data) ? data : [];
+            // Default to "kahoot" tab if the user has no session certs
+            const hasSession = arr.some(c => !c.type || c.type === "session");
+            setActiveTab(hasSession ? "session" : "kahoot");
+            setResults(arr);
         } catch {
             setResults([]);
         }
@@ -227,11 +252,59 @@ export default function CertificateSearch() {
                                 <button onClick={() => setResults(null)} className="px-10 py-5 bg-slate-900 text-white rounded-full font-bold hover:bg-slate-800 transition-all shadow-xl active:scale-95 uppercase tracking-widest text-xs">Search Again</button>
                             </motion.div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                                {results.map((cert) => (
-                                    <CertificateResultCard key={cert._id} cert={cert} />
-                                ))}
-                            </div>
+                            <>
+                                {/* ── Type Toggle (shown only when both types exist) ── */}
+                                {(() => {
+                                    const hasSession = results.some(c => !c.type || c.type === "session");
+                                    const hasKahoot = results.some(c => c.type === "kahoot");
+                                    if (!hasSession || !hasKahoot) return null;
+                                    return (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            className="flex justify-center mb-12"
+                                        >
+                                            <div className="inline-flex bg-slate-100 rounded-full p-1.5 gap-1 shadow-inner">
+                                                <button
+                                                    onClick={() => setActiveTab("session")}
+                                                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-widest transition-all ${
+                                                        activeTab === "session"
+                                                            ? "bg-[#1e3a8a] text-white shadow-lg shadow-blue-600/20"
+                                                            : "text-slate-500 hover:text-slate-700"
+                                                    }`}
+                                                >
+                                                    <Award className="w-4 h-4" />
+                                                    Session Certificates
+                                                </button>
+                                                <button
+                                                    onClick={() => setActiveTab("kahoot")}
+                                                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-widest transition-all ${
+                                                        activeTab === "kahoot"
+                                                            ? "bg-yellow-500 text-black shadow-lg shadow-yellow-500/20"
+                                                            : "text-slate-500 hover:text-slate-700"
+                                                    }`}
+                                                >
+                                                    <Trophy className="w-4 h-4" />
+                                                    Kahoot Winners
+                                                </button>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })()}
+
+                                {/* ── Filtered Results Grid ── */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                                    {results
+                                        .filter(cert =>
+                                            activeTab === "kahoot"
+                                                ? cert.type === "kahoot"
+                                                : !cert.type || cert.type === "session"
+                                        )
+                                        .map((cert) => (
+                                            <CertificateResultCard key={cert._id} cert={cert} />
+                                        ))}
+                                </div>
+                            </>
                         )}
                     </AnimatePresence>
                 </div>

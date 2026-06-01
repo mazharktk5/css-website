@@ -14,11 +14,23 @@ export async function GET(request) {
         // If it's an admin looking for batches
         const user = verifyAuth(request);
         if (user && !email) {
-            // Aggressive aggregate to find any records, even corrupted ones
+            const adminType = searchParams.get("adminType"); // "session" | "kahoot"
+            // Existing records without a type field are treated as session certs
+            let matchStage;
+            if (adminType === "session") {
+                matchStage = { $match: { $or: [{ type: "session" }, { type: { $exists: false } }, { type: null }] } };
+            } else if (adminType === "kahoot") {
+                matchStage = { $match: { type: "kahoot" } };
+            } else {
+                matchStage = { $match: {} };
+            }
+
             const batches = await CertificateRecord.aggregate([
+                matchStage,
                 {
                     $group: {
                         _id: { $ifNull: ["$eventName", "UNNAMED_EVENT"] },
+                        type: { $first: { $ifNull: ["$type", "session"] } },
                         description: { $first: "$description" },
                         rightSignatureName: { $first: "$rightSignatureName" },
                         rightSignatureRole: { $first: "$rightSignatureRole" },
@@ -27,10 +39,8 @@ export async function GET(request) {
                         lastUpdated: { $max: "$updatedAt" }
                     }
                 },
-                // Filter out records that have no valid ID (optional, but let's see them for debugging)
                 { $sort: { lastUpdated: -1 } }
             ]);
-            
 
             return NextResponse.json(batches);
         }
@@ -63,14 +73,23 @@ export async function POST(request) {
         // Prepare bulk operations for Upsert
         const ops = records.map(reg => ({
             updateOne: {
-                filter: { email: reg.email.toLowerCase(), eventName: reg.eventName },
+                // Include type in the filter so session + kahoot certs for the
+                // same event name don't collide.
+                filter: {
+                    email: reg.email.toLowerCase(),
+                    eventName: reg.eventName,
+                    type: reg.type || "session"
+                },
                 update: {
                     $set: {
                         fullName: reg.fullName,
-                        description: reg.description,
+                        description: reg.description || "",
                         leftSignatureName: "Muhammad Ilyas",
-                        rightSignatureName: reg.rightSignatureName,
+                        rightSignatureName: reg.rightSignatureName || "",
                         rightSignatureRole: reg.rightSignatureRole || "Club Lead",
+                        type: reg.type || "session",
+                        position: reg.position ?? null,
+                        sessionDate: reg.sessionDate ? new Date(reg.sessionDate) : null,
                         issueDate: reg.issueDate || new Date()
                     }
                 },
@@ -100,18 +119,19 @@ export async function DELETE(request) {
         const { searchParams } = new URL(request.url);
         const id = searchParams.get("id"); // Specific record ID
         const eventName = searchParams.get("eventName"); // Batch delete
+        const batchType = searchParams.get("type");       // "session" | "kahoot"
         const clearAll = searchParams.get("clearAll");
 
         if (clearAll) {
-            const result = await CertificateRecord.deleteMany({});
-
+            await CertificateRecord.deleteMany({});
             return NextResponse.json({ message: "Database cleared successfully" });
         }
 
         if (eventName) {
-            // Match exactly or if it was unnamed
-            const filter = eventName === "UNNAMED_EVENT" ? { eventName: { $in: [null, ""] } } : { eventName };
-            const result = await CertificateRecord.deleteMany(filter);
+            // Match exactly or if it was unnamed; optionally scope to a cert type
+            let filter = eventName === "UNNAMED_EVENT" ? { eventName: { $in: [null, ""] } } : { eventName };
+            if (batchType) filter = { ...filter, type: batchType };
+            await CertificateRecord.deleteMany(filter);
 
             return NextResponse.json({ message: "Batch deleted" });
         }
