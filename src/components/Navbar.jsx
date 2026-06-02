@@ -42,57 +42,57 @@ export default function Navbar() {
             >
                 <div className="max-w-7xl mx-auto px-6 flex items-center justify-between gap-12">
 
-                {/* LOGO SECTION */}
-                <Link href="/" className="flex items-center gap-2 group shrink-0">
-                    <div className="relative w-11 h-11 transition-transform duration-300 group-hover:scale-105">
-                        <Image
-                            src={logo}
-                            alt="CSS Logo"
-                            fill
-                            sizes="44px"
-                            loading="eager"
-                            priority
-                            className="rounded-full object-cover border-2 border-white/20 shadow-inner"
-                        />
-                    </div>
-                    <div className="flex flex-col justify-center">
-                        <h1 className="font-black text-sm sm:text-lg text-white tracking-tight leading-tight uppercase">
-                            Computing Students <span className="text-blue-300 block sm:inline">Society</span>
-                        </h1>
-                    </div>
-                </Link>
-
-                {/* Desktop Links (No changes here, kept as you liked them) */}
-                <div className="hidden lg:flex items-center space-x-8">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.name}
-                            href={link.href}
-                            className="group relative text-[13px] font-extrabold uppercase tracking-widest text-white hover:text-blue-200 transition-colors"
-                        >
-                            {link.name}
-                            <span className="absolute -bottom-2 left-0 w-0 h-[3px] bg-blue-300 transition-all duration-300 group-hover:w-full rounded-full" />
-                        </Link>
-                    ))}
-
-                    <Link
-                        href="/contact"
-                        className="group flex items-center gap-2 px-8 py-3 bg-white text-[#1e3a8a] rounded-full font-black text-[13px] tracking-widest uppercase transition-all duration-300 hover:scale-105 shadow-lg active:scale-95"
-                    >
-                        Contact
-                        <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                    {/* LOGO SECTION */}
+                    <Link href="/" className="flex items-center gap-2 group shrink-0">
+                        <div className="relative w-11 h-11 transition-transform duration-300 group-hover:scale-105">
+                            <Image
+                                src={logo}
+                                alt="CSS Logo"
+                                fill
+                                sizes="44px"
+                                loading="eager"
+                                priority
+                                className="rounded-full object-cover border-2 border-white/20 shadow-inner"
+                            />
+                        </div>
+                        <div className="flex flex-col justify-center">
+                            <h1 className="font-black text-sm sm:text-lg text-white tracking-tight leading-tight uppercase">
+                                Computing Students <span className="text-blue-300 block sm:inline">Society</span>
+                            </h1>
+                        </div>
                     </Link>
-                </div>
 
-                {/* MOBILE MENU TOGGLE - Cleaner Style */}
-                <button
-                    onClick={() => setOpen(!open)}
-                    aria-label="Toggle Navigation Menu"
-                    className="lg:hidden relative z-[150] p-2 text-white bg-white/10 hover:bg-white/20 rounded-full transition-all active:scale-90"
-                >
-                    {open ? <X size={24} /> : <Menu size={24} />}
-                </button>
-            </div>
+                    {/* Desktop Links (No changes here, kept as you liked them) */}
+                    <div className="hidden lg:flex items-center space-x-8">
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.name}
+                                href={link.href}
+                                className="group relative text-[13px] font-extrabold uppercase tracking-widest text-white hover:text-blue-200 transition-colors"
+                            >
+                                {link.name}
+                                <span className="absolute -bottom-2 left-0 w-0 h-[3px] bg-blue-300 transition-all duration-300 group-hover:w-full rounded-full" />
+                            </Link>
+                        ))}
+
+                        <Link
+                            href="/contact"
+                            className="group flex items-center gap-2 px-8 py-3 bg-white text-[#1e3a8a] rounded-full font-black text-[13px] tracking-widest uppercase transition-all duration-300 hover:scale-105 shadow-lg active:scale-95"
+                        >
+                            Contact
+                            <ArrowRight size={18} className="transition-transform group-hover:translate-x-1" />
+                        </Link>
+                    </div>
+
+                    {/* MOBILE MENU TOGGLE - Cleaner Style */}
+                    <button
+                        onClick={() => setOpen(!open)}
+                        aria-label="Toggle Navigation Menu"
+                        className="lg:hidden relative z-[150] p-2 text-white bg-white/10 hover:bg-white/20 rounded-full transition-all active:scale-90"
+                    >
+                        {open ? <X size={24} /> : <Menu size={24} />}
+                    </button>
+                </div>
             </nav>
 
 
@@ -101,16 +101,14 @@ export default function Navbar() {
             {/* Soft Backdrop */}
             <div
                 onClick={() => setOpen(false)}
-                className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[98] lg:hidden transition-opacity duration-300 ${
-                    open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-                }`}
+                className={`fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[98] lg:hidden transition-opacity duration-300 ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                    }`}
             />
 
             {/* Side Drawer */}
             <div
-                className={`fixed right-0 top-0 h-full w-[80%] max-w-[320px] bg-[#1e3a8a] z-[99] lg:hidden flex flex-col shadow-2xl transition-transform duration-300 ease-out ${
-                    open ? "translate-x-0" : "translate-x-full"
-                }`}
+                className={`fixed right-0 top-0 h-full w-[80%] max-w-[320px] bg-[#1e3a8a] z-[99] lg:hidden flex flex-col shadow-2xl transition-transform duration-300 ease-out ${open ? "translate-x-0" : "translate-x-full"
+                    }`}
             >
                 <div className="flex flex-col h-full pt-32 px-6 pb-12">
 
