@@ -404,7 +404,7 @@ export default function AdminCertificates() {
                         </div>
 
                         <div className="md:col-span-2 lg:col-span-3">
-                            <ImageUpload 
+                            <ImageUpload
                                 label="Lead / Organizer Signature (Overrides Auto-Match)"
                                 value={leadSignatureUrl}
                                 onChange={setLeadSignatureUrl}
@@ -422,8 +422,8 @@ export default function AdminCertificates() {
                 {/* Status Message */}
                 {status && (
                     <div className={`p-4 rounded-xl flex items-start gap-3 border ${status.type === "success"
-                            ? "bg-green-500/10 border-green-500/20 text-green-400"
-                            : "bg-red-500/10 border-red-500/20 text-red-400"
+                        ? "bg-green-500/10 border-green-500/20 text-green-400"
+                        : "bg-red-500/10 border-red-500/20 text-red-400"
                         }`}>
                         {status.type === "success" ? <CheckCircle className="w-5 h-5 mt-0.5" /> : <XCircle className="w-5 h-5 mt-0.5" />}
                         <div>
@@ -627,8 +627,8 @@ export default function AdminCertificates() {
                     {/* Kahoot Status */}
                     {kahootStatus && (
                         <div className={`p-4 rounded-xl flex items-start gap-3 border mb-4 ${kahootStatus.type === "success"
-                                ? "bg-green-500/10 border-green-500/20 text-green-400"
-                                : "bg-red-500/10 border-red-500/20 text-red-400"
+                            ? "bg-green-500/10 border-green-500/20 text-green-400"
+                            : "bg-red-500/10 border-red-500/20 text-red-400"
                             }`}>
                             {kahootStatus.type === "success" ? <CheckCircle className="w-5 h-5 mt-0.5" /> : <XCircle className="w-5 h-5 mt-0.5" />}
                             <div>
@@ -797,7 +797,7 @@ export default function AdminCertificates() {
                                     <div className={`p-4 rounded-xl flex items-start gap-3 border ${kahootEditStatus.type === "success"
                                         ? "bg-green-500/10 border-green-500/20 text-green-400"
                                         : "bg-red-500/10 border-red-500/20 text-red-400"
-                                    }`}>
+                                        }`}>
                                         {kahootEditStatus.type === "success" ? <CheckCircle className="w-5 h-5 mt-0.5" /> : <XCircle className="w-5 h-5 mt-0.5" />}
                                         <div>
                                             <p className="text-sm font-bold">{kahootEditStatus.type === "success" ? "Success" : "Error"}</p>

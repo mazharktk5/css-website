@@ -113,7 +113,7 @@ export async function POST(request) {
 
         const result = await CertificateRecord.bulkWrite(ops);
 
-        return NextResponse.json({ 
+        return NextResponse.json({
             message: "Records processed successfully",
             details: `${result.upsertedCount} new, ${result.modifiedCount} updated`
         }, { status: 201 });
