@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
-import { Upload, Trash2, Search, FileText, Download, CheckCircle, XCircle, AlertCircle, Trophy } from "lucide-react";
+import { Upload, Trash2, Search, FileText, Download, CheckCircle, XCircle, AlertCircle, Trophy, Pencil, X } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import ImageUpload from "@/components/Admin/ImageUpload";
 
@@ -25,6 +25,18 @@ export default function AdminCertificates() {
         { name: "", email: "" },
         { name: "", email: "" },
     ]);
+
+    // Kahoot edit state
+    const [editingKahootBatch, setEditingKahootBatch] = useState(null); // original session name
+    const [kahootEditSessionName, setKahootEditSessionName] = useState("");
+    const [kahootEditSessionDate, setKahootEditSessionDate] = useState("");
+    const [kahootEditWinners, setKahootEditWinners] = useState([
+        { name: "", email: "", position: 1 },
+        { name: "", email: "", position: 2 },
+        { name: "", email: "", position: 3 },
+    ]);
+    const [kahootEditStatus, setKahootEditStatus] = useState(null);
+    const [kahootEditSaving, setKahootEditSaving] = useState(false);
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
@@ -227,6 +239,99 @@ export default function AdminCertificates() {
             setKahootStatus({ type: "error", message: err.message || "Network error." });
         }
         setKahootImporting(false);
+    };
+
+    // ── Kahoot edit handlers ───────────────────────────────────────────────────
+    const handleKahootEditOpen = async (batch) => {
+        setKahootEditStatus(null);
+        try {
+            const res = await fetch(
+                `/api/certificates?eventName=${encodeURIComponent(batch._id)}&type=kahoot`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            const records = await res.json();
+
+            const winners = [
+                { name: "", email: "", position: 1 },
+                { name: "", email: "", position: 2 },
+                { name: "", email: "", position: 3 },
+            ];
+            if (Array.isArray(records)) {
+                records.forEach(r => {
+                    const idx = (r.position ?? 1) - 1;
+                    if (idx >= 0 && idx < 3) {
+                        winners[idx] = { name: r.fullName, email: r.email, position: r.position ?? idx + 1 };
+                    }
+                });
+                const firstRecord = records[0];
+                setKahootEditSessionDate(
+                    firstRecord?.sessionDate
+                        ? new Date(firstRecord.sessionDate).toISOString().slice(0, 10)
+                        : ""
+                );
+            }
+
+            setKahootEditWinners(winners);
+            setKahootEditSessionName(batch._id);
+            setEditingKahootBatch(batch._id);
+        } catch {
+            setKahootEditStatus({ type: "error", message: "Failed to load batch records." });
+        }
+    };
+
+    const handleKahootEditSubmit = async (e) => {
+        e.preventDefault();
+        if (!kahootEditSessionName || !kahootEditSessionDate) {
+            setKahootEditStatus({ type: "error", message: "Session Name and Date are required." });
+            return;
+        }
+
+        const filled = kahootEditWinners.filter(w => w.name.trim() && w.email.trim());
+        if (filled.length === 0) {
+            setKahootEditStatus({ type: "error", message: "Enter at least one winner's name and email." });
+            return;
+        }
+
+        setKahootEditSaving(true);
+        setKahootEditStatus(null);
+
+        try {
+            // If the session name changed, delete the old batch first
+            if (kahootEditSessionName.trim() !== editingKahootBatch) {
+                await fetch(
+                    `/api/certificates?eventName=${encodeURIComponent(editingKahootBatch)}&type=kahoot`,
+                    { method: "DELETE", headers: { Authorization: `Bearer ${token}` } }
+                );
+            }
+
+            const formattedRecords = filled.map((w, i) => ({
+                fullName: w.name.trim(),
+                email: w.email.trim().toLowerCase(),
+                eventName: kahootEditSessionName.trim(),
+                description: "",
+                type: "kahoot",
+                position: w.position ?? i + 1,
+                sessionDate: kahootEditSessionDate,
+            }));
+
+            const res = await fetch("/api/certificates", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                body: JSON.stringify({ records: formattedRecords }),
+            });
+
+            if (res.ok) {
+                setKahootEditStatus({ type: "success", message: "Batch updated successfully!" });
+                setEditingKahootBatch(null);
+                fetchKahootBatches();
+            } else {
+                const err = await res.json();
+                setKahootEditStatus({ type: "error", message: err.error || "Failed to update batch." });
+            }
+        } catch (err) {
+            setKahootEditStatus({ type: "error", message: err.message || "Network error." });
+        }
+        setKahootEditSaving(false);
     };
 
     return (
@@ -583,13 +688,22 @@ export default function AdminCertificates() {
                                                     <span className="text-gray-500 text-xs">{new Date(batch.lastUpdated).toLocaleDateString()}</span>
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
-                                                    <button
-                                                        onClick={() => setDeleteModal({ open: true, eventName: batch._id, type: 'batch', certType: 'kahoot' })}
-                                                        className="p-2 rounded-lg hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-colors flex items-center gap-2 text-xs font-bold ml-auto"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                        <span className="hidden md:inline">Delete Batch</span>
-                                                    </button>
+                                                    <div className="flex items-center justify-end gap-2">
+                                                        <button
+                                                            onClick={() => handleKahootEditOpen(batch)}
+                                                            className="p-2 rounded-lg hover:bg-yellow-500/10 text-gray-400 hover:text-yellow-400 transition-colors flex items-center gap-2 text-xs font-bold"
+                                                        >
+                                                            <Pencil className="w-4 h-4" />
+                                                            <span className="hidden md:inline">Edit Batch</span>
+                                                        </button>
+                                                        <button
+                                                            onClick={() => setDeleteModal({ open: true, eventName: batch._id, type: 'batch', certType: 'kahoot' })}
+                                                            className="p-2 rounded-lg hover:bg-red-500/10 text-gray-400 hover:text-red-400 transition-colors flex items-center gap-2 text-xs font-bold"
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                            <span className="hidden md:inline">Delete Batch</span>
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))
@@ -598,6 +712,120 @@ export default function AdminCertificates() {
                             </table>
                         </div>
                     </div>
+
+                    {/* Kahoot Edit Panel */}
+                    {editingKahootBatch && (
+                        <div className="mt-6 bg-yellow-500/5 border border-yellow-500/20 rounded-2xl overflow-hidden">
+                            <div className="p-4 border-b border-yellow-500/20 flex items-center justify-between">
+                                <div className="flex items-center gap-3">
+                                    <Pencil className="w-4 h-4 text-yellow-400" />
+                                    <h3 className="text-sm font-bold text-white">
+                                        Editing: <span className="text-yellow-400">{editingKahootBatch}</span>
+                                    </h3>
+                                </div>
+                                <button
+                                    onClick={() => { setEditingKahootBatch(null); setKahootEditStatus(null); }}
+                                    className="p-1.5 rounded-lg hover:bg-white/10 text-gray-400 hover:text-white transition-colors"
+                                >
+                                    <X className="w-4 h-4" />
+                                </button>
+                            </div>
+
+                            <form onSubmit={handleKahootEditSubmit} className="p-6 space-y-6">
+                                <div className="grid md:grid-cols-2 gap-6">
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Session Name</label>
+                                        <input
+                                            type="text"
+                                            value={kahootEditSessionName}
+                                            onChange={(e) => setKahootEditSessionName(e.target.value)}
+                                            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                            required
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Session Date</label>
+                                        <input
+                                            type="date"
+                                            value={kahootEditSessionDate}
+                                            onChange={(e) => setKahootEditSessionDate(e.target.value)}
+                                            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                            required
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    {["🥇 1st Place", "🥈 2nd Place", "🥉 3rd Place"].map((label, i) => (
+                                        <div key={i} className="grid md:grid-cols-2 gap-4 p-4 bg-white/[0.02] border border-white/[0.05] rounded-xl">
+                                            <div className="md:col-span-2">
+                                                <span className="text-xs font-black uppercase tracking-widest text-yellow-400">{label}</span>
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Full Name</label>
+                                                <input
+                                                    type="text"
+                                                    placeholder="Winner's full name"
+                                                    value={kahootEditWinners[i].name}
+                                                    onChange={(e) => {
+                                                        const updated = [...kahootEditWinners];
+                                                        updated[i] = { ...updated[i], name: e.target.value };
+                                                        setKahootEditWinners(updated);
+                                                    }}
+                                                    className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                                />
+                                            </div>
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-bold uppercase tracking-widest text-gray-500">Email</label>
+                                                <input
+                                                    type="email"
+                                                    placeholder="winner@example.com"
+                                                    value={kahootEditWinners[i].email}
+                                                    onChange={(e) => {
+                                                        const updated = [...kahootEditWinners];
+                                                        updated[i] = { ...updated[i], email: e.target.value };
+                                                        setKahootEditWinners(updated);
+                                                    }}
+                                                    className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-yellow-500/50 transition-all font-medium"
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {kahootEditStatus && (
+                                    <div className={`p-4 rounded-xl flex items-start gap-3 border ${kahootEditStatus.type === "success"
+                                        ? "bg-green-500/10 border-green-500/20 text-green-400"
+                                        : "bg-red-500/10 border-red-500/20 text-red-400"
+                                    }`}>
+                                        {kahootEditStatus.type === "success" ? <CheckCircle className="w-5 h-5 mt-0.5" /> : <XCircle className="w-5 h-5 mt-0.5" />}
+                                        <div>
+                                            <p className="text-sm font-bold">{kahootEditStatus.type === "success" ? "Success" : "Error"}</p>
+                                            <p className="text-xs opacity-80">{kahootEditStatus.message}</p>
+                                        </div>
+                                    </div>
+                                )}
+
+                                <div className="flex justify-end gap-3">
+                                    <button
+                                        type="button"
+                                        onClick={() => { setEditingKahootBatch(null); setKahootEditStatus(null); }}
+                                        className="px-6 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white border border-white/10 hover:border-white/20 transition-all"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        disabled={kahootEditSaving}
+                                        className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 disabled:opacity-50 text-black font-black px-8 py-2.5 rounded-xl transition-all shadow-lg shadow-yellow-500/20 text-sm uppercase tracking-widest"
+                                    >
+                                        <Trophy className="w-4 h-4" />
+                                        {kahootEditSaving ? "Saving..." : "Save Changes"}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    )}
 
                 </div>
             </div>

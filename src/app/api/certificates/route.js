@@ -13,6 +13,20 @@ export async function GET(request) {
 
         // If it's an admin looking for batches
         const user = verifyAuth(request);
+
+        // Admin: fetch individual records for a specific batch (for edit)
+        if (user && !email) {
+            const batchEventName = searchParams.get("eventName");
+            const batchType = searchParams.get("type");
+            if (batchEventName && batchType) {
+                const records = await CertificateRecord.find({
+                    eventName: batchEventName,
+                    type: batchType,
+                }).sort({ position: 1 });
+                return NextResponse.json(records);
+            }
+        }
+
         if (user && !email) {
             const adminType = searchParams.get("adminType"); // "session" | "kahoot"
             // Existing records without a type field are treated as session certs
