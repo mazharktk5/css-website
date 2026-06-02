@@ -12,10 +12,15 @@ export async function POST() {
         await dbConnect();
 
         // --- Seed Admin ---
-        const existingAdmin = await Admin.findOne({ email: "admin@css.uop.edu.pk" });
-        const hashedPassword = await bcrypt.hash(process.env.ADMIN_SEED_PASSWORD || "cssuop@admin781", 10);
+        const adminEmail = process.env.ADMIN_EMAIL;
+        const adminPassword = process.env.ADMIN_SEED_PASSWORD;
+        if (!adminEmail || !adminPassword) {
+            return NextResponse.json({ error: "ADMIN_EMAIL and ADMIN_SEED_PASSWORD must be set in environment variables." }, { status: 500 });
+        }
+        const existingAdmin = await Admin.findOne({ email: adminEmail });
+        const hashedPassword = await bcrypt.hash(adminPassword, 10);
         if (!existingAdmin) {
-            await Admin.create({ email: "admin@css.uop.edu.pk", password: hashedPassword });
+            await Admin.create({ email: adminEmail, password: hashedPassword });
         } else {
             existingAdmin.password = hashedPassword;
             await existingAdmin.save();
@@ -120,7 +125,7 @@ export async function POST() {
 
         return NextResponse.json({
             message: "Database seeded successfully!",
-            admin: "admin@css.uop.edu.pk / admin123",
+            admin: adminEmail,
         });
     } catch (error) {
         return NextResponse.json({ error: "Seed failed: " + error.message }, { status: 500 });
