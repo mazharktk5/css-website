@@ -50,6 +50,8 @@ export default function Navbar() {
                             alt="CSS Logo"
                             fill
                             sizes="44px"
+                            loading="eager"
+                            priority
                             className="rounded-full object-cover border-2 border-white/20 shadow-inner"
                         />
                     </div>
