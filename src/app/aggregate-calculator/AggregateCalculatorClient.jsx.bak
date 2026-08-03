@@ -1,0 +1,426 @@
+"use client";
+
+import { useState, useEffect, useRef, useCallback } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import {
+  Instagram,
+  Linkedin,
+  Calculator,
+  GraduationCap,
+  BookOpen,
+  FlaskConical,
+  Trophy,
+  RotateCcw,
+  ChevronDown,
+  AlertCircle,
+  CheckCircle2,
+  TrendingUp,
+  Star,
+  ArrowLeft,
+} from "lucide-react";
+
+/* ─── count-up hook ─── */
+function useCountUp(target, duration = 1400, active = false) {
+  const [value, setValue] = useState(0);
+  const raf = useRef(null);
+
+  useEffect(() => {
+    if (!active) { setValue(0); return; }
+    let t0 = null;
+    const tick = (ts) => {
+      if (!t0) t0 = ts;
+      const p = Math.min((ts - t0) / duration, 1);
+      const e = 1 - Math.pow(1 - p, 3);          // ease-out cubic
+      setValue(parseFloat((e * target).toFixed(2)));
+      if (p < 1) raf.current = requestAnimationFrame(tick);
+      else setValue(target);
+    };
+    raf.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf.current);
+  }, [target, duration, active]);
+
+  return value;
+}
+
+/* ─── field component ─── */
+function InputField({ label, icon: Icon, obtained, total, onObtained, onTotal, totalOptions, error }) {
+  return (
+    <div className={`relative rounded-2xl border ${error ? "border-red-400" : "border-slate-200"} bg-white p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-0.5`}>
+      <div className="flex items-center gap-3 mb-5">
+        <div className="p-2.5 rounded-xl bg-[#1e3a8a] shadow-sm">
+          <Icon className="w-5 h-5 text-white" />
+        </div>
+        <h3 className="text-base font-bold text-slate-800">{label}</h3>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Obtained</label>
+          <input
+            type="number"
+            min="0"
+            max={total}
+            value={obtained}
+            onChange={(e) => onObtained(e.target.value)}
+            placeholder="e.g. 950"
+            className={`w-full rounded-xl border ${error ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50"} px-4 py-3 text-sm font-semibold text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a] transition`}
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Total</label>
+          {totalOptions ? (
+            <div className="relative">
+              <select
+                value={total}
+                onChange={(e) => onTotal(e.target.value)}
+                className="w-full appearance-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a] transition pr-8 cursor-pointer"
+              >
+                {totalOptions.map((o) => (<option key={o} value={o}>{o}</option>))}
+              </select>
+              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+            </div>
+          ) : (
+            <input type="number" value={total} readOnly className="w-full rounded-xl border border-slate-200 bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-400 cursor-not-allowed" />
+          )}
+        </div>
+      </div>
+
+      {error && (
+        <div className="mt-3 flex items-center gap-1.5 text-red-500">
+          <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+          <span className="text-xs font-medium">{error}</span>
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── main page ─── */
+export default function AggregateCalculator() {
+  const [matric, setMatric] = useState({ obtained: "", total: "1100" });
+  const [fsc, setFsc] = useState({ obtained: "", total: "1100" });
+  const [test, setTest] = useState({ obtained: "", total: "50" });
+  const [errors, setErrors] = useState({});
+  const [result, setResult] = useState(null);
+  const [animating, setAnimating] = useState(false);
+  const resultRef = useRef(null);
+
+  const animatedAggregate = useCountUp(result?.aggregate ?? 0, 1400, animating);
+
+  const validate = useCallback(() => {
+    const errs = {};
+    const check = (key, obtained, total, name) => {
+      const o = obtained.trim ? obtained.trim() : String(obtained);
+      if (o === "") { errs[key] = `${name} marks are required`; return; }
+      const n = Number(o), m = Number(total);
+      if (isNaN(n) || n < 0) { errs[key] = "Must be a non-negative number"; return; }
+      if (n > m) { errs[key] = `Cannot exceed total marks (${m})`; }
+    };
+    check("matric", matric.obtained, matric.total, "Matric obtained");
+    check("fsc", fsc.obtained, fsc.total, "FSc obtained");
+    check("test", test.obtained, test.total, "Entry test obtained");
+    return errs;
+  }, [matric, fsc, test]);
+
+  const calculate = () => {
+    const errs = validate();
+    setErrors(errs);
+    if (Object.keys(errs).length > 0) return;
+
+    const mp = (Number(matric.obtained) / Number(matric.total)) * 100;
+    const fp = (Number(fsc.obtained) / Number(fsc.total)) * 100;
+    const tp = (Number(test.obtained) / Number(test.total)) * 100;
+    const ag = mp * 0.20 + fp * 0.30 + tp * 0.50;
+
+    setResult({ matricPct: mp, fscPct: fp, testPct: tp, aggregate: parseFloat(ag.toFixed(2)) });
+    setAnimating(false);
+    setTimeout(() => {
+      setAnimating(true);
+      resultRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 80);
+  };
+
+  const reset = () => {
+    setMatric({ obtained: "", total: "1100" });
+    setFsc({ obtained: "", total: "1100" });
+    setTest({ obtained: "", total: "50" });
+    setErrors({});
+    setResult(null);
+    setAnimating(false);
+  };
+
+  const getGrade = (agg) => {
+    if (agg >= 80) return { label: "Excellent", color: "text-emerald-600 dark:text-emerald-400" };
+    if (agg >= 65) return { label: "Good", color: "text-green-600 dark:text-green-400" };
+    if (agg >= 50) return { label: "Average", color: "text-yellow-600 dark:text-yellow-400" };
+    return { label: "Below Average", color: "text-red-500 dark:text-red-400" };
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 font-sans">
+
+      {/* ── Hero ── */}
+      <section className="relative bg-[#1e3a8a] overflow-hidden pt-24 pb-20">
+        <div className="absolute top-[-200px] right-[-200px] w-[500px] h-[500px] bg-white/5 rounded-full blur-[140px]" />
+        <div className="absolute bottom-[-200px] left-[-200px] w-[400px] h-[400px] bg-black/10 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(white 1px, transparent 1px)", backgroundSize: "36px 36px" }} />
+
+        <div className="relative max-w-4xl mx-auto px-5 text-center">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-blue-300 hover:text-white text-sm font-medium mb-8 transition">
+            <ArrowLeft className="w-4 h-4" /> Back to Home
+          </Link>
+
+          <div className="flex justify-center mb-6">
+            <div className="relative w-20 h-20 rounded-full border-4 border-white/30 shadow-2xl overflow-hidden">
+              <Image src="/images/logo/cssfinallogo.jpeg" alt="CSS UoP Logo" fill sizes="80px" className="object-cover" />
+            </div>
+          </div>
+
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 backdrop-blur-sm rounded-full px-4 py-1.5 mb-4">
+            <GraduationCap className="w-4 h-4 text-blue-300" />
+            <span className="text-blue-100 text-xs font-bold tracking-widest uppercase">University of Peshawar</span>
+          </div>
+
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight mb-4">
+            Aggregate<br />
+            <span className="text-blue-300">Calculator</span>
+          </h1>
+          <p className="text-blue-100 text-base sm:text-lg max-w-xl mx-auto leading-relaxed">
+            Calculate your UoP admission aggregate instantly. Enter your Matric, FSc, and Entry Test marks to get started.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-3 mt-8">
+            {[
+              { icon: BookOpen, label: "Matric", weight: "20%" },
+              { icon: GraduationCap, label: "FSc", weight: "30%" },
+              { icon: FlaskConical, label: "Entry Test", weight: "50%" },
+            ].map(({ icon: Icon, label, weight }) => (
+              <div key={label} className="flex items-center gap-2 bg-white/15 border border-white/25 backdrop-blur-sm rounded-full px-5 py-2">
+                <Icon className="w-4 h-4 text-blue-300" />
+                <span className="text-white text-sm font-bold">{weight}</span>
+                <span className="text-blue-200 text-sm">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Calculator Form ── */}
+      <section className="max-w-5xl mx-auto px-5 py-14">
+        <div className="grid md:grid-cols-3 gap-5">
+          <InputField
+            label="Matric Marks"
+            icon={BookOpen}
+            obtained={matric.obtained}
+            total={matric.total}
+            onObtained={(v) => { setMatric((p) => ({ ...p, obtained: v })); setErrors((e) => ({ ...e, matric: undefined })); }}
+            onTotal={(v) => setMatric((p) => ({ ...p, total: v }))}
+            totalOptions={["1100", "1200"]}
+            error={errors.matric}
+          />
+          <InputField
+            label="FSc / Intermediate"
+            icon={GraduationCap}
+            obtained={fsc.obtained}
+            total={fsc.total}
+            onObtained={(v) => { setFsc((p) => ({ ...p, obtained: v })); setErrors((e) => ({ ...e, fsc: undefined })); }}
+            onTotal={(v) => setFsc((p) => ({ ...p, total: v }))}
+            totalOptions={["600", "1100", "1200"]}
+            error={errors.fsc}
+          />
+          <InputField
+            label="Entry Test"
+            icon={FlaskConical}
+            obtained={test.obtained}
+            total={test.total}
+            onObtained={(v) => { setTest((p) => ({ ...p, obtained: v })); setErrors((e) => ({ ...e, test: undefined })); }}
+            onTotal={null}
+            totalOptions={null}
+            error={errors.test}
+          />
+        </div>
+
+        {/* Formula reference */}
+        <div className="mt-6 rounded-2xl bg-[#1e3a8a]/5 border border-[#1e3a8a]/15 p-5">
+          <p className="text-xs font-bold text-[#1e3a8a] uppercase tracking-widest mb-2">Formula Used</p>
+          <p className="text-sm text-slate-700 font-mono">
+            Aggregate = (Matric% × 0.20) + (FSc% × 0.30) + (Test% × 0.50)
+          </p>
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex flex-col sm:flex-row gap-3 mt-7">
+          <button
+            onClick={calculate}
+            className="flex-1 flex items-center justify-center gap-2 bg-[#1e3a8a] hover:bg-[#172e6b] text-white font-bold py-4 px-8 rounded-2xl text-base shadow-lg shadow-[#1e3a8a]/25 hover:shadow-[#1e3a8a]/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200"
+          >
+            <Calculator className="w-5 h-5" />
+            Calculate Aggregate
+          </button>
+          <button
+            onClick={reset}
+            className="flex items-center justify-center gap-2 bg-white border border-slate-200 text-slate-700 font-bold py-4 px-6 rounded-2xl text-base hover:bg-slate-50 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200 shadow-sm"
+          >
+            <RotateCcw className="w-5 h-5" />
+            Reset
+          </button>
+        </div>
+      </section>
+
+      {/* ── Result ── */}
+      {result && (
+        <section ref={resultRef} className="max-w-3xl mx-auto px-5 pb-14">
+          <div className="rounded-3xl bg-white border border-slate-100 shadow-xl shadow-[#1e3a8a]/10 overflow-hidden">
+
+            {/* Result header */}
+            <div className="bg-[#1e3a8a] p-8 text-center">
+              <div className="flex justify-center mb-4">
+                <div className="p-3 bg-white/20 rounded-2xl">
+                  <Trophy className="w-8 h-8 text-white" />
+                </div>
+              </div>
+              <p className="text-blue-200 text-sm font-semibold uppercase tracking-widest mb-2">Your Aggregate</p>
+              <div className="flex items-end justify-center gap-1">
+                <span className="text-7xl sm:text-8xl font-black text-white tabular-nums leading-none">
+                  {animatedAggregate.toFixed(2)}
+                </span>
+                <span className="text-3xl font-bold text-blue-300 mb-2">%</span>
+              </div>
+              {(() => {
+                const g = getGrade(result.aggregate);
+                return (
+                  <div className="mt-3 inline-flex items-center gap-1.5 bg-white/20 rounded-full px-4 py-1">
+                    <Star className="w-3.5 h-3.5 text-yellow-300" />
+                    <span className="text-white text-sm font-bold">{g.label}</span>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Progress bar */}
+            <div className="px-8 pt-6">
+              <div className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
+                <span>0%</span>
+                <span className="text-[#1e3a8a] font-bold">{result.aggregate}%</span>
+                <span>100%</span>
+              </div>
+              <div className="h-4 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-[#1e3a8a] transition-all duration-[1400ms] ease-out"
+                  style={{ width: animating ? `${Math.min(result.aggregate, 100)}%` : "0%" }}
+                />
+              </div>
+            </div>
+
+            {/* Breakdown */}
+            <div className="p-8 grid sm:grid-cols-3 gap-4">
+              {[
+                { label: "Matric Percentage", value: result.matricPct, icon: BookOpen, color: "bg-slate-50 border-slate-100", weight: "20%" },
+                { label: "FSc Percentage", value: result.fscPct, icon: GraduationCap, color: "bg-blue-50 border-blue-100", weight: "30%" },
+                { label: "Test Percentage", value: result.testPct, icon: FlaskConical, color: "bg-[#1e3a8a]/5 border-[#1e3a8a]/15", weight: "50%" },
+              ].map(({ label, value, icon: Icon, color, weight }) => (
+                <div key={label} className={`rounded-2xl border p-4 ${color}`}>
+                  <div className="flex items-center gap-2 mb-3">
+                    <div className="p-1.5 rounded-lg bg-[#1e3a8a]">
+                      <Icon className="w-3.5 h-3.5 text-white" />
+                    </div>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">{weight} weight</span>
+                  </div>
+                  <p className="text-2xl font-black text-slate-800">{parseFloat(value).toFixed(2)}%</p>
+                  <p className="text-xs text-slate-400 mt-0.5">{label}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Hint */}
+            <div className="px-8 pb-8">
+              <div className="flex items-center gap-2 bg-[#1e3a8a]/5 border border-[#1e3a8a]/10 rounded-xl px-4 py-3">
+                <CheckCircle2 className="w-4 h-4 text-[#1e3a8a] shrink-0" />
+                <p className="text-xs text-slate-600 font-medium">
+                  Results are based on official UoP weightage: 20% Matric + 30% FSc + 50% Entry Test.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── How it works ── */}
+      <section className="max-w-3xl mx-auto px-5 pb-16">
+        <div className="rounded-2xl bg-white border border-slate-100 p-8 shadow-sm">
+          <div className="flex items-center gap-2 mb-5">
+            <TrendingUp className="w-5 h-5 text-[#1e3a8a]" />
+            <h2 className="text-base font-black text-slate-800 uppercase tracking-wide">How Aggregate is Calculated</h2>
+          </div>
+          <div className="space-y-3">
+            {[
+              { step: "1", text: "Matric % = (Obtained ÷ Total) × 100 → multiplied by 0.20" },
+              { step: "2", text: "FSc % = (Obtained ÷ Total) × 100 → multiplied by 0.30" },
+              { step: "3", text: "Test % = (Obtained ÷ Total) × 100 → multiplied by 0.50" },
+              { step: "∑", text: "Aggregate = Matric contribution + FSc contribution + Test contribution" },
+            ].map(({ step, text }) => (
+              <div key={step} className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-lg bg-[#1e3a8a] flex items-center justify-center shrink-0 mt-0.5">
+                  <span className="text-white text-xs font-black">{step}</span>
+                </div>
+                <p className="text-sm text-slate-600 font-mono leading-relaxed">{text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Social Footer ── */}
+      <section className="bg-[#1e3a8a] py-14 px-5">
+        <div className="max-w-2xl mx-auto text-center">
+          <div className="flex justify-center mb-5">
+            <div className="relative w-14 h-14 rounded-full border-2 border-white/20 overflow-hidden">
+              <Image src="/images/logo/cssfinallogo.jpeg" alt="CSS Logo" fill sizes="56px" className="object-cover" />
+            </div>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">Need more admission updates?</h2>
+          <p className="text-blue-200 text-sm mb-10">Follow us on social media for the latest news, events, and resources.</p>
+
+          <div className="grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
+            <div className="rounded-2xl bg-white/10 border border-white/15 p-6 text-left hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2.5 rounded-xl bg-gradient-to-br from-pink-500 via-rose-500 to-orange-400">
+                  <Instagram className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-black text-sm">Instagram</p>
+                  <p className="text-blue-200 text-xs">@css.dcs.uop</p>
+                </div>
+              </div>
+              <a href="https://www.instagram.com/css.dcs.uop" target="_blank" rel="noopener noreferrer"
+                className="block w-full text-center bg-gradient-to-r from-pink-600 to-orange-500 hover:from-pink-700 hover:to-orange-600 text-white text-sm font-bold py-2.5 px-4 rounded-xl transition shadow-md">
+                Follow on Instagram
+              </a>
+            </div>
+
+            <div className="rounded-2xl bg-white/10 border border-white/15 p-6 text-left hover:bg-white/15 transition-all duration-300 hover:-translate-y-1">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="p-2.5 rounded-xl bg-[#0077b5]">
+                  <Linkedin className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-black text-sm">LinkedIn</p>
+                  <p className="text-blue-200 text-xs">Computing Students Society</p>
+                </div>
+              </div>
+              <a href="https://www.linkedin.com/company/computing-students-society/" target="_blank" rel="noopener noreferrer"
+                className="block w-full text-center bg-[#0077b5] hover:bg-[#005e8b] text-white text-sm font-bold py-2.5 px-4 rounded-xl transition shadow-md">
+                Follow on LinkedIn
+              </a>
+            </div>
+          </div>
+
+          <p className="mt-10 text-blue-300/60 text-xs">
+            © {new Date().getFullYear()} Computing Students Society · University of Peshawar
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}

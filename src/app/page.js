@@ -6,6 +6,7 @@ const Highlights = dynamic(() => import("../components/Home/EventsPreview"), { l
 const GalleryPreview = dynamic(() => import("../components/Home/GalleryPreview"), { loading: () => <div className="h-96" /> });
 const DevelopersPreview = dynamic(() => import("@/components/Home/DevelopersPreview"), { loading: () => <div className="h-96" /> });
 import PopupWrapper from "@/components/Home/PopupWrapper";
+import AggregateCalcWrapper from "@/components/Home/AggregateCalcWrapper";
 
 export const metadata = {
   title: "Computing Students Society | Empowering Students Through Technology",
@@ -27,6 +28,7 @@ export default function Home() {
         <GalleryPreview />
         <DevelopersPreview />
         <PopupWrapper />
+        <AggregateCalcWrapper />
       </main>
     </>
   );
