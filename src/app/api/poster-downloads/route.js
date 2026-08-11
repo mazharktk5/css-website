@@ -35,7 +35,8 @@ export async function POST(request) {
             try {
                 const result = await cloudinary.uploader.upload(thumbDataUrl, {
                     folder: "css-society/posters",
-                    transformation: [{ width: 540, height: 540, crop: "scale", quality: "auto" }],
+                    // store at 720px — enough for high-quality admin preview and download
+                    transformation: [{ width: 720, height: 720, crop: "scale", quality: 90 }],
                 });
                 posterUrl = result.secure_url;
             } catch {

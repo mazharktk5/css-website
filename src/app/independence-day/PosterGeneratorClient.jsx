@@ -173,7 +173,28 @@ function drawRRPhoto(ctx, photo, fx, fy, fw, fh, fr, borderColor, glowColor) {
     rrPath(ctx, fx, fy, fw, fh, fr); ctx.stroke();
     ctx.restore();
     if (photo) {
-        clipRRect(ctx, fx, fy, fw, fh, fr, (c) => c.drawImage(photo, fx, fy, fw, fh));
+        clipRRect(ctx, fx, fy, fw, fh, fr, (c) => {
+            // object-cover: fill frame, maintain aspect ratio, centre-crop
+            const iw = photo.naturalWidth || photo.width;
+            const ih = photo.naturalHeight || photo.height;
+            const imgAspect = iw / ih;
+            const frameAspect = fw / fh;
+            let sx, sy, sw, sh;
+            if (imgAspect > frameAspect) {
+                // image wider — crop sides
+                sh = ih;
+                sw = ih * frameAspect;
+                sx = (iw - sw) / 2;
+                sy = 0;
+            } else {
+                // image taller — crop top/bottom
+                sw = iw;
+                sh = iw / frameAspect;
+                sx = 0;
+                sy = (ih - sh) / 2;
+            }
+            c.drawImage(photo, sx, sy, sw, sh, fx, fy, fw, fh);
+        });
     } else {
         ctx.fillStyle = "rgba(0,0,0,0.2)";
         rrPath(ctx, fx, fy, fw, fh, fr); ctx.fill();
@@ -631,12 +652,12 @@ export default function PosterGeneratorClient() {
                 setDownloading(false);
                 setDownloadCount((c) => (c ?? 0) + 1);
 
-                // Background: create 270×270 JPEG thumbnail and save to DB
+                // Background: create 720×720 JPEG and save to DB for better admin quality
                 try {
                     const thumb = document.createElement("canvas");
-                    thumb.width = 270; thumb.height = 270;
-                    thumb.getContext("2d").drawImage(canvas, 0, 0, 270, 270);
-                    const thumbDataUrl = thumb.toDataURL("image/jpeg", 0.72);
+                    thumb.width = 720; thumb.height = 720;
+                    thumb.getContext("2d").drawImage(canvas, 0, 0, 720, 720);
+                    const thumbDataUrl = thumb.toDataURL("image/jpeg", 0.92);
                     fetch("/api/poster-downloads", {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -762,8 +783,8 @@ export default function PosterGeneratorClient() {
                                         key={id}
                                         onClick={() => setTemplate(id)}
                                         className={`shrink-0 w-[90px] sm:w-[105px] relative rounded-xl overflow-hidden border-2 transition-all duration-200 snap-start group ${template === id
-                                                ? "border-[#c8a84b] scale-[1.04] shadow-lg shadow-[#c8a84b]/20"
-                                                : "border-white/10 hover:border-white/25"
+                                            ? "border-[#c8a84b] scale-[1.04] shadow-lg shadow-[#c8a84b]/20"
+                                            : "border-white/10 hover:border-white/25"
                                             }`}
                                     >
                                         <canvas

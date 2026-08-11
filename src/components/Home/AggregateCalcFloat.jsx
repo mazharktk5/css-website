@@ -63,16 +63,16 @@ export default function AggregateCalcFloat() {
 
                         <div className="flex gap-1.5 mb-4">
                             {[
-                                { label: "Emerald", color: "#0d5c2a" },
-                                { label: "Flag", color: "#155e35" },
-                                { label: "Light", color: "#f7f7f7" },
+                                { label: "Savera", color: "#0d4a22" },
+                                { label: "Pehchan", color: "#f7f7f7" },
+                                { label: "Parcham", color: "#0D5E2A" },
                             ].map(({ label, color }) => (
                                 <div
                                     key={label}
                                     className="flex-1 rounded-lg border border-white/15 px-2 py-1.5 text-center"
                                     style={{ background: color }}
                                 >
-                                    <p className={`text-[10px] font-bold ${label === "Light" ? "text-[#0D5E2A]" : "text-white"}`}>
+                                    <p className={`text-[10px] font-bold ${label === "Pehchan" ? "text-[#0D5E2A]" : "text-white"}`}>
                                         {label}
                                     </p>
                                 </div>
