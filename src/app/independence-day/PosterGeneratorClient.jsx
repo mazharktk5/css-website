@@ -223,7 +223,7 @@ function drawNameBlock(ctx, name, role, cx, nameY, divRgba, nameColor, roleColor
 
 // ─── Template 1: Naya Savera (Dark) ───────────────────────────────────────
 
-function drawSavera(ctx, photo, name, role, logo) {
+function drawSavera(ctx, photo, name, role, logo, org, sub) {
     const bg = ctx.createRadialGradient(W / 2, H * 0.4, 0, W / 2, H * 0.5, 800);
     bg.addColorStop(0, "#0d4a22"); bg.addColorStop(1, "#041208");
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
@@ -241,9 +241,9 @@ function drawSavera(ctx, photo, name, role, logo) {
 
     drawLogo(ctx, logo, 70, 62, 55, "rgba(200,168,75,0.7)");
     ctx.fillStyle = "#ffffff"; ctx.font = "bold 26px Arial"; ctx.textAlign = "center";
-    ctx.fillText("COMPUTING STUDENTS SOCIETY", W / 2, 50);
+    ctx.fillText((org || "Computing Students Society").toUpperCase(), W / 2, 50);
     ctx.fillStyle = "rgba(200,168,75,0.72)"; ctx.font = "16px Arial";
-    ctx.fillText("University of Peshawar", W / 2, 78);
+    ctx.fillText(sub || "University of Peshawar", W / 2, 78);
     drawCrescent(ctx, 948, 58, 48, "#c8a84b");
     drawStar(ctx, 1012, 28, 15, "#c8a84b");
     hGLine(ctx, 105, 200, 168, 75, 0.6);
@@ -269,7 +269,7 @@ function drawSavera(ctx, photo, name, role, logo) {
 
 // ─── Template 2: Dil Hai Pakistan ─────────────────────────────────────────
 
-function drawDil(ctx, photo, name, role, logo) {
+function drawDil(ctx, photo, name, role, logo, org, sub) {
     const bg = ctx.createLinearGradient(0, 0, 0, H);
     bg.addColorStop(0, "#062010"); bg.addColorStop(0.5, "#0a3018"); bg.addColorStop(1, "#041208");
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
@@ -296,9 +296,9 @@ function drawDil(ctx, photo, name, role, logo) {
 
     drawLogo(ctx, logo, 70, 62, 55, "rgba(200,168,75,0.7)");
     ctx.fillStyle = "#c8a84b"; ctx.font = "bold 26px Arial"; ctx.textAlign = "center";
-    ctx.fillText("COMPUTING STUDENTS SOCIETY", W / 2, 50);
+    ctx.fillText((org || "Computing Students Society").toUpperCase(), W / 2, 50);
     ctx.fillStyle = "rgba(255,255,255,0.6)"; ctx.font = "16px Arial";
-    ctx.fillText("University of Peshawar", W / 2, 78);
+    ctx.fillText(sub || "University of Peshawar", W / 2, 78);
     drawCrescent(ctx, 948, 58, 48, "#c8a84b");
     drawStar(ctx, 1012, 28, 15, "#c8a84b");
     hGLine(ctx, 105, 200, 168, 75, 0.6);
@@ -324,7 +324,7 @@ function drawDil(ctx, photo, name, role, logo) {
 
 // ─── Template 3: Meri Pehchan (Light) ─────────────────────────────────────
 
-function drawPehchan(ctx, photo, name, role, logo) {
+function drawPehchan(ctx, photo, name, role, logo, org, sub) {
     ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, W, H);
     ctx.fillStyle = "#0D5E2A"; ctx.fillRect(0, 0, W, 145);
     ctx.strokeStyle = "#c8a84b"; ctx.lineWidth = 3;
@@ -340,9 +340,9 @@ function drawPehchan(ctx, photo, name, role, logo) {
 
     drawLogo(ctx, logo, 72, 72, 55, "rgba(255,255,255,0.6)");
     ctx.fillStyle = "#ffffff"; ctx.font = "bold 28px Georgia, serif"; ctx.textAlign = "center";
-    ctx.fillText("Computing Students Society", W / 2, 62);
+    ctx.fillText(org || "Computing Students Society", W / 2, 62);
     ctx.font = "17px Arial"; ctx.fillStyle = "rgba(255,255,255,0.65)";
-    ctx.fillText("University of Peshawar", W / 2, 92);
+    ctx.fillText(sub || "University of Peshawar", W / 2, 92);
     drawCrescent(ctx, 940, 70, 46, "#ffffff");
     drawStar(ctx, 1000, 42, 14, "#ffffff");
 
@@ -379,7 +379,7 @@ function drawPehchan(ctx, photo, name, role, logo) {
 
 // ─── Template 4: Azaadi Mubarak (Ivory) ───────────────────────────────────
 
-function drawAzaadiLight(ctx, photo, name, role, logo) {
+function drawAzaadiLight(ctx, photo, name, role, logo, org, sub) {
     ctx.fillStyle = "#fdf9f0"; ctx.fillRect(0, 0, W, H);
 
     const bm = makeCrescent(330, "rgba(13,94,42,0.05)");
@@ -397,9 +397,9 @@ function drawAzaadiLight(ctx, photo, name, role, logo) {
 
     drawLogo(ctx, logo, 72, 60, 52, "rgba(255,255,255,0.6)");
     ctx.fillStyle = "#ffffff"; ctx.font = "bold 27px Georgia, serif"; ctx.textAlign = "center";
-    ctx.fillText("Computing Students Society", W / 2, 52);
+    ctx.fillText(org || "Computing Students Society", W / 2, 52);
     ctx.font = "17px Arial"; ctx.fillStyle = "rgba(255,255,255,0.65)";
-    ctx.fillText("University of Peshawar", W / 2, 80);
+    ctx.fillText(sub || "University of Peshawar", W / 2, 80);
     drawCrescent(ctx, 942, 58, 44, "#ffffff");
     drawStar(ctx, 1000, 32, 13, "#ffffff");
 
@@ -438,7 +438,7 @@ function drawAzaadiLight(ctx, photo, name, role, logo) {
 
 // ─── Template 5: CSS Azaadi ────────────────────────────────────────────────
 
-function drawCSSAzaadi(ctx, photo, name, role, logo) {
+function drawCSSAzaadi(ctx, photo, name, role, logo, org, sub) {
     const bg = ctx.createLinearGradient(0, 0, W, H);
     bg.addColorStop(0, "#0a1e4a"); bg.addColorStop(0.5, "#0c2d5e"); bg.addColorStop(1, "#0a1e30");
     ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
@@ -463,9 +463,9 @@ function drawCSSAzaadi(ctx, photo, name, role, logo) {
 
     drawLogo(ctx, logo, 70, 62, 55, "rgba(200,168,75,0.7)");
     ctx.fillStyle = "#ffffff"; ctx.font = "bold 26px Arial"; ctx.textAlign = "center";
-    ctx.fillText("COMPUTING STUDENTS SOCIETY", W / 2, 50);
+    ctx.fillText((org || "Computing Students Society").toUpperCase(), W / 2, 50);
     ctx.fillStyle = "rgba(180,210,255,0.65)"; ctx.font = "16px Arial";
-    ctx.fillText("University of Peshawar", W / 2, 78);
+    ctx.fillText(sub || "University of Peshawar", W / 2, 78);
     drawCrescent(ctx, 950, 58, 50, "#c8a84b");
     drawStar(ctx, 1018, 24, 18, "#c8a84b");
 
@@ -491,7 +491,7 @@ function drawCSSAzaadi(ctx, photo, name, role, logo) {
 
 // ─── Template 6: Parcham ──────────────────────────────────────────────────
 
-function drawParcham(ctx, photo, name, role, logo) {
+function drawParcham(ctx, photo, name, role, logo, org, sub) {
     ctx.fillStyle = "#0D5E2A"; ctx.fillRect(0, 0, W, H);
 
     // White left stripe (Pakistan flag proportion)
@@ -528,9 +528,9 @@ function drawParcham(ctx, photo, name, role, logo) {
     // Green area: header
     const gCX = W * 0.62;
     ctx.fillStyle = "#ffffff"; ctx.font = "bold 26px Arial"; ctx.textAlign = "center";
-    ctx.fillText("COMPUTING STUDENTS SOCIETY", gCX, 50);
+    ctx.fillText((org || "Computing Students Society").toUpperCase(), gCX, 50);
     ctx.fillStyle = "rgba(255,255,255,0.6)"; ctx.font = "16px Arial";
-    ctx.fillText("University of Peshawar  \u00b7  Jashn-e-Azaadi 2026", gCX, 80);
+    ctx.fillText(`${sub || "University of Peshawar"}  \u00b7  Jashn-e-Azaadi 2026`, gCX, 80);
     hGLine(ctx, 108, 255, 255, 255, 0.2);
 
     ctx.fillStyle = "#e8d060"; ctx.textAlign = "center";
@@ -559,14 +559,14 @@ function drawParcham(ctx, photo, name, role, logo) {
 
 // ─── Drawing dispatcher ────────────────────────────────────────────────────
 
-function renderTemplate(ctx, templateId, photo, name, role, logo) {
+function renderTemplate(ctx, templateId, photo, name, role, logo, org, sub) {
     ctx.clearRect(0, 0, W, H);
-    if (templateId === "savera") drawSavera(ctx, photo, name, role, logo);
-    else if (templateId === "dil") drawDil(ctx, photo, name, role, logo);
-    else if (templateId === "pehchan") drawPehchan(ctx, photo, name, role, logo);
-    else if (templateId === "azaadi") drawAzaadiLight(ctx, photo, name, role, logo);
-    else if (templateId === "cssazaadi") drawCSSAzaadi(ctx, photo, name, role, logo);
-    else drawParcham(ctx, photo, name, role, logo);
+    if (templateId === "savera") drawSavera(ctx, photo, name, role, logo, org, sub);
+    else if (templateId === "dil") drawDil(ctx, photo, name, role, logo, org, sub);
+    else if (templateId === "pehchan") drawPehchan(ctx, photo, name, role, logo, org, sub);
+    else if (templateId === "azaadi") drawAzaadiLight(ctx, photo, name, role, logo, org, sub);
+    else if (templateId === "cssazaadi") drawCSSAzaadi(ctx, photo, name, role, logo, org, sub);
+    else drawParcham(ctx, photo, name, role, logo, org, sub);
 }
 
 
@@ -580,9 +580,16 @@ export default function PosterGeneratorClient() {
     const [downloading, setDownloading] = useState(false);
     const [thumbsReady, setThumbsReady] = useState(false);
     const [downloadCount, setDownloadCount] = useState(null);
+    // Org customization
+    const [orgName, setOrgName] = useState("Computing Students Society");
+    const [orgSub, setOrgSub] = useState("University of Peshawar");
+    const [customLogoImg, setCustomLogoImg] = useState(null);
+    const [customLogoThumb, setCustomLogoThumb] = useState(null);
+    const [showCustomize, setShowCustomize] = useState(false);
 
     const canvasRef = useRef(null);
     const fileRef = useRef(null);
+    const logoFileRef = useRef(null);
     const thumbRefs = useRef({});
 
     // Load CSS Society logo once
@@ -604,10 +611,11 @@ export default function PosterGeneratorClient() {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
-        renderTemplate(canvas.getContext("2d"), template, photoImg, name, role, cssLogo);
-    }, [template, name, role, photoImg, cssLogo]);
+        const activeLogo = customLogoImg || cssLogo;
+        renderTemplate(canvas.getContext("2d"), template, photoImg, name, role, activeLogo, orgName, orgSub);
+    }, [template, name, role, photoImg, cssLogo, customLogoImg, orgName, orgSub]);
 
-    // Draw static thumbnails after logo loads (or on mount if logo not needed)
+    // Draw static thumbnails (always use CSS defaults for previews)
     useEffect(() => {
         const scale = 240 / W;
         TEMPLATES.forEach(({ id }) => {
@@ -616,7 +624,8 @@ export default function PosterGeneratorClient() {
             const ctx = canvas.getContext("2d");
             ctx.save();
             ctx.scale(scale, scale);
-            renderTemplate(ctx, id, null, "Your Name", "CSS Society", cssLogo);
+            renderTemplate(ctx, id, null, "Your Name", "CSS Society", cssLogo,
+                "Computing Students Society", "University of Peshawar");
             ctx.restore();
         });
         setThumbsReady(true);
@@ -635,6 +644,22 @@ export default function PosterGeneratorClient() {
         };
         reader.readAsDataURL(file);
     };
+
+    const handleLogoUpload = (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const src = ev.target.result;
+            setCustomLogoThumb(src);
+            const img = new window.Image();
+            img.onload = () => setCustomLogoImg(img);
+            img.src = src;
+        };
+        reader.readAsDataURL(file);
+    };
+
+    const resetLogo = () => { setCustomLogoImg(null); setCustomLogoThumb(null); };
 
     const handleDownload = useCallback(() => {
         const canvas = canvasRef.current;
@@ -875,6 +900,108 @@ export default function PosterGeneratorClient() {
                                     className="w-full bg-white/6 border border-white/12 rounded-xl px-4 py-3 text-white placeholder-white/22 text-sm focus:outline-none focus:border-[#c8a84b]/55 focus:bg-white/10 transition"
                                 />
                             </div>
+                        </section>
+
+                        {/* Customize Organization (collapsible) */}
+                        <section className="rounded-2xl bg-white/5 border border-white/8 overflow-hidden">
+                            <button
+                                onClick={() => setShowCustomize(v => !v)}
+                                className="w-full flex items-center justify-between px-4 py-3 text-left"
+                            >
+                                <span className="text-[10px] font-bold uppercase tracking-widest text-white/45">
+                                    Customize Organization
+                                </span>
+                                <span className={`text-white/30 text-xs transition-transform duration-200 ${showCustomize ? "rotate-180" : ""}`}>
+                                    ▼
+                                </span>
+                            </button>
+
+                            {showCustomize && (
+                                <div className="px-4 pb-4 space-y-3 border-t border-white/8 pt-3">
+                                    {/* Logo upload */}
+                                    <div>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-white/45 mb-2">
+                                            Logo (optional)
+                                        </label>
+                                        <div className="flex items-center gap-3">
+                                            <div
+                                                onClick={() => logoFileRef.current?.click()}
+                                                className="w-12 h-12 rounded-full overflow-hidden border-2 border-white/20 cursor-pointer hover:border-[#c8a84b]/60 transition shrink-0 bg-white/5 flex items-center justify-center"
+                                            >
+                                                {customLogoThumb ? (
+                                                    <img src={customLogoThumb} alt="Logo" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <img src="/images/logo/cssfinallogo.jpeg" alt="CSS Logo" className="w-full h-full object-cover opacity-60" />
+                                                )}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                                <button
+                                                    onClick={() => logoFileRef.current?.click()}
+                                                    className="text-xs text-[#c8a84b] hover:text-[#d6b85c] font-semibold block truncate"
+                                                >
+                                                    {customLogoThumb ? "Change logo" : "Upload custom logo"}
+                                                </button>
+                                                {customLogoThumb && (
+                                                    <button onClick={resetLogo} className="text-[10px] text-white/35 hover:text-white/60 mt-0.5">
+                                                        Reset to CSS logo
+                                                    </button>
+                                                )}
+                                                {!customLogoThumb && (
+                                                    <p className="text-[10px] text-white/25 mt-0.5">Defaults to CSS Society logo</p>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <input
+                                            ref={logoFileRef}
+                                            type="file"
+                                            accept="image/jpeg,image/png,image/webp"
+                                            className="hidden"
+                                            onChange={handleLogoUpload}
+                                        />
+                                    </div>
+
+                                    {/* Org name */}
+                                    <div>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-white/45 mb-2">
+                                            Organization Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={orgName}
+                                            onChange={(e) => setOrgName(e.target.value)}
+                                            placeholder="Computing Students Society"
+                                            maxLength={50}
+                                            className="w-full bg-white/6 border border-white/12 rounded-xl px-4 py-2.5 text-white placeholder-white/22 text-sm focus:outline-none focus:border-[#c8a84b]/55 focus:bg-white/10 transition"
+                                        />
+                                    </div>
+
+                                    {/* Sub-text */}
+                                    <div>
+                                        <label className="block text-[10px] font-bold uppercase tracking-widest text-white/45 mb-2">
+                                            Sub-text
+                                        </label>
+                                        <input
+                                            type="text"
+                                            value={orgSub}
+                                            onChange={(e) => setOrgSub(e.target.value)}
+                                            placeholder="University of Peshawar"
+                                            maxLength={50}
+                                            className="w-full bg-white/6 border border-white/12 rounded-xl px-4 py-2.5 text-white placeholder-white/22 text-sm focus:outline-none focus:border-[#c8a84b]/55 focus:bg-white/10 transition"
+                                        />
+                                    </div>
+
+                                    <button
+                                        onClick={() => {
+                                            setOrgName("Computing Students Society");
+                                            setOrgSub("University of Peshawar");
+                                            resetLogo();
+                                        }}
+                                        className="text-[10px] text-white/30 hover:text-white/55 transition"
+                                    >
+                                        Reset all to defaults
+                                    </button>
+                                </div>
+                            )}
                         </section>
 
                         {/* Download */}
