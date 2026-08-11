@@ -2,32 +2,36 @@
 
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
-import { CalendarDays, Image, Users, TrendingUp, Youtube } from "lucide-react";
+import { CalendarDays, Image, Users, TrendingUp, Youtube, Flag } from "lucide-react";
 
 export default function AdminDashboard() {
-    const [stats, setStats] = useState({ events: 0, gallery: 0, team: 0, videos: 0 });
+    const [stats, setStats] = useState({ events: 0, gallery: 0, team: 0, videos: 0, posters: 0 });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
+            const token = localStorage.getItem("admin_token");
             try {
-                const [eventsRes, galleryRes, teamRes, vidoesRes] = await Promise.all([
+                const [eventsRes, galleryRes, teamRes, vidoesRes, postersRes] = await Promise.all([
                     fetch("/api/events"),
                     fetch("/api/gallery"),
                     fetch("/api/team"),
                     fetch("/api/videos"),
+                    fetch("/api/poster-downloads", { headers: { Authorization: `Bearer ${token}` } }),
                 ]);
-                const [events, gallery, team, videos] = await Promise.all([
+                const [events, gallery, team, videos, postersData] = await Promise.all([
                     eventsRes.json(),
                     galleryRes.json(),
                     teamRes.json(),
                     vidoesRes.json(),
+                    postersRes.json(),
                 ]);
                 setStats({
                     events: Array.isArray(events) ? events.length : 0,
                     gallery: Array.isArray(gallery) ? gallery.length : 0,
                     team: Array.isArray(team) ? team.length : 0,
                     videos: Array.isArray(videos) ? videos.length : 0,
+                    posters: Array.isArray(postersData) ? postersData.length : 0,
                 });
             } catch (err) {
                 console.error("Failed to fetch stats:", err);
@@ -65,6 +69,13 @@ export default function AdminDashboard() {
             icon: Users,
             gradient: "from-emerald-600 to-teal-500",
             shadow: "shadow-emerald-500/20",
+        },
+        {
+            title: "Poster Downloads",
+            value: stats.posters,
+            icon: Flag,
+            gradient: "from-green-700 to-emerald-500",
+            shadow: "shadow-green-500/20",
         },
     ];
 

@@ -148,6 +148,7 @@ const Events = () => {
                                             src={event.image || "/images/gallery/placeholder.jpg"}
                                             alt={event.title}
                                             fill
+                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                             className="object-cover transition-transform duration-500 group-hover:scale-105 rounded-t-2xl"
                                         />
                                         <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 rounded-full text-[10px] font-bold uppercase text-[#1e3a8a] border border-slate-200">
