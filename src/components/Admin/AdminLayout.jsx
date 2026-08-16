@@ -29,7 +29,7 @@ const navItems = [
     { name: "Videos", href: "/admin/videos", icon: Youtube },
     { name: "Team", href: "/admin/team", icon: Users },
     { name: "Certificates", href: "/admin/certificates", icon: FileCheck },
-    { name: "Posters", href: "/admin/posters", icon: Flag },
+    // { name: "Posters", href: "/admin/posters", icon: Flag }, // disabled
 ];
 
 export default function AdminLayout({ children }) {
