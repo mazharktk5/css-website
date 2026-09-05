@@ -76,7 +76,7 @@ export default function CertificateCanvas({
             } else if (roleLower.includes("ai club") || (roleLower.includes("ai") && roleLower.includes("lead"))) {
                 matchedFile = "ai_club_lead.jpeg";
             } else if (roleLower.includes("trainer") || roleLower.includes("speaker")) {
-                matchedFile = "trainer.jpeg";
+                matchedFile = "trainer_signature.jpeg";
             } else if (
                 roleLower.includes("chief") ||
                 roleLower.includes("organizer") ||
