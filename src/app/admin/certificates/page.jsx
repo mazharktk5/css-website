@@ -410,7 +410,7 @@ export default function AdminCertificates() {
                                 onChange={setLeadSignatureUrl}
                             />
                             <p className="text-[10px] text-blue-400 mt-2 italic px-2">
-                                * Auto-match rules: &quot;<span className="text-green-400 font-semibold">SE Club Lead</span>&quot; → SE signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">AI Club Lead</span>&quot; → AI signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">Chief Organizer</span>&quot; (or &quot;General&quot;) → Chief Organizer signature. Upload an image here only to override.
+                                * Auto-match rules: &quot;<span className="text-green-400 font-semibold">SE Club Lead</span>&quot; → SE signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">AI Club Lead</span>&quot; → AI signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">Trainer</span>&quot; / &quot;<span className="text-green-400 font-semibold">Speaker</span>&quot; → Trainer signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">Chief Organizer</span>&quot; (or &quot;General&quot;) → Chief Organizer signature. Upload an image here only to override.
                             </p>
                         </div>
                         <p className="md:col-span-2 lg:col-span-3 text-[10px] text-gray-500 italic">

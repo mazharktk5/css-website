@@ -46,12 +46,12 @@ export default function CertificateCanvas({
 
                 // 1. Levels Adjustment & Thresholding
                 for (let i = 0; i < data.length; i += 4) {
-                    let r = data[i], g = data[i+1], b = data[i+2];
-                    
+                    let r = data[i], g = data[i + 1], b = data[i + 2];
+
                     // Boost contrast: Map gray range [120-255] to pure white
                     // This forces shadowy backgrounds to become transparent
                     const luminance = (r + g + b) / 3;
-                    
+
                     if (luminance > 135) {
                         data[i + 3] = 0; // Pure Transparent
                     } else {
@@ -59,8 +59,8 @@ export default function CertificateCanvas({
                         // This makes the signature look sharp even if the photo was blurry
                         const strength = 1.8; // Ink boost factor
                         data[i] = Math.max(0, Math.min(255, r * strength - 100));
-                        data[i+1] = Math.max(0, Math.min(255, g * strength - 100));
-                        data[i+2] = Math.max(0, Math.min(255, b * strength - 100));
+                        data[i + 1] = Math.max(0, Math.min(255, g * strength - 100));
+                        data[i + 2] = Math.max(0, Math.min(255, b * strength - 100));
                     }
                 }
                 tCtx.putImageData(imgData, 0, 0);
@@ -70,11 +70,13 @@ export default function CertificateCanvas({
             // Fuzzy Search for signature files based on keywords in the role
             const roleLower = (rightSignatureRole || "").toLowerCase();
             let matchedFile = null;
-            
+
             if (roleLower.includes("se club") || (roleLower.includes("se") && roleLower.includes("lead"))) {
                 matchedFile = "se_club_lead.jpeg";
             } else if (roleLower.includes("ai club") || (roleLower.includes("ai") && roleLower.includes("lead"))) {
                 matchedFile = "ai_club_lead.jpeg";
+            } else if (roleLower.includes("trainer") || roleLower.includes("speaker")) {
+                matchedFile = "trainer.jpeg";
             } else if (
                 roleLower.includes("chief") ||
                 roleLower.includes("organizer") ||
@@ -149,12 +151,12 @@ export default function CertificateCanvas({
                 words.forEach((word) => {
                     const hasQuote = (word.match(/"/g) || []).length;
                     const isBold = lineInside || word.includes('"');
-                    
+
                     ctx.font = isBold ? "bold 38px 'Inter', sans-serif" : "500 38px 'Inter', sans-serif";
                     const wordWidth = ctx.measureText(word + " ").width;
 
                     const currentLineWidth = currentLine.reduce((acc, w) => {
-                        return acc + ctx.measureText(w + " ").width; 
+                        return acc + ctx.measureText(w + " ").width;
                     }, 0);
 
                     if (currentLineWidth + wordWidth > maxWidth && currentLine.length > 0) {
@@ -178,10 +180,10 @@ export default function CertificateCanvas({
 
             // 1. Draw Student Name (Switched to modern Sans-Serif to match reference)
             ctx.font = "bold 85px 'Inter', sans-serif";
-            ctx.fillText(fullName, canvas.width / 2, canvas.height * 0.485); 
+            ctx.fillText(fullName, canvas.width / 2, canvas.height * 0.485);
 
             // 2. Draw Description (Optimized spacing and size)
-            ctx.fillStyle = "#334155"; 
+            ctx.fillStyle = "#334155";
             drawWrappedText(description, canvas.width / 2, canvas.height * 0.57, canvas.width * 0.65, 54);
 
             // 3. Draw Signatures & Labels
@@ -217,15 +219,15 @@ export default function CertificateCanvas({
             // --- Dynamic Labels (Role Titles) ---
             ctx.textAlign = "center";
             ctx.font = "bold 30px sans-serif"; // Using generic sans-serif for better template match
-            ctx.fillStyle = "#0f172a"; 
-            
+            ctx.fillStyle = "#0f172a";
+
             // Note: President Label is already in the background image.
             // We match its style and vertical alignment for the Lead Role.
 
             // Draw Dynamic Lead Role
             const labelX = canvas.width * 0.72;
             const labelY = canvas.height * 0.855; // Lowered slightly to match President's gap
-            
+
             ctx.fillText(rightSignatureRole || "Club Lead", labelX, labelY);
 
             if (onReady && !hasCalledReady.current) {
@@ -239,7 +241,7 @@ export default function CertificateCanvas({
         <canvas
             ref={canvasRef}
             className={`w-full h-auto border border-gray-200 rounded-lg shadow-inner bg-white ${isPreview ? 'block' : 'hidden'}`}
-            style={{ display: isPreview ? "block" : "none" }} 
+            style={{ display: isPreview ? "block" : "none" }}
         />
     );
 }
