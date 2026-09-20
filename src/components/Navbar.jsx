@@ -28,7 +28,6 @@ export default function Navbar() {
         { name: "Gallery", href: "/gallery" },
         { name: "Alumni", href: "/alumni" },
         { name: "Blog", href: "/blog" },
-        { name: "Watch", href: "/videos" },
         { name: "Certificates", href: "/certificates" },
     ];
 
