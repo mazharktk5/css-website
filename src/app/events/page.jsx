@@ -40,6 +40,21 @@ const Events = () => {
 
     const displayedEvents = filteredEvents;
 
+    const eventsByYear = useMemo(() => {
+        const grouped = {};
+        displayedEvents.forEach((event) => {
+            const year = new Date(event.date).getFullYear();
+            if (!grouped[year]) grouped[year] = [];
+            grouped[year].push(event);
+        });
+        return Object.entries(grouped)
+            .sort(([a], [b]) => Number(b) - Number(a))
+            .map(([year, events]) => ({
+                year: Number(year),
+                events: events.sort((a, b) => new Date(b.date) - new Date(a.date)),
+            }));
+    }, [displayedEvents]);
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
@@ -128,48 +143,58 @@ const Events = () => {
                 </div>
             </div>
 
-            {/* Events Grid/List */}
+            {/* Events by Year */}
             <main className="max-w-7xl mx-auto px-6 mt-10">
                 <AnimatePresence mode="popLayout">
-                    {displayedEvents.length > 0 ? (
-                        <motion.div
-                            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
-                        >
-                            {displayedEvents.map((event, idx) => (
-                                <motion.div
-                                    key={event._id || idx}
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    transition={{ duration: 0.3, delay: idx * 0.05 }}
-                                    className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col"
-                                >
-                                    <div className="relative h-48 w-full">
-                                        <Image
-                                            src={event.image || "/images/gallery/placeholder.jpg"}
-                                            alt={event.title}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                            className="object-cover transition-transform duration-500 group-hover:scale-105 rounded-t-2xl"
-                                        />
-                                        <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 rounded-full text-[10px] font-bold uppercase text-[#1e3a8a] border border-slate-200">
-                                            {event.category}
-                                        </span>
+                    {eventsByYear.length > 0 ? (
+                        <div className="space-y-20">
+                            {eventsByYear.map(({ year, events }) => (
+                                <section key={year}>
+                                    <div className="flex items-center gap-6 mb-10">
+                                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
+                                            {year}
+                                        </h2>
+                                        <div className="flex-1 h-[1px] bg-slate-200" />
                                     </div>
-                                    <div className="p-4 flex flex-col flex-grow">
-                                        <div className="flex items-center gap-2 mb-2 text-[#1e3a8a] text-[10px] font-bold uppercase">
-                                            <Calendar className="w-3.5 h-3.5" /> {formatDate(event.date)}
-                                        </div>
-                                        <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2">{event.title}</h3>
-                                        <p className="text-slate-500 text-[11px] font-medium line-clamp-3 flex-grow">{event.description}</p>
-                                        <div className="flex items-center justify-between mt-4 pt-2 border-t border-slate-100">
-                                            <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-slate-400">
-                                                <Users className="w-4 h-4 text-[#1e3a8a]" /> {event.participants || "ARCHIVED"}
-                                            </div>
-                                        </div>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                                        {events.map((event, idx) => (
+                                            <motion.div
+                                                key={event._id || idx}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                transition={{ duration: 0.3, delay: idx * 0.05 }}
+                                                className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col"
+                                            >
+                                                <div className="relative h-48 w-full">
+                                                    <Image
+                                                        src={event.image || "/images/gallery/placeholder.jpg"}
+                                                        alt={event.title}
+                                                        fill
+                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                                        className="object-cover transition-transform duration-500 group-hover:scale-105 rounded-t-2xl"
+                                                    />
+                                                    <span className="absolute top-3 left-3 px-3 py-1 bg-white/90 rounded-full text-[10px] font-bold uppercase text-[#1e3a8a] border border-slate-200">
+                                                        {event.category}
+                                                    </span>
+                                                </div>
+                                                <div className="p-4 flex flex-col flex-grow">
+                                                    <div className="flex items-center gap-2 mb-2 text-[#1e3a8a] text-[10px] font-bold uppercase">
+                                                        <Calendar className="w-3.5 h-3.5" /> {formatDate(event.date)}
+                                                    </div>
+                                                    <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2">{event.title}</h3>
+                                                    <p className="text-slate-500 text-[11px] font-medium line-clamp-3 flex-grow">{event.description}</p>
+                                                    <div className="flex items-center justify-between mt-4 pt-2 border-t border-slate-100">
+                                                        <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-slate-400">
+                                                            <Users className="w-4 h-4 text-[#1e3a8a]" /> {event.participants || "ARCHIVED"}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
                                     </div>
-                                </motion.div>
+                                </section>
                             ))}
-                        </motion.div>
+                        </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center py-40 text-center">
                             <div className="p-12 bg-slate-50 rounded-full border border-slate-200 mb-10">
