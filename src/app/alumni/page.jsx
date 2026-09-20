@@ -22,6 +22,83 @@ const foundersData = [
 
 const alumniData = [
     {
+        chapter: "2024-25",
+        members: [
+            {
+                name: "Abdullah Ahmad",
+                role: "Ex-Information Secretary",
+                image: "/images/team/vp.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Hashir Ahmad",
+                role: "Ex-Chief Secretary",
+                image: "/images/team/cyber-lead.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Fatima",
+                role: "Ex-Management Head",
+                image: "/images/team/management-lead.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Hanzallah Khan",
+                role: "Ex-Management Co-ordinator",
+                image: "/images/developers/hanzala.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Safia Zulfiqar",
+                role: "Ex-Management Member",
+                image: "/images/developers/safia.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Muhammad Ilyas",
+                role: "Ex-AI & DS Lead",
+                image: "/images/team/president.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Aamna Malik",
+                role: "Ex-AI & DS Member",
+                image: "/images/team/amna_malik.PNG",
+                chapter: "2024-25"
+            },
+            {
+                name: "Mustafa Zahid Shahsawar",
+                role: "Ex-AI & DS Member",
+                image: "/images/team/mustafa.jpeg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Hazrat Umer",
+                role: "Ex-AI & DS Member",
+                image: "/images/team/Hazrat_umer.jpeg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Mamoon Khan",
+                role: "Ex-Software Lead",
+                image: "/images/developers/mamoon.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Mazhar Ahmad",
+                role: "Ex-Software Co Lead",
+                image: "/images/team/software-lead.jpg",
+                chapter: "2024-25"
+            },
+            {
+                name: "Muhammad Hasnain",
+                role: "Ex-Software Member",
+                image: "/images/team/Hasnain.jpeg",
+                chapter: "2024-25"
+            }
+        ]
+    },
+    {
         chapter: "2025-2026",
         members: [
             {
