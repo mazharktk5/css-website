@@ -147,14 +147,19 @@ const Events = () => {
             <main className="max-w-7xl mx-auto px-6 mt-10">
                 <AnimatePresence mode="popLayout">
                     {eventsByYear.length > 0 ? (
-                        <div className="space-y-20">
+                        <div>
                             {eventsByYear.map(({ year, events }) => (
-                                <section key={year}>
-                                    <div className="flex items-center gap-6 mb-10">
-                                        <h2 className="text-3xl md:text-4xl font-bold text-slate-900">
-                                            {year}
-                                        </h2>
-                                        <div className="flex-1 h-[1px] bg-slate-200" />
+                                <section key={year} className="mb-32 last:mb-0">
+                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                                        <div>
+                                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
+                                                {String(year).slice(0, 2)}<span className="text-[#1e3a8a]">{String(year).slice(2)}</span>
+                                            </h2>
+                                            <div className="w-12 h-1.5 bg-[#1e3a8a] rounded-full" />
+                                        </div>
+                                        <p className="text-slate-500 font-medium tracking-wide italic">
+                                            {events.length} event{events.length !== 1 ? 's' : ''}
+                                        </p>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                                         {events.map((event, idx) => (
