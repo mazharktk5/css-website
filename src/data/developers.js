@@ -13,23 +13,10 @@ const developers = [
     },
 
     {
-        name: "Qazi Qatadah Afridi",
-        role: "MERN Developer",
-        image: "/images/developers/Qazi.jpeg",
-        linkedin: "https://www.linkedin.com/in/qazi-qataadah-9072b5382",
-    },
-
-    {
         name: "Qazi Farhan",
         role: "MERN Developer",
-        image: "/images/developers/Qazi_Farhan.jpeg",
+        image: "/images/developers/qazi_farhan.jpg",
         linkedin: "https://www.linkedin.com/in/qazi-farhan-ahmad-7a3b3432b/",
-    },
-    {
-        name: "Muhammad Musa",
-        role: "MERN Developer",
-        image: "/images/developers/musa.jpeg",
-        linkedin: "https://www.linkedin.com/in/muhammad-musa-se",
     },
     {
         name: "Mahin Arshad",
