@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Calendar, Users, LayoutGrid, List, Zap } from "lucide-react";
+import { groupBySession } from "@/lib/chapters";
 
 const Events = () => {
     const [allEvents, setAllEvents] = useState([]);
@@ -41,20 +42,14 @@ const Events = () => {
 
     const displayedEvents = filteredEvents;
 
-    const eventsByYear = useMemo(() => {
-        const grouped = {};
-        displayedEvents.forEach((event) => {
-            const year = new Date(event.date).getFullYear();
-            if (!grouped[year]) grouped[year] = [];
-            grouped[year].push(event);
-        });
-        return Object.entries(grouped)
-            .sort(([a], [b]) => Number(b) - Number(a))
-            .map(([year, events]) => ({
-                year: Number(year),
-                events: events.sort((a, b) => new Date(b.date) - new Date(a.date)),
-            }));
-    }, [displayedEvents]);
+    const eventsByChapter = useMemo(
+        () =>
+            groupBySession(displayedEvents, (event) => event.date).map((group) => ({
+                ...group,
+                items: [...group.items].sort((a, b) => new Date(b.date) - new Date(a.date)),
+            })),
+        [displayedEvents]
+    );
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -144,26 +139,26 @@ const Events = () => {
                 </div>
             </div>
 
-            {/* Events by Year */}
+            {/* Events by Chapter */}
             <main className="max-w-7xl mx-auto px-6 mt-10">
                 <AnimatePresence mode="popLayout">
-                    {eventsByYear.length > 0 ? (
+                    {eventsByChapter.length > 0 ? (
                         <div>
-                            {eventsByYear.map(({ year, events }) => (
-                                <section key={year} className="mb-32 last:mb-0">
-                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                            {eventsByChapter.map(({ label, long, items }) => (
+                                <section key={label} className="mb-32 last:mb-0">
+                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
                                         <div>
                                             <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
-                                                {String(year).slice(0, 2)}<span className="text-[#1e3a8a]">{String(year).slice(2)}</span>
+                                                Chapter <span className="text-[#1e3a8a]">{label}</span>
                                             </h2>
-                                            <div className="w-12 h-1.5 bg-[#1e3a8a] rounded-full" />
+                                            <div className="w-20 h-1.5 bg-[#1e3a8a] rounded-full" />
                                         </div>
                                         <p className="text-slate-500 font-medium tracking-wide italic">
-                                            {events.length} event{events.length !== 1 ? 's' : ''}
+                                            {items.length} event{items.length !== 1 ? "s" : ""} &middot; {long}
                                         </p>
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                                        {events.map((event, idx) => (
+                                        {items.map((event, idx) => (
                                             <Link key={event._id || idx} href={`/events/${event._id}`}>
                                                 <motion.div
                                                     initial={{ opacity: 0 }}
