@@ -7,7 +7,7 @@ import { Plus, Pencil, Trash2, X, Save, ImageIcon } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import ImageUpload from "@/components/Admin/ImageUpload";
 
-const emptyItem = { eventName: "", category: "", image: "", description: "" };
+const emptyItem = { eventName: "", category: "", image: "", date: "", description: "" };
 
 export default function AdminGallery() {
     const [items, setItems] = useState([]);
@@ -36,7 +36,13 @@ export default function AdminGallery() {
 
     const openEdit = (item) => {
         setEditing(item._id);
-        setForm({ eventName: item.eventName, category: item.category, image: item.image, description: item.description });
+        setForm({
+            eventName: item.eventName,
+            category: item.category,
+            image: item.image,
+            date: item.date ? new Date(item.date).toISOString().slice(0, 10) : "",
+            description: item.description,
+        });
         setModalOpen(true);
     };
 
@@ -141,6 +147,16 @@ export default function AdminGallery() {
                                 <GInput label="Event Name" value={form.eventName} onChange={(v) => setForm({ ...form, eventName: v })} />
                                 <GInput label="Category" value={form.category} onChange={(v) => setForm({ ...form, category: v })} placeholder="e.g. Workshop, Bootcamp, Games" />
                                 <ImageUpload label="Gallery Image" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Event Date</label>
+                                    <input
+                                        type="date"
+                                        value={form.date}
+                                        onChange={(e) => setForm({ ...form, date: e.target.value })}
+                                        className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all text-sm [color-scheme:dark]"
+                                    />
+                                    <p className="text-xs text-gray-500">Determines which chapter this image appears under on the public gallery.</p>
+                                </div>
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Description</label>
                                     <textarea

@@ -4,6 +4,7 @@ const GalleryItemSchema = new mongoose.Schema({
     eventName: { type: String, required: true },
     category: { type: String, required: true },
     image: { type: String, required: true },
+    date: { type: Date },
     description: { type: String, default: "" },
 }, { timestamps: true });
 

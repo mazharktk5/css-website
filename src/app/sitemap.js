@@ -7,7 +7,6 @@ export default async function sitemap() {
     '/events',
     '/gallery',
     '/blog',
-    '/videos',
     '/alumni',
     '/contact',
     '/certificates',

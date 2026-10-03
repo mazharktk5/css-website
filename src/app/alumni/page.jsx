@@ -22,44 +22,133 @@ const foundersData = [
 
 const alumniData = [
     {
+        chapter: "2025-2026",
+        members: [
+            {
+                name: "Muhammad Ilyas",
+                role: "Ex-President",
+                image: "/images/team/president.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Abdullah Ahmad",
+                role: "Ex-Vice President",
+                image: "/images/team/vp.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Fatima Ijaz",
+                role: "Ex-Female Vice President",
+                image: "/images/team/fatima.png",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Mati Ullah Bangash",
+                role: "Ex-Chief Secretary",
+                image: "/images/team/chief-secretary.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Safia Zulfiqar",
+                role: "Ex-Information Secretary",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1771758799/css-society/phhuhzt8l3xbkun6gzra.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "M Ali",
+                role: "Ex-Creative Lead",
+                image: "/images/team/creative-head.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Mazhar Ahmad",
+                role: "Ex-Software Engineering Lead",
+                image: "/images/team/software-lead.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Hashir Ahmad",
+                role: "Ex-Cyber Security Lead",
+                image: "/images/team/cyber-lead.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Junaid Ahmad",
+                role: "Ex-AI & DS Lead",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774885446/css-society/wpw79uosxm1qm1zelcy1.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Amna Amir",
+                role: "Ex-Content & Graphics Head",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774890656/css-society/fclz7ci0xliunsrsu7rw.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Bilal Shahid",
+                role: "Ex-Management Head",
+                image: "/images/team/management-head.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Muhammad Musa",
+                role: "Ex-Management Coordinator",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774885072/css-society/ua9n5vprftghr3vfcexu.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "M Uzair",
+                role: "Ex-External PR Head",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774886391/css-society/w1csmbcyqtyunyxxgoqv.png",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Sanan Khan",
+                role: "Ex-Internal PR Head",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774889693/css-society/cwbhu07pnuhzuwzvx1v2.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Yahya Jan",
+                role: "Ex-Literary Club Lead",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774885550/css-society/wbaohkb1kgf2sgocxwva.jpg",
+                chapter: "2025-2026"
+            },
+            {
+                name: "Abubakar Dayan",
+                role: "Ex-Media Head",
+                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774886435/css-society/tszxkqnpjbpmx9dzxnon.jpg",
+                chapter: "2025-2026"
+            }
+        ]
+    },
+    {
         chapter: "2024-25",
         members: [
-            // {
-            //     name: "Muhammad Jawad",
-            //     role: "Ex-Vice President",
-            //     image: "/images/team/jawad.jpg",
-            //     chapter: "2024-25"
-            // },
-
             {
                 name: "Abdullah Ahmad",
                 role: "Ex-Information Secretary",
                 image: "/images/team/vp.jpg",
                 chapter: "2024-25"
             },
-
             {
                 name: "Hashir Ahmad",
                 role: "Ex-Chief Secretary",
                 image: "/images/team/cyber-lead.jpg",
                 chapter: "2024-25"
             },
-
             {
                 name: "Fatima",
                 role: "Ex-Management Head",
                 image: "/images/team/management-lead.jpg",
                 chapter: "2024-25"
             },
-
             {
                 name: "Hanzallah Khan",
                 role: "Ex-Management Co-ordinator",
                 image: "/images/developers/hanzala.jpg",
                 chapter: "2024-25"
             },
-
-
             {
                 name: "Safia Zulfiqar",
                 role: "Ex-Management Member",
@@ -72,7 +161,6 @@ const alumniData = [
                 image: "/images/team/president.jpg",
                 chapter: "2024-25"
             },
-
             {
                 name: "Aamna Malik",
                 role: "Ex-AI & DS Member",
@@ -103,16 +191,12 @@ const alumniData = [
                 image: "/images/team/software-lead.jpg",
                 chapter: "2024-25"
             },
-
             {
                 name: "Muhammad Hasnain",
                 role: "Ex-Software Member",
                 image: "/images/team/Hasnain.jpeg",
                 chapter: "2024-25"
-            },
-
-
-
+            }
         ]
     }
 ];

@@ -3,8 +3,9 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, LayoutGrid } from 'lucide-react';
+import { Zap, LayoutGrid, Calendar } from 'lucide-react';
 import ImageLightbox from '@/components/Gallery/ImageLightbox';
+import { groupBySession } from '@/lib/chapters';
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState([]);
@@ -34,10 +35,29 @@ const Gallery = () => {
         [galleryData, selectedCategory]
     );
 
+    // Images added before the event-date field existed fall back to their upload date.
+    const imagesByChapter = useMemo(
+        () =>
+            groupBySession(filteredImages, (item) => item.date || item.createdAt).map((group) => ({
+                ...group,
+                items: [...group.items].sort(
+                    (a, b) => new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt)
+                ),
+            })),
+        [filteredImages]
+    );
+
     const openLightbox = idx => setLightbox({ isOpen: true, index: idx });
     const closeLightbox = () => setLightbox({ isOpen: false, index: 0 });
     const nextImage = () => setLightbox(prev => ({ ...prev, index: (prev.index + 1) % filteredImages.length }));
     const prevImage = () => setLightbox(prev => ({ ...prev, index: (prev.index - 1 + filteredImages.length) % filteredImages.length }));
+
+    const formatDate = value => {
+        if (!value) return "";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return "";
+        return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+    };
 
     if (loading) {
         return (
@@ -124,43 +144,66 @@ const Gallery = () => {
                 </div>
             </div>
 
-            {/* Gallery Grid */}
+            {/* Gallery by Chapter */}
             <main className="max-w-7xl mx-auto px-6 mt-10">
                 <AnimatePresence mode="popLayout">
-                    {filteredImages.length > 0 ? (
-                        <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                            {filteredImages.map((item, idx) => (
-                                <motion.div
-                                    layout
-                                    key={item._id || idx}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ duration: 0.5, delay: idx * 0.05 }}
-                                    className="group relative overflow-hidden rounded-2xl cursor-pointer shadow-lg hover:shadow-2xl transition-all"
-                                    onClick={() => openLightbox(idx)}
-                                >
-                                    <div className="relative aspect-[4/5]">
-                                        <Image
-                                            src={item.image}
-                                            alt={item.eventName}
-                                            fill
-                                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
-                                            className="object-cover transition-transform duration-500 group-hover:scale-110 rounded-2xl"
-                                        />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl">
-                                            <div className="absolute bottom-4 left-4">
-                                                <span className="px-3 py-1 bg-[#1e3a8a]/30 text-white text-[10px] font-bold uppercase rounded-full">{item.category}</span>
-                                                <h3 className="mt-2 text-white font-black text-lg line-clamp-2">{item.eventName}</h3>
-                                                <p className="text-white/70 text-xs line-clamp-2 mt-1">{item.description}</p>
-                                            </div>
+                    {imagesByChapter.length > 0 ? (
+                        <div>
+                            {imagesByChapter.map(({ label, long, items }) => (
+                                <section key={label} className="mb-32 last:mb-0">
+                                    <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+                                        <div>
+                                            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-2">
+                                                Chapter <span className="text-[#1e3a8a]">{label}</span>
+                                            </h2>
+                                            <div className="w-20 h-1.5 bg-[#1e3a8a] rounded-full" />
                                         </div>
-                                        <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500">
-                                            <LayoutGrid className="w-5 h-5" />
-                                        </div>
+                                        <p className="text-slate-500 font-medium tracking-wide italic">
+                                            {items.length} image{items.length !== 1 ? 's' : ''} &middot; {long}
+                                        </p>
                                     </div>
-                                </motion.div>
+                                    <motion.div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                                        {items.map((item, idx) => (
+                                            <motion.div
+                                                layout
+                                                key={item._id || idx}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{ duration: 0.5, delay: idx * 0.05 }}
+                                                className="group relative overflow-hidden rounded-2xl cursor-pointer shadow-lg hover:shadow-2xl transition-all"
+                                                onClick={() => openLightbox(filteredImages.indexOf(item))}
+                                            >
+                                                <div className="relative aspect-[4/5]">
+                                                    <Image
+                                                        src={item.image}
+                                                        alt={item.eventName}
+                                                        fill
+                                                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 300px"
+                                                        className="object-cover transition-transform duration-500 group-hover:scale-110 rounded-2xl"
+                                                    />
+                                                    {item.date && (
+                                                        <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-sm text-[#1e3a8a] text-[10px] font-bold uppercase tracking-wide shadow-sm">
+                                                            <Calendar className="w-3 h-3" />
+                                                            {formatDate(item.date)}
+                                                        </div>
+                                                    )}
+                                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl">
+                                                        <div className="absolute bottom-4 left-4">
+                                                            <span className="px-3 py-1 bg-[#1e3a8a]/30 text-white text-[10px] font-bold uppercase rounded-full">{item.category}</span>
+                                                            <h3 className="mt-2 text-white font-black text-lg line-clamp-2">{item.eventName}</h3>
+                                                            <p className="text-white/70 text-xs line-clamp-2 mt-1">{item.description}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div className="absolute top-4 right-4 w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-all duration-500">
+                                                        <LayoutGrid className="w-5 h-5" />
+                                                    </div>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </motion.div>
+                                </section>
                             ))}
-                        </motion.div>
+                        </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center py-40 text-center">
                             <div className="p-12 bg-slate-50 rounded-full border border-slate-200 mb-6">
