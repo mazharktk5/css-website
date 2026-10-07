@@ -126,7 +126,7 @@ export default function CertificateCanvas({
                     line.forEach(word => {
                         const hasQuote = (word.match(/"/g) || []).length;
                         const isBold = currentInside || word.includes('"');
-                        ctx.font = isBold ? "bold 38px 'Inter', sans-serif" : "500 38px 'Inter', sans-serif";
+                        ctx.font = isBold ? "bold 38px 'Poppins', sans-serif" : "500 38px 'Poppins', sans-serif";
                         totalWidth += ctx.measureText(word + " ").width;
                         if (hasQuote % 2 !== 0) currentInside = !currentInside;
                     });
@@ -138,7 +138,7 @@ export default function CertificateCanvas({
                     line.forEach((word) => {
                         const hasQuote = (word.match(/"/g) || []).length;
                         const isBold = currentInside || word.includes('"');
-                        ctx.font = isBold ? "bold 38px 'Inter', sans-serif" : "500 38px 'Inter', sans-serif";
+                        ctx.font = isBold ? "bold 38px 'Poppins', sans-serif" : "500 38px 'Poppins', sans-serif";
                         ctx.textAlign = "left";
                         ctx.fillText(word, startX, currentY);
                         startX += ctx.measureText(word + " ").width;
@@ -152,7 +152,7 @@ export default function CertificateCanvas({
                     const hasQuote = (word.match(/"/g) || []).length;
                     const isBold = lineInside || word.includes('"');
 
-                    ctx.font = isBold ? "bold 38px 'Inter', sans-serif" : "500 38px 'Inter', sans-serif";
+                    ctx.font = isBold ? "bold 38px 'Poppins', sans-serif" : "500 38px 'Poppins', sans-serif";
                     const wordWidth = ctx.measureText(word + " ").width;
 
                     const currentLineWidth = currentLine.reduce((acc, w) => {
@@ -179,7 +179,7 @@ export default function CertificateCanvas({
             ctx.fillStyle = "#1e293b";
 
             // 1. Draw Student Name (Switched to modern Sans-Serif to match reference)
-            ctx.font = "bold 85px 'Inter', sans-serif";
+            ctx.font = "bold 85px 'Poppins', sans-serif";
             ctx.fillText(fullName, canvas.width / 2, canvas.height * 0.485);
 
             // 2. Draw Description (Optimized spacing and size)

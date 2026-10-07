@@ -1,20 +1,29 @@
-import { Geist, Inter } from "next/font/google";
+import { Kalam, Poppins } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import ClientLayout from "./ClientLayout";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
+  variable: "--font-body",
   subsets: ["latin"],
   display: 'swap',
+  weight: ["400", "500", "600", "700"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const kalamDisplay = Kalam({
+  variable: "--font-display",
   subsets: ["latin"],
   display: 'swap',
+  weight: "700",
+});
+
+const kalamAccent = Kalam({
+  variable: "--font-accent",
+  subsets: ["latin"],
+  display: 'swap',
+  weight: "700",
 });
 
 
@@ -58,7 +67,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${geistSans.variable} ${inter.variable} antialiased`}
+        className={`${poppins.variable} ${kalamDisplay.variable} ${kalamAccent.variable} antialiased`}
       >
         <ClientLayout>
           {children}
