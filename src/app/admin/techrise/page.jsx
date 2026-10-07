@@ -221,11 +221,10 @@ export default function AdminTechRisePage() {
                         <button
                             key={tab.key}
                             onClick={() => setStatus(tab.key)}
-                            className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition ${
-                                status === tab.key
+                            className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition ${status === tab.key
                                     ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
                                     : "bg-white/[0.04] text-gray-400 hover:text-white hover:bg-white/[0.07]"
-                            }`}
+                                }`}
                         >
                             {tab.label}
                         </button>
@@ -320,11 +319,10 @@ export default function AdminTechRisePage() {
                                                     onClick={() => toggleCheckIn(row)}
                                                     disabled={busyId === row._id}
                                                     title={row.checkedIn ? "Undo check-in" : "Mark checked-in"}
-                                                    className={`p-2 rounded-lg transition disabled:opacity-50 ${
-                                                        row.checkedIn
+                                                    className={`p-2 rounded-lg transition disabled:opacity-50 ${row.checkedIn
                                                             ? "hover:bg-amber-500/10 text-emerald-400 hover:text-amber-400"
                                                             : "hover:bg-emerald-500/10 text-gray-400 hover:text-emerald-400"
-                                                    }`}
+                                                        }`}
                                                 >
                                                     {busyId === row._id ? <Loader2 size={15} className="animate-spin" /> : row.checkedIn ? <UserX size={15} /> : <UserCheck size={15} />}
                                                 </button>

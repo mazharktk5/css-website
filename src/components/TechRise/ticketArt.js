@@ -94,7 +94,7 @@ export async function ensureFonts() {
         `500 30px ${body}`,
         `400 28px ${body}`,
     ];
-    await Promise.all(specs.map((s) => document.fonts.load(s).catch(() => {})));
+    await Promise.all(specs.map((s) => document.fonts.load(s).catch(() => { })));
     try { await document.fonts.ready; } catch { /* noop */ }
 }
 

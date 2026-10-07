@@ -172,11 +172,10 @@ export default function TechRiseRegisterForm() {
                     >
                         {serverError && (
                             <div
-                                className={`rounded-xl px-4 py-3 text-sm border flex items-start gap-2 ${
-                                    duplicate
+                                className={`rounded-xl px-4 py-3 text-sm border flex items-start gap-2 ${duplicate
                                         ? "bg-amber-50 border-amber-200 text-amber-700"
                                         : "bg-red-50 border-red-200 text-red-600"
-                                }`}
+                                    }`}
                             >
                                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
                                 <span>

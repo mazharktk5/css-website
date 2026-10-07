@@ -61,7 +61,7 @@ export default function TicketView({ token }) {
                 setData({ ...json, token });
                 setState("ready");
                 if (json.photoUrl) {
-                    loadImage(json.photoUrl).then((img) => { if (!cancelled) setPhotoImg(img); }).catch(() => {});
+                    loadImage(json.photoUrl).then((img) => { if (!cancelled) setPhotoImg(img); }).catch(() => { });
                 }
             } catch (err) {
                 if (!cancelled) {
