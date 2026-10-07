@@ -27,6 +27,22 @@ export default function Hero() {
 
           {/* LEFT CONTENT */}
           <HeroContent>
+            {/* TechRise fire badge */}
+            <div>
+              <Link
+                href="/techrise/register"
+                className="font-display inline-flex items-center gap-2 md:gap-2.5 whitespace-nowrap bg-gradient-to-r from-[#b8841f] via-[#C8912A] to-[#b8841f] text-[#122a52] text-[12px] md:text-[15px] font-extrabold uppercase tracking-[0.04em] md:tracking-[0.04em] px-3.5 md:px-4 py-2 rounded-full shadow-[0_6px_24px_-8px_rgba(184,132,31,0.55)] ring-1 ring-[#8a6317]/40 hover:brightness-105 transition"
+                aria-label="Register for TechRise 2026"
+              >
+                <span className="relative inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7" aria-hidden="true">
+                  <span className="animate-ember absolute inset-0 rounded-full bg-[radial-gradient(circle,rgba(251,146,60,0.85),transparent_70%)] blur-[6px]" />
+                  <span className="animate-fire relative text-base md:text-xl leading-none">🔥</span>
+                </span>
+                TechRise &rsquo;26 · Registrations Open
+                <span className="animate-arrow" aria-hidden="true">→</span>
+              </Link>
+            </div>
+
             {/* Label */}
             <p className="uppercase tracking-[0.35em] text-xs font-bold text-[#1e3a8a]">
               Computing Students Society
@@ -50,12 +66,18 @@ export default function Hero() {
             </p>
 
             {/* CTA */}
-            <div>
+            <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/events"
                 className="bg-[#1e3a8a] text-white px-8 py-4 rounded-full font-semibold hover:bg-[#172e6b] transition inline-block"
               >
                 Explore Events
+              </Link>
+              <Link
+                href="/techrise/register"
+                className="font-display bg-gradient-to-r from-[#C8912A] to-[#b8841f] text-[#122a52] px-8 py-4 rounded-full font-extrabold tracking-wide hover:brightness-105 transition inline-block shadow-[0_10px_30px_-10px_rgba(184,132,31,0.6)]"
+              >
+                Register TechRise &rsquo;26 🔥
               </Link>
             </div>
 
