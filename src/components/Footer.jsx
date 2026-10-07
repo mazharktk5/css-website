@@ -14,6 +14,7 @@ export default function Footer() {
                 { name: "Home", href: "/" },
                 { name: "About Us", href: "/about" },
                 { name: "Events", href: "/events" },
+                { name: "TechRise '26", href: "/techrise" },
                 { name: "Gallery", href: "/gallery" },
             ],
         },
