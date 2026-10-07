@@ -10,11 +10,13 @@ export default async function sitemap() {
     '/alumni',
     '/contact',
     '/certificates',
+    '/techrise',
+    '/techrise/register',
   ].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'weekly',
-    priority: route === '' ? 1 : 0.8,
+    priority: route === '' ? 1 : route === '/techrise' ? 0.9 : 0.8,
   }));
 
   return [...staticRoutes];

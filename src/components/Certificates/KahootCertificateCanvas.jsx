@@ -130,7 +130,7 @@ export default function KahootCertificateCanvas({
             // ── Winner name ───────────────────────────────────────────────────────
             ctx.textAlign = "center";
             ctx.fillStyle = "#0f172a";
-            ctx.font = `bold 82px 'Inter', sans-serif`;
+            ctx.font = `bold 82px 'Poppins', sans-serif`;
             ctx.fillText(fullName, canvas.width / 2, canvas.height * 0.458);
 
             // ── Dynamic description ───────────────────────────────────────────────
@@ -158,8 +158,8 @@ export default function KahootCertificateCanvas({
             // Smaller font + tighter line-height so the block comfortably fits
             // between the name underline and the signature lines on the template.
             const FONT_SIZE = 30;
-            const NORMAL = `500 ${FONT_SIZE}px 'Inter', sans-serif`;
-            const BOLD   = `bold ${FONT_SIZE}px 'Inter', sans-serif`;
+            const NORMAL = `500 ${FONT_SIZE}px 'Poppins', sans-serif`;
+            const BOLD   = `bold ${FONT_SIZE}px 'Poppins', sans-serif`;
 
             // Tokenise and word-wrap mixed-weight segments, then draw centred
             const tokens = [];

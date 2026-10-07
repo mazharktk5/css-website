@@ -17,11 +17,13 @@ import {
     MessageSquare,
     FileCheck,
     Flag,
+    QrCode,
 } from "lucide-react";
 
 const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Events", href: "/admin/events", icon: CalendarDays },
+    { name: "TechRise", href: "/admin/techrise", icon: QrCode },
     { name: "Registrations", href: "/admin/registrations", icon: Bell },
     { name: "Blog", href: "/admin/blog", icon: MessageSquare },
     { name: "Gallery", href: "/admin/gallery", icon: Image },
@@ -116,7 +118,10 @@ export default function AdminLayout({ children }) {
                 {/* Navigation */}
                 <nav className="flex-1 px-4 py-6 space-y-1.5">
                     {navItems.map((item) => {
-                        const isActive = pathname === item.href;
+                        const isActive =
+                            item.href === "/admin"
+                                ? pathname === "/admin"
+                                : pathname === item.href || pathname.startsWith(item.href + "/");
                         return (
                             <Link
                                 key={item.name}
@@ -160,7 +165,11 @@ export default function AdminLayout({ children }) {
 
                     <div className="flex-1">
                         <h1 className="text-lg font-bold text-white">
-                            {navItems.find((item) => item.href === pathname)?.name || "Admin"}
+                            {navItems.find((item) =>
+                                item.href === "/admin"
+                                    ? pathname === "/admin"
+                                    : pathname === item.href || pathname.startsWith(item.href + "/")
+                            )?.name || "Admin"}
                         </h1>
                     </div>
 
