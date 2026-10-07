@@ -16,7 +16,7 @@ export async function GET(request) {
         }
 
         const doc = await TechRiseRegistration.findOne({ checkInToken: token })
-            .select("regId name department communityPartner checkedIn checkedInAt")
+            .select("regId name department communityPartner checkedIn checkedInAt photoUrl")
             .lean();
         if (!doc) return NextResponse.json({ error: "Ticket not found" }, { status: 404 });
 
@@ -29,6 +29,7 @@ export async function GET(request) {
             department: doc.department,
             communityPartner: doc.communityPartner,
             checkedIn: doc.checkedIn,
+            photoUrl: doc.photoUrl || "",
             event: { title: merged.title, tagline: merged.tagline, dateLabel: merged.dateLabel, dateISO: merged.dateISO, venue: merged.venue },
         });
     } catch (error) {

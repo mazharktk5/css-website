@@ -4,10 +4,13 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-    Download, Loader2, AlertCircle, QrCode, CalendarDays, MapPin, CheckCircle2, Copy,
+    Download, Loader2, AlertCircle, QrCode, CalendarDays, MapPin, CheckCircle2, Copy, Share2, Ticket,
+    ImagePlus, X, UserCircle2,
 } from "lucide-react";
 import { FaLinkedinIn } from "react-icons/fa6";
-import { renderTicket, renderStory, downloadCanvas, loadImage, TICKET_W, TICKET_H, STORY_W, STORY_H } from "./ticketArt";
+import { renderTicket, renderStory, downloadCanvas, loadImage, stripNearWhite, TICKET_W, TICKET_H, STORY_W, STORY_H } from "./ticketArt";
+
+const MAX_PHOTO_BYTES = 8 * 1024 * 1024; // 8MB
 
 function openPopup(url) {
     return window.open(url, "_blank", "popup=yes,width=680,height=720,noopener,noreferrer");
@@ -31,9 +34,14 @@ async function copyImageToClipboard(canvas) {
 export default function TicketView({ token }) {
     const ticketRef = useRef(null);
     const storyRef = useRef(null);
+    const photoUrlRef = useRef(null);
     const [state, setState] = useState("loading"); // loading | error | ready
     const [error, setError] = useState("");
     const [data, setData] = useState(null);
+    const [assets, setAssets] = useState(null);
+    const [photoImg, setPhotoImg] = useState(null);
+    const [photoError, setPhotoError] = useState("");
+    const [photoSaving, setPhotoSaving] = useState(false);
     const [rendering, setRendering] = useState(true);
     const [toast, setToast] = useState("");
 
@@ -52,6 +60,9 @@ export default function TicketView({ token }) {
                 if (cancelled) return;
                 setData({ ...json, token });
                 setState("ready");
+                if (json.photoUrl) {
+                    loadImage(json.photoUrl).then((img) => { if (!cancelled) setPhotoImg(img); }).catch(() => {});
+                }
             } catch (err) {
                 if (!cancelled) {
                     setError(err.message || "Ticket not found");
@@ -62,18 +73,41 @@ export default function TicketView({ token }) {
         return () => { cancelled = true; };
     }, [token]);
 
+    // Load the static brand assets once per ticket.
     useEffect(() => {
         if (state !== "ready" || !data) return;
         let cancelled = false;
         (async () => {
             try {
-                const [wordmarkImg, ticketImg] = await Promise.all([
+                const [wordmarkImg, ticketImg, cssLogoImg, deptLogoImg, youthLogoImg] = await Promise.all([
                     loadImage("/images/techrise/wordmark.png"),
                     loadImage("/images/techrise/ticket.jpg"),
+                    loadImage("/images/logo/cssfinallogo.jpeg"),
+                    loadImage("/images/logo/department-logo.png"),
+                    loadImage("/images/logo/youth-affairs-logo.png"),
                 ]);
                 if (cancelled) return;
-                await renderTicket(ticketRef.current, { ...data, posterImg: ticketImg, wordmarkImg });
-                await renderStory(storyRef.current, { ...data, posterImg: ticketImg, wordmarkImg });
+                // The CSS logo is a flattened JPEG with its own white backing —
+                // key it out so it sits on the share card's band like the others.
+                setAssets({ wordmarkImg, ticketImg, cssLogoImg: stripNearWhite(cssLogoImg), deptLogoImg, youthLogoImg });
+            } catch (err) {
+                console.error("ticket asset load:", err);
+                if (!cancelled) setError("Failed to load ticket graphics.");
+            }
+        })();
+        return () => { cancelled = true; };
+    }, [state, data]);
+
+    // Render both canvases whenever assets, data, or the attendee's photo change.
+    useEffect(() => {
+        if (!assets || !data) return;
+        let cancelled = false;
+        setRendering(true);
+        (async () => {
+            try {
+                const registerUrl = `${window.location.origin}/techrise`;
+                await renderStory(storyRef.current, { ...data, registerUrl, photoImg, ...assets });
+                await renderTicket(ticketRef.current, { ...data, posterImg: assets.ticketImg, wordmarkImg: assets.wordmarkImg });
                 if (!cancelled) setRendering(false);
             } catch (err) {
                 console.error("ticket render:", err);
@@ -84,7 +118,64 @@ export default function TicketView({ token }) {
             }
         })();
         return () => { cancelled = true; };
-    }, [state, data]);
+    }, [assets, data, photoImg]);
+
+    // Draws instantly from the local file, then uploads it so organisers can
+    // see it in the admin dashboard alongside the rest of the registration.
+    async function handlePhotoChange(e) {
+        const file = e.target.files?.[0];
+        e.target.value = "";
+        if (!file) return;
+        setPhotoError("");
+
+        if (!file.type.startsWith("image/")) {
+            setPhotoError("Please choose an image file (JPG, PNG, WebP).");
+            return;
+        }
+        if (file.size > MAX_PHOTO_BYTES) {
+            setPhotoError("Image is too large — please pick one under 8MB.");
+            return;
+        }
+
+        const url = URL.createObjectURL(file);
+        try {
+            const img = await loadImage(url);
+            if (photoUrlRef.current) URL.revokeObjectURL(photoUrlRef.current);
+            photoUrlRef.current = url;
+            setPhotoImg(img);
+        } catch {
+            URL.revokeObjectURL(url);
+            setPhotoError("Couldn't read that image — please try another file.");
+            return;
+        }
+
+        setPhotoSaving(true);
+        try {
+            const formData = new FormData();
+            formData.append("token", token);
+            formData.append("file", file);
+            const res = await fetch("/api/techrise/photo", { method: "POST", body: formData });
+            const json = await res.json();
+            if (!res.ok) throw new Error(json.error || "Upload failed");
+        } catch (err) {
+            setPhotoError(err.message || "Couldn't save your photo — it still shows on the card below.");
+        } finally {
+            setPhotoSaving(false);
+        }
+    }
+
+    function handleRemovePhoto() {
+        if (photoUrlRef.current) {
+            URL.revokeObjectURL(photoUrlRef.current);
+            photoUrlRef.current = null;
+        }
+        setPhotoImg(null);
+        setPhotoError("");
+    }
+
+    useEffect(() => () => {
+        if (photoUrlRef.current) URL.revokeObjectURL(photoUrlRef.current);
+    }, []);
 
     function showToast(msg) {
         setToast(msg);
@@ -97,14 +188,37 @@ export default function TicketView({ token }) {
         downloadCanvas(canvas, `TechRise26_${label}_${data.regId}.png`);
     }
 
+    // Native share sheet (WhatsApp/Instagram/etc.) — the main sharing path on
+    // mobile, where most registrants will be viewing this page.
+    async function handleNativeShare() {
+        const canvas = storyRef.current;
+        if (!canvas || rendering) return;
+        try {
+            const blob = await canvasToBlob(canvas);
+            const file = blob && new File([blob], `TechRise26_${data.regId}.png`, { type: "image/png" });
+            if (file && navigator.canShare?.({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: "I'm attending TechRise '26!",
+                    text: "Join me at TechRise '26 — Learn, Connect, Rise. Register free:",
+                });
+                return;
+            }
+        } catch (err) {
+            if (err?.name === "AbortError") return;
+        }
+        downloadCanvas(canvas, `TechRise26_Share_${data.regId}.png`);
+        showToast("Image downloaded — post it to WhatsApp Status or Instagram Stories!");
+    }
+
     async function handleLinkedIn() {
         if (rendering) return;
-        const copied = await copyImageToClipboard(ticketRef.current);
-        openPopup(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`);
+        const copied = await copyImageToClipboard(storyRef.current);
+        openPopup(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${window.location.origin}/techrise`)}`);
         showToast(
             copied
-                ? "Ticket copied — paste it (Ctrl+V) into your LinkedIn post!"
-                : "LinkedIn opened — download the Ticket PNG to attach it."
+                ? "Card copied — paste it (Ctrl+V) into your LinkedIn post!"
+                : "LinkedIn opened — download the card to attach it."
         );
     }
 
@@ -150,7 +264,7 @@ export default function TicketView({ token }) {
                             You&rsquo;re in! 🎉
                         </h1>
                         <p className="text-slate-500 mt-3">
-                            Pa Meena Pakhair Raghley, <b className="text-slate-700">{data.name}</b> — see you at TechRise &rsquo;26. Your pass is ready below.
+                            Pa Meena Pakhair Raghley, <b className="text-slate-700">{data.name}</b> — see you at TechRise &rsquo;26.
                         </p>
                     </div>
 
@@ -167,13 +281,102 @@ export default function TicketView({ token }) {
                         </span>
                     </div>
 
-                    {/* Ticket preview */}
-                    <div className="mt-10">
+                    {/* HERO: shareable "I'm Attending" card — this drives sign-ups, so it leads */}
+                    <div className="mt-10 grid md:grid-cols-[300px_1fr] gap-6 items-start">
+                        <div>
+                            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Your &ldquo;I&rsquo;m Attending&rdquo; Card</h2>
+                            <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm">
+                                <canvas
+                                    ref={storyRef}
+                                    style={{ width: "100%", display: rendering ? "none" : "block", borderRadius: 10 }}
+                                    aria-label="TechRise 26 I'm attending share card"
+                                />
+                                {rendering && <div className="h-72 flex items-center justify-center"><Loader2 size={24} className="animate-spin text-[#14305E]" /></div>}
+                            </div>
+                        </div>
+                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+                            <h3 className="font-display font-extrabold text-[#14305E] uppercase tracking-wide">Personalise your card</h3>
+                            <p className="text-slate-500 text-sm mt-2 leading-relaxed">
+                                Add a photo for a personal touch, or skip it — we&rsquo;ll show a neat initials
+                                badge instead. Your photo is saved with your registration (visible only to CSS
+                                organisers) so it&rsquo;s ready if you reopen this page later.
+                            </p>
+                            <div className="flex flex-wrap items-center gap-3 mt-4">
+                                <label className="inline-flex items-center gap-2 bg-[#14305E] hover:bg-[#1B3A6B] text-white font-bold text-xs uppercase tracking-widest px-4 py-3 rounded-xl transition active:scale-95 cursor-pointer">
+                                    {photoSaving ? <Loader2 size={15} className="animate-spin" /> : <ImagePlus size={15} />}
+                                    {photoImg ? "Change Photo" : "Add Photo"}
+                                    <input type="file" accept="image/*" className="hidden" onChange={handlePhotoChange} disabled={photoSaving} />
+                                </label>
+                                {photoImg && (
+                                    <button
+                                        onClick={handleRemovePhoto}
+                                        className="inline-flex items-center gap-1.5 text-slate-500 hover:text-red-500 font-bold text-xs uppercase tracking-widest px-3 py-3 transition"
+                                    >
+                                        <X size={14} /> Remove
+                                    </button>
+                                )}
+                                {!photoImg && (
+                                    <span className="inline-flex items-center gap-1.5 text-xs text-slate-400">
+                                        <UserCircle2 size={15} /> Using initials badge
+                                    </span>
+                                )}
+                            </div>
+                            {photoError && (
+                                <p className="text-xs text-red-500 mt-2 flex items-center gap-1.5"><AlertCircle size={12} /> {photoError}</p>
+                            )}
+
+                            <h3 className="font-display font-extrabold text-[#14305E] uppercase tracking-wide mt-6 pt-5 border-t border-slate-100">Share the hype</h3>
+                            <p className="text-slate-500 text-sm mt-2 leading-relaxed">
+                                Post your card to your WhatsApp Status or Instagram Story and tag{" "}
+                                <b className="text-slate-700">@cssuop</b> — it carries a scannable link so your
+                                friends can register in one tap. The card shows only your name, photo and
+                                registration ID, never your phone, email or entry QR.
+                            </p>
+
+                            {/* Primary: native share sheet (WhatsApp/Instagram/etc.) */}
+                            <button
+                                onClick={handleNativeShare}
+                                disabled={rendering}
+                                className="w-full mt-5 inline-flex items-center justify-center gap-2.5 bg-[#14305E] hover:bg-[#1B3A6B] text-white font-black text-sm uppercase tracking-wide px-5 py-4 rounded-xl transition active:scale-95 disabled:opacity-50"
+                            >
+                                <Share2 size={17} /> Share Now
+                            </button>
+                            <p className="text-xs text-slate-400 mt-2">Opens your device&rsquo;s share sheet — pick WhatsApp, Instagram or any app.</p>
+
+                            {/* Secondary actions */}
+                            <div className="flex flex-wrap gap-3 mt-4">
+                                <button
+                                    onClick={() => handleDownload(storyRef, "Share")}
+                                    disabled={rendering}
+                                    className="inline-flex items-center gap-2 bg-[#C8912A] hover:bg-[#d6a33c] text-[#14305E] font-black text-xs uppercase tracking-widest px-5 py-3.5 rounded-xl transition active:scale-95 disabled:opacity-50"
+                                >
+                                    <Download size={15} /> Download PNG
+                                </button>
+                                <button
+                                    onClick={handleLinkedIn}
+                                    disabled={rendering}
+                                    className="inline-flex items-center gap-2 bg-[#0A66C2] hover:bg-[#08549e] text-white font-black text-xs uppercase tracking-widest px-5 py-3.5 rounded-xl transition active:scale-95 disabled:opacity-50"
+                                >
+                                    <FaLinkedinIn size={14} /> LinkedIn
+                                </button>
+                            </div>
+
+                            <div className="mt-6 pt-5 border-t border-slate-100 text-sm text-slate-500 space-y-2">
+                                <p className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-500" /> Every share has a QR + link your friends can use to register.</p>
+                                <p className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-500" /> Screenshot this page or bookmark the link to reopen your pass anytime.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* SECONDARY: entry ticket — functional, for the door, no need to share */}
+                    <div className="mt-12">
                         <div className="flex items-center justify-between mb-3">
-                            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">Entry Ticket</h2>
+                            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 inline-flex items-center gap-1.5">
+                                <Ticket size={13} /> Entry Pass (for the door)
+                            </h2>
                             {rendering && <span className="text-xs text-slate-400 inline-flex items-center gap-1.5"><Loader2 size={12} className="animate-spin" /> Rendering…</span>}
                         </div>
-                        <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm overflow-x-auto">
+                        <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm overflow-x-auto max-w-2xl">
                             <canvas
                                 ref={ticketRef}
                                 style={{ width: "100%", display: rendering ? "none" : "block", borderRadius: 10 }}
@@ -181,63 +384,17 @@ export default function TicketView({ token }) {
                             />
                             {rendering && <div className="h-56 md:h-80 flex items-center justify-center"><Loader2 size={26} className="animate-spin text-[#14305E]" /></div>}
                         </div>
-                        <p className="text-xs text-slate-400 mt-2 flex items-center gap-1.5">
-                            <QrCode size={13} /> Your QR encodes a one-time check-in token — no personal details are stored in it.
-                        </p>
-                    </div>
-
-                    {/* Story card preview */}
-                    <div className="mt-10 grid md:grid-cols-[300px_1fr] gap-6 items-start">
-                        <div>
-                            <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">Story Card (1080×1920)</h2>
-                            <div className="bg-white border border-slate-200 rounded-2xl p-3 shadow-sm">
-                                <canvas
-                                    ref={storyRef}
-                                    style={{ width: "100%", display: rendering ? "none" : "block", borderRadius: 10 }}
-                                    aria-label="TechRise 26 story card"
-                                />
-                                {rendering && <div className="h-72 flex items-center justify-center"><Loader2 size={24} className="animate-spin text-[#14305E]" /></div>}
-                            </div>
-                        </div>
-                        <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-                            <h3 className="font-display font-extrabold text-[#14305E] uppercase tracking-wide">Share the hype</h3>
-                            <p className="text-slate-500 text-sm mt-2 leading-relaxed">
-                                Post your pass and tag <b className="text-slate-700">@cssuop</b>{" "}so your friends know you&rsquo;re coming.
-                                The card shows only your name and registration ID — never your phone, email or QR token.
-                            </p>
-
-                            {/* One-click LinkedIn share */}
+                        <div className="flex flex-wrap items-center gap-4 mt-3">
                             <button
-                                onClick={handleLinkedIn}
+                                onClick={() => handleDownload(ticketRef, "Ticket")}
                                 disabled={rendering}
-                                className="w-full mt-5 inline-flex items-center justify-center gap-2.5 bg-[#0A66C2] hover:bg-[#08549e] text-white font-black text-sm uppercase tracking-wide px-5 py-4 rounded-xl transition active:scale-95 disabled:opacity-50"
+                                className="inline-flex items-center gap-2 bg-[#14305E] hover:bg-[#1B3A6B] text-white font-black text-xs uppercase tracking-widest px-5 py-3 rounded-xl transition active:scale-95 disabled:opacity-50"
                             >
-                                <FaLinkedinIn size={17} /> Share on LinkedIn
+                                <Download size={14} /> Ticket PNG
                             </button>
-                            <p className="text-xs text-slate-400 mt-2">Opens a LinkedIn post with your pass link — one click to share.</p>
-
-                            {/* Downloads */}
-                            <div className="flex flex-wrap gap-3 mt-5">
-                                <button
-                                    onClick={() => handleDownload(ticketRef, "Ticket")}
-                                    disabled={rendering}
-                                    className="inline-flex items-center gap-2 bg-[#14305E] hover:bg-[#1B3A6B] text-white font-black text-xs uppercase tracking-widest px-5 py-3.5 rounded-xl transition active:scale-95 disabled:opacity-50"
-                                >
-                                    <Download size={15} /> Ticket PNG
-                                </button>
-                                <button
-                                    onClick={() => handleDownload(storyRef, "Story")}
-                                    disabled={rendering}
-                                    className="inline-flex items-center gap-2 bg-[#C8912A] hover:bg-[#d6a33c] text-[#14305E] font-black text-xs uppercase tracking-widest px-5 py-3.5 rounded-xl transition active:scale-95 disabled:opacity-50"
-                                >
-                                    <Download size={15} /> Story PNG
-                                </button>
-                            </div>
-
-                            <div className="mt-6 pt-5 border-t border-slate-100 text-sm text-slate-500 space-y-2">
-                                <p className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-500" /> Save your ticket — bring it (or your ID) on event day.</p>
-                                <p className="flex items-center gap-2"><CheckCircle2 size={14} className="text-emerald-500" /> Screenshot this page or bookmark the link to reopen your pass anytime.</p>
-                            </div>
+                            <p className="text-xs text-slate-400 flex items-center gap-1.5">
+                                <QrCode size={13} /> This QR is a one-time check-in token — keep it private, bring it on event day.
+                            </p>
                         </div>
                     </div>
 

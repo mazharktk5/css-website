@@ -14,8 +14,10 @@ const TechRiseConfigSchema = new mongoose.Schema({
     options: {
         departments: { type: [String], default: undefined },
         semesters: { type: [String], default: undefined },
+        regions: { type: [String], default: undefined },
         hearSources: { type: [String], default: undefined },
         partners: { type: [String], default: undefined },
+        interests: { type: [String], default: undefined },
     },
 }, { timestamps: true });
 

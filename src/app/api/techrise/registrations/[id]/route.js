@@ -19,7 +19,7 @@ export async function PATCH(request, { params }) {
             update.checkedInAt = body.checkedIn ? new Date() : null;
             update.checkedInMethod = body.checkedIn ? "manual" : "";
         }
-        const editable = ["name", "phone", "institution", "department", "semester", "communityPartner", "hearSource"];
+        const editable = ["name", "phone", "institution", "department", "semester", "region", "communityPartner", "hearSource", "interests"];
         for (const field of editable) {
             if (typeof body[field] === "string") update[field] = body[field].trim();
         }

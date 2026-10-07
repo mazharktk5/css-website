@@ -6,7 +6,7 @@ import AdminLayout from "@/components/Admin/AdminLayout";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import {
     Search, Download, RefreshCw, Loader2, CheckCircle2, Clock, Users, Handshake,
-    QrCode, Trash2, UserCheck, UserX, Trophy,
+    QrCode, Trash2, UserCheck, UserX, Trophy, Eye, UserRound, X as XIcon,
 } from "lucide-react";
 import * as XLSX from "xlsx";
 
@@ -25,6 +25,7 @@ export default function AdminTechRisePage() {
     const [status, setStatus] = useState("all");
     const [busyId, setBusyId] = useState(null);
     const [deleteTarget, setDeleteTarget] = useState(null);
+    const [detailsTarget, setDetailsTarget] = useState(null);
     const [exporting, setExporting] = useState(false);
     const [error, setError] = useState("");
 
@@ -94,8 +95,12 @@ export default function AdminTechRisePage() {
                 Institution: r.institution || "",
                 Department: r.department || "",
                 Semester: r.semester || "",
+                Region: r.region || "",
                 "Community Partner": r.communityPartner || "",
                 "Heard Via": r.hearSource || "",
+                Interests: r.interests || "",
+                "Consented": r.consent ? "Yes" : "No",
+                "Photo URL": r.photoUrl || "",
                 Status: r.checkedIn ? "Checked-In" : "Not Arrived",
                 "Checked-In At": r.checkedInAt ? new Date(r.checkedInAt).toLocaleString() : "",
                 Registered: new Date(r.createdAt).toLocaleString(),
@@ -259,6 +264,7 @@ export default function AdminTechRisePage() {
                             <thead>
                                 <tr className="border-b border-white/[0.06]">
                                     <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">ID</th>
+                                    <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Photo</th>
                                     <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Name</th>
                                     <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Contact</th>
                                     <th className="text-left px-6 py-4 text-xs font-bold uppercase tracking-widest text-gray-500">Department</th>
@@ -272,6 +278,16 @@ export default function AdminTechRisePage() {
                                     <tr key={row._id} className="border-b border-white/[0.04] hover:bg-white/[0.02] transition-colors">
                                         <td className="px-6 py-4">
                                             <span className="px-2.5 py-1 rounded-lg text-xs font-black bg-[#14305E]/60 text-amber-400 border border-amber-500/20">{row.regId}</span>
+                                        </td>
+                                        <td className="px-6 py-4">
+                                            {row.photoUrl ? (
+                                                // eslint-disable-next-line @next/next/no-img-element
+                                                <img src={row.photoUrl} alt={row.name} className="w-9 h-9 rounded-full object-cover border border-white/10" />
+                                            ) : (
+                                                <span className="w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-600">
+                                                    <UserRound size={16} />
+                                                </span>
+                                            )}
                                         </td>
                                         <td className="px-6 py-4 text-white font-semibold">{row.name}</td>
                                         <td className="px-6 py-4">
@@ -293,6 +309,13 @@ export default function AdminTechRisePage() {
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center justify-end gap-2">
+                                                <button
+                                                    onClick={() => setDetailsTarget(row)}
+                                                    className="p-2 rounded-lg text-gray-400 hover:bg-blue-500/10 hover:text-blue-400 transition"
+                                                    title="View all details"
+                                                >
+                                                    <Eye size={15} />
+                                                </button>
                                                 <button
                                                     onClick={() => toggleCheckIn(row)}
                                                     disabled={busyId === row._id}
@@ -329,6 +352,53 @@ export default function AdminTechRisePage() {
                 title="Delete Registration"
                 message={`Delete ${deleteTarget?.name} (${deleteTarget?.regId})? This permanently removes their registration and QR pass.`}
             />
+
+            {detailsTarget && (
+                <div className="fixed inset-0 z-[300] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+                    <div className="bg-[#111827] border border-white/[0.08] rounded-2xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[85vh] flex flex-col">
+                        <div className="flex items-start justify-between p-6 pb-4 border-b border-white/[0.06]">
+                            <div className="flex items-center gap-4">
+                                {detailsTarget.photoUrl ? (
+                                    // eslint-disable-next-line @next/next/no-img-element
+                                    <img src={detailsTarget.photoUrl} alt={detailsTarget.name} className="w-16 h-16 rounded-xl object-cover border border-white/10" />
+                                ) : (
+                                    <span className="w-16 h-16 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-600">
+                                        <UserRound size={24} />
+                                    </span>
+                                )}
+                                <div>
+                                    <h3 className="text-lg font-black text-white">{detailsTarget.name}</h3>
+                                    <span className="px-2 py-0.5 rounded text-xs font-black bg-[#14305E]/60 text-amber-400 border border-amber-500/20">{detailsTarget.regId}</span>
+                                </div>
+                            </div>
+                            <button onClick={() => setDetailsTarget(null)} className="p-2 hover:bg-white/[0.05] rounded-lg text-gray-400 transition-colors">
+                                <XIcon className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <div className="p-6 pt-4 overflow-y-auto space-y-3 text-sm">
+                            {[
+                                ["Email", detailsTarget.email],
+                                ["Phone", detailsTarget.phone],
+                                ["Institution", detailsTarget.institution],
+                                ["Department", detailsTarget.department],
+                                ["Semester", detailsTarget.semester],
+                                ["Region", detailsTarget.region],
+                                ["Community Partner", detailsTarget.communityPartner],
+                                ["Heard Via", detailsTarget.hearSource],
+                                ["Interests", detailsTarget.interests],
+                                ["Consented", detailsTarget.consent ? "Yes" : "No"],
+                                ["Status", detailsTarget.checkedIn ? `Checked-In${detailsTarget.checkedInAt ? ` · ${new Date(detailsTarget.checkedInAt).toLocaleString()}` : ""}` : "Not Arrived"],
+                                ["Registered", detailsTarget.createdAt ? new Date(detailsTarget.createdAt).toLocaleString() : ""],
+                            ].map(([label, value]) => (
+                                <div key={label} className="flex items-start justify-between gap-4 border-b border-white/[0.04] pb-2.5">
+                                    <span className="text-gray-500 font-bold uppercase text-xs tracking-widest shrink-0">{label}</span>
+                                    <span className="text-white text-right">{value || "—"}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 }

@@ -13,20 +13,24 @@ function validate(form) {
     const errors = {};
     if (form.name.trim().length < 3 || form.name.trim().length > 100) errors.name = "Enter your full name (3-100 characters).";
     if (!EMAIL_RE.test(form.email.trim())) errors.email = "Enter a valid email address.";
-    if (form.phone.trim() && !PHONE_RE.test(form.phone.trim())) errors.phone = "Enter a valid phone number.";
-    if (form.institution.trim().length > 150) errors.institution = "Institution name is too long.";
-    if (!form.department) errors.department = "Select your department.";
+    if (!PHONE_RE.test(form.phone.trim())) errors.phone = "Enter a valid WhatsApp number.";
+    if (!form.institution.trim() || form.institution.trim().length > 150) errors.institution = "Enter your university / institution.";
+    if (!form.department) errors.department = "Select your department / program.";
     if (!form.semester) errors.semester = "Select your semester.";
+    if (!form.region) errors.region = "Select your region.";
+    if (!form.communityPartner) errors.communityPartner = "Select a community or referral source.";
+    if (!form.consent) errors.consent = "You must agree before registering.";
     return errors;
 }
 
-function Field({ label, error, children, required }) {
+function Field({ label, error, hint, children, required }) {
     return (
         <label className="block">
             <span className="text-xs font-bold uppercase tracking-widest text-slate-400">
                 {label} {required && <span className="text-red-400">*</span>}
             </span>
             <div className="mt-1.5">{children}</div>
+            {hint && !error && <span className="mt-1 block text-xs text-slate-400">{hint}</span>}
             {error && (
                 <span className="mt-1 flex items-center gap-1 text-xs text-red-500">
                     <AlertCircle size={12} /> {error}
@@ -45,7 +49,8 @@ export default function TechRiseRegisterForm() {
     const [config, setConfig] = useState(null);
     const [form, setForm] = useState({
         name: "", email: "", phone: "", institution: "University of Peshawar",
-        department: "", semester: "", communityPartner: "", hearSource: "", honeypot: "",
+        department: "", semester: "", region: "", communityPartner: "", interests: "",
+        consent: false, honeypot: "",
     });
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
@@ -144,13 +149,19 @@ export default function TechRiseRegisterForm() {
                 >
                     <div className="text-center mb-8">
                         <span className="text-xs font-extrabold uppercase tracking-[0.3em] text-[#C8912A]">
-                            Registration
+                            Student Registration Form
                         </span>
                         <h1 className="text-4xl md:text-5xl font-black mt-3 text-[#14305E]">
                             TechRise<span className="text-[#C8912A]">&rsquo;26</span>
                         </h1>
+                        <p className="text-slate-600 font-bold mt-2">Learn. Connect. Rise.</p>
+                        <p className="text-slate-500 mt-4 text-sm max-w-xl mx-auto leading-relaxed">
+                            Join us for a day of technology, skills, career opportunities, and
+                            networking at the University of Peshawar. Open to students from all
+                            regions and institutions.
+                        </p>
                         <p className="text-slate-500 mt-3 text-sm">
-                            {config.dateLabel} · {config.venue}
+                            22 October 2026 · SSAQ Khan Hall, UoP
                         </p>
                     </div>
 
@@ -182,25 +193,25 @@ export default function TechRiseRegisterForm() {
                                     placeholder="e.g. Ahmed Khan" className={inputCls} autoComplete="name"
                                 />
                             </Field>
-                            <Field label="Email" required error={errors.email}>
+                            <Field label="Email Address" required error={errors.email}>
                                 <input
                                     type="email" value={form.email} onChange={set("email")}
                                     placeholder="you@example.com" className={inputCls} autoComplete="email"
                                 />
                             </Field>
-                            <Field label="Phone" error={errors.phone}>
+                            <Field label="WhatsApp Number" required error={errors.phone}>
                                 <input
                                     type="tel" value={form.phone} onChange={set("phone")}
                                     placeholder="03XX-XXXXXXX" className={inputCls} autoComplete="tel"
                                 />
                             </Field>
-                            <Field label="Institution" error={errors.institution}>
+                            <Field label="University / Institution" required error={errors.institution}>
                                 <input
                                     type="text" value={form.institution} onChange={set("institution")}
                                     placeholder="University / College" className={inputCls}
                                 />
                             </Field>
-                            <Field label="Department" required error={errors.department}>
+                            <Field label="Department / Program" required error={errors.department}>
                                 <select value={form.department} onChange={set("department")} className={selectCls}>
                                     <option value="">Select department…</option>
                                     {(options.departments || []).map((d) => (
@@ -208,31 +219,68 @@ export default function TechRiseRegisterForm() {
                                     ))}
                                 </select>
                             </Field>
-                            <Field label="Semester" required error={errors.semester}>
+                            <Field label="Current Semester / Education Level" required error={errors.semester}>
                                 <select value={form.semester} onChange={set("semester")} className={selectCls}>
-                                    <option value="">Select semester…</option>
+                                    <option value="">Select your semester</option>
                                     {(options.semesters || []).map((s) => (
                                         <option key={s} value={s}>{s}</option>
                                     ))}
                                 </select>
                             </Field>
-                            <Field label="Community Partner">
+                            <Field
+                                label="Region / District"
+                                required
+                                error={errors.region}
+                                hint="For participant demographics and regional outreach reporting. All regions are welcome."
+                            >
+                                <select value={form.region} onChange={set("region")} className={selectCls}>
+                                    <option value="">Select your region</option>
+                                    {(options.regions || []).map((r) => (
+                                        <option key={r} value={r}>{r}</option>
+                                    ))}
+                                </select>
+                            </Field>
+                            <Field
+                                label="Referred By / Community Partner"
+                                required
+                                error={errors.communityPartner}
+                                hint="Replace demo communities with confirmed partners. This will help track verified attendance for partner recognition."
+                            >
                                 <select value={form.communityPartner} onChange={set("communityPartner")} className={selectCls}>
-                                    <option value="">Not a partner / General attendee</option>
+                                    <option value="">Select community or referral source</option>
                                     {(options.partners || []).map((p) => (
                                         <option key={p} value={p}>{p}</option>
                                     ))}
                                 </select>
                             </Field>
-                            <Field label="How did you hear about us?">
-                                <select value={form.hearSource} onChange={set("hearSource")} className={selectCls}>
-                                    <option value="">Select…</option>
-                                    {(options.hearSources || []).map((h) => (
-                                        <option key={h} value={h}>{h}</option>
+                            <Field label="What interests you most about TechRise?">
+                                <select value={form.interests} onChange={set("interests")} className={selectCls}>
+                                    <option value="">Choose your main interest</option>
+                                    {(options.interests || []).map((i) => (
+                                        <option key={i} value={i}>{i}</option>
                                     ))}
                                 </select>
                             </Field>
                         </div>
+
+                        <label className="flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs text-slate-600 leading-relaxed">
+                            <input
+                                type="checkbox"
+                                checked={form.consent}
+                                onChange={(e) => setForm((f) => ({ ...f, consent: e.target.checked }))}
+                                className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 text-[#14305E] focus:ring-[#14305E]"
+                            />
+                            <span>
+                                I agree that my registration details may be used by CSS for event
+                                management, attendance verification, and event-related communication.{" "}
+                                <span className="text-red-400">*</span>
+                            </span>
+                        </label>
+                        {errors.consent && (
+                            <span className="flex items-center gap-1 text-xs text-red-500">
+                                <AlertCircle size={12} /> {errors.consent}
+                            </span>
+                        )}
 
                         {/* Honeypot — hidden from humans, catches naive bots */}
                         <div aria-hidden="true" className="absolute opacity-0 pointer-events-none h-0 overflow-hidden">

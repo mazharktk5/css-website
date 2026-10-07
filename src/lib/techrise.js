@@ -20,8 +20,31 @@ export const EVENT_DEFAULTS = {
             "Other",
         ],
         semesters: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "Graduated", "Other"],
+        regions: [
+            "Khyber Pakhtunkhwa",
+            "Punjab",
+            "Sindh",
+            "Balochistan",
+            "Islamabad Capital Territory",
+            "Gilgit-Baltistan",
+            "Azad Jammu & Kashmir",
+            "Other",
+        ],
         hearSources: ["Instagram", "WhatsApp", "University", "Friend", "Poster", "Other"],
-        partners: ["Not a partner / General attendee"],
+        partners: [
+            "General Attendee / Not via a Partner",
+            "Community Partner 1",
+            "Community Partner 2",
+            "Community Partner 3",
+        ],
+        interests: [
+            "Web & App Development",
+            "AI & Machine Learning",
+            "Career Guidance",
+            "Networking",
+            "Entrepreneurship",
+            "Other",
+        ],
     },
 };
 
@@ -51,8 +74,11 @@ export function validateRegistrationInput(body, options) {
         institution: clean(body?.institution),
         department: clean(body?.department),
         semester: clean(body?.semester),
+        region: clean(body?.region),
         communityPartner: clean(body?.communityPartner),
         hearSource: clean(body?.hearSource),
+        interests: clean(body?.interests),
+        consent: Boolean(body?.consent),
         honeypot: clean(body?.honeypot),
     };
 
@@ -62,20 +88,31 @@ export function validateRegistrationInput(body, options) {
     if (!EMAIL_RE.test(value.email) || value.email.length > 254) {
         errors.push("Please enter a valid email address.");
     }
-    if (value.phone && !PHONE_RE.test(value.phone)) {
-        errors.push("Please enter a valid phone number.");
+    if (!value.phone || !PHONE_RE.test(value.phone)) {
+        errors.push("Please enter a valid WhatsApp number.");
     }
-    if (value.institution.length > 150) errors.push("Institution name is too long.");
+    if (!value.institution || value.institution.length > 150) {
+        errors.push("Please enter your university/institution.");
+    }
+    if (!value.department) errors.push("Please select your department/program.");
     if (value.department.length > 100) errors.push("Department name is too long.");
+    if (!value.semester) errors.push("Please select your semester.");
     if (value.semester.length > 30) errors.push("Semester value is too long.");
+    if (!value.region) errors.push("Please select your region/district.");
+    if (value.region.length > 60) errors.push("Region value is too long.");
+    if (!value.communityPartner) errors.push("Please select a community or referral source.");
     if (value.communityPartner.length > 120) errors.push("Community partner value is too long.");
     if (value.hearSource.length > 60) errors.push("Source value is too long.");
+    if (value.interests.length > 120) errors.push("Interest value is too long.");
+    if (!value.consent) errors.push("Please agree to the data usage consent.");
 
     const allowed = (list, val) => !val || !list?.length || list.includes(val);
     if (!allowed(options?.departments, value.department)) errors.push("Invalid department.");
     if (!allowed(options?.semesters, value.semester)) errors.push("Invalid semester.");
+    if (!allowed(options?.regions, value.region)) errors.push("Invalid region.");
     if (!allowed(options?.hearSources, value.hearSource)) errors.push("Invalid source.");
     if (!allowed(options?.partners, value.communityPartner)) errors.push("Invalid community partner.");
+    if (!allowed(options?.interests, value.interests)) errors.push("Invalid interest.");
 
     delete value.honeypot;
     return { ok: errors.length === 0, errors, value, isSpam: Boolean(clean(body?.honeypot)) };
