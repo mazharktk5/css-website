@@ -54,6 +54,7 @@ export default function TechRiseRegisterForm() {
         department: "", semester: "", region: "", communityPartner: "", interests: "",
         consent: false, honeypot: "",
     });
+    const [institutionChoice, setInstitutionChoice] = useState("University of Peshawar");
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
     const [serverError, setServerError] = useState("");
@@ -213,10 +214,26 @@ export default function TechRiseRegisterForm() {
                                 />
                             </Field>
                             <Field label="University / Institution" required error={errors.institution}>
-                                <input
-                                    type="text" value={form.institution} onChange={set("institution")}
-                                    placeholder="University / College" className={inputCls}
-                                />
+                                <select
+                                    value={institutionChoice}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        setInstitutionChoice(val);
+                                        setForm((f) => ({ ...f, institution: val === "Other" ? "" : val }));
+                                    }}
+                                    className={selectCls}
+                                >
+                                    <option value="">Select institution…</option>
+                                    {(options.institutions || []).map((i) => (
+                                        <option key={i} value={i}>{i}</option>
+                                    ))}
+                                </select>
+                                {institutionChoice === "Other" && (
+                                    <input
+                                        type="text" value={form.institution} onChange={set("institution")}
+                                        placeholder="Enter your university / college" className={inputCls + " mt-2"}
+                                    />
+                                )}
                             </Field>
                             <Field label="Department / Program" required error={errors.department}>
                                 <select value={form.department} onChange={set("department")} className={selectCls}>

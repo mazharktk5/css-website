@@ -25,6 +25,13 @@ export const EVENT_DEFAULTS = {
             "Other",
         ],
         semesters: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "Graduated", "Other"],
+        institutions: [
+            "University of Peshawar",
+            "UET Peshawar",
+            "The University of Agriculture, Peshawar",
+            "Islamia College Peshawar",
+            "Other",
+        ],
         regions: [
             "Khyber Pakhtunkhwa",
             "Punjab",
