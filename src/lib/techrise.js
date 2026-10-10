@@ -64,7 +64,8 @@ export const EVENT_DEFAULTS = {
             "Code Voyagers",
             "Faseel Community",
             "Farabi Science Society UAP",
-            "SheTech"
+            "SheTech",
+            "Core Computing Society UoP"
         ],
         interests: [
             "Web & App Development",
