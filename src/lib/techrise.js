@@ -16,7 +16,12 @@ export const EVENT_DEFAULTS = {
         departments: [
             "Computer Science",
             "Software Engineering",
+            "Artificial Intelligence",
+            "Data Science",
+            "Cyber Security",
             "Information Technology",
+
+
             "Other",
         ],
         semesters: ["1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "Graduated", "Other"],
@@ -54,6 +59,10 @@ export const EVENT_DEFAULTS = {
         interests: [
             "Web & App Development",
             "AI & Machine Learning",
+            "Cyber Security",
+            "Data Science & Analytics",
+            "UI/UX Design",
+            "Robotics & IoT",
             "Career Guidance",
             "Networking",
             "Entrepreneurship",
