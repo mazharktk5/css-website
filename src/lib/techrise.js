@@ -2,6 +2,8 @@ import crypto from "crypto";
 
 export const CONFIG_KEY = "techrise26";
 
+export const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/KyNW12D8GaG1fIPvY32Ink";
+
 export const EVENT_DEFAULTS = {
     title: "TechRise '26",
     tagline: "Learn • Connect • Rise",

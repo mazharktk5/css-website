@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Loader2, AlertCircle, CheckCircle2, Users } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
+import { WHATSAPP_GROUP_URL } from "@/lib/techrise";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_RE = /^[0-9+\-\s()]{7,20}$/;
@@ -166,6 +168,14 @@ export default function TechRiseRegisterForm() {
                         <p className="text-slate-500 mt-3 text-sm">
                             22 October 2026 · SSAQ Khan Hall, UoP
                         </p>
+                        <a
+                            href={WHATSAPP_GROUP_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1ebe5a] text-white font-bold text-sm px-5 py-3 rounded-xl shadow-lg shadow-[#25D366]/20 transition mt-5 active:scale-95"
+                        >
+                            <FaWhatsapp size={18} /> Join our WhatsApp Group
+                        </a>
                     </div>
 
                     <form

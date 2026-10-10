@@ -7,8 +7,9 @@ import {
     Download, Loader2, AlertCircle, QrCode, CalendarDays, MapPin, CheckCircle2, Copy, Share2, Ticket,
     ImagePlus, X, UserCircle2,
 } from "lucide-react";
-import { FaLinkedinIn } from "react-icons/fa6";
+import { FaLinkedinIn, FaWhatsapp } from "react-icons/fa6";
 import { renderTicket, renderStory, downloadCanvas, loadImage, stripNearWhite, TICKET_W, TICKET_H, STORY_W, STORY_H } from "./ticketArt";
+import { WHATSAPP_GROUP_URL } from "@/lib/techrise";
 
 const MAX_PHOTO_BYTES = 8 * 1024 * 1024; // 8MB
 
@@ -279,6 +280,18 @@ export default function TicketView({ token }) {
                         <span className="bg-white border border-slate-200 text-slate-600 font-bold px-4 py-2.5 rounded-xl text-sm inline-flex items-center gap-2">
                             <MapPin size={15} /> {data.event.venue}
                         </span>
+                    </div>
+
+                    {/* Group CTA — get every confirmed registrant into the community loop */}
+                    <div className="flex justify-center mt-7">
+                        <a
+                            href={WHATSAPP_GROUP_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1ebe5a] text-white font-black text-sm uppercase tracking-wide px-6 py-3.5 rounded-xl shadow-lg shadow-[#25D366]/20 transition active:scale-95"
+                        >
+                            <FaWhatsapp size={19} /> Join our WhatsApp Group
+                        </a>
                     </div>
 
                     {/* HERO: shareable "I'm Attending" card — this drives sign-ups, so it leads */}
