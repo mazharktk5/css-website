@@ -99,7 +99,7 @@ const alumniData = [
             {
                 name: "M Uzair",
                 role: "Ex-External PR Head",
-                image: "https://res.cloudinary.com/dfqaf1gg7/image/upload/v1774886391/css-society/w1csmbcyqtyunyxxgoqv.png",
+                image: "/images/team/asim.jpeg",
                 chapter: "2025-2026"
             },
             {
@@ -144,7 +144,7 @@ const alumniData = [
                 chapter: "2024-25"
             },
             {
-                name: "Hanzallah Khan",
+                name: "Hanzala Khan",
                 role: "Ex-Management Co-ordinator",
                 image: "/images/developers/hanzala.jpg",
                 chapter: "2024-25"
