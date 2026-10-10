@@ -16,6 +16,13 @@ const STATUS_TABS = [
     { key: "checkedin", label: "Checked-In" },
 ];
 
+// Only the last 4 digits show in the table; full CNIC is in the details modal.
+function maskCnic(cnic) {
+    const digits = String(cnic || "").replace(/[^0-9]/g, "");
+    if (digits.length < 4) return cnic;
+    return `•••••-•••••${digits.slice(-4, -1)}-${digits.slice(-1)}`;
+}
+
 export default function AdminTechRisePage() {
     const [rows, setRows] = useState([]);
     const [stats, setStats] = useState({ total: 0, checkedIn: 0, pending: 0 });
@@ -92,6 +99,7 @@ export default function AdminTechRisePage() {
                 Name: r.name,
                 Email: r.email,
                 Phone: r.phone || "",
+                CNIC: r.cnic || "",
                 Institution: r.institution || "",
                 Department: r.department || "",
                 Semester: r.semester || "",
@@ -222,8 +230,8 @@ export default function AdminTechRisePage() {
                             key={tab.key}
                             onClick={() => setStatus(tab.key)}
                             className={`px-4 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition ${status === tab.key
-                                    ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
-                                    : "bg-white/[0.04] text-gray-400 hover:text-white hover:bg-white/[0.07]"
+                                ? "bg-blue-600 text-white shadow-lg shadow-blue-500/20"
+                                : "bg-white/[0.04] text-gray-400 hover:text-white hover:bg-white/[0.07]"
                                 }`}
                         >
                             {tab.label}
@@ -292,6 +300,7 @@ export default function AdminTechRisePage() {
                                         <td className="px-6 py-4">
                                             <div className="text-gray-400">{row.email}</div>
                                             {row.phone && <div className="text-gray-600 text-xs">{row.phone}</div>}
+                                            {row.cnic && <div className="text-gray-600 text-xs">{maskCnic(row.cnic)}</div>}
                                         </td>
                                         <td className="px-6 py-4 text-gray-400">{row.department}</td>
                                         <td className="px-6 py-4 text-gray-400">{row.communityPartner || "—"}</td>
@@ -320,8 +329,8 @@ export default function AdminTechRisePage() {
                                                     disabled={busyId === row._id}
                                                     title={row.checkedIn ? "Undo check-in" : "Mark checked-in"}
                                                     className={`p-2 rounded-lg transition disabled:opacity-50 ${row.checkedIn
-                                                            ? "hover:bg-amber-500/10 text-emerald-400 hover:text-amber-400"
-                                                            : "hover:bg-emerald-500/10 text-gray-400 hover:text-emerald-400"
+                                                        ? "hover:bg-amber-500/10 text-emerald-400 hover:text-amber-400"
+                                                        : "hover:bg-emerald-500/10 text-gray-400 hover:text-emerald-400"
                                                         }`}
                                                 >
                                                     {busyId === row._id ? <Loader2 size={15} className="animate-spin" /> : row.checkedIn ? <UserX size={15} /> : <UserCheck size={15} />}
@@ -377,6 +386,7 @@ export default function AdminTechRisePage() {
                             {[
                                 ["Email", detailsTarget.email],
                                 ["Phone", detailsTarget.phone],
+                                ["CNIC", detailsTarget.cnic],
                                 ["Institution", detailsTarget.institution],
                                 ["Department", detailsTarget.department],
                                 ["Semester", detailsTarget.semester],

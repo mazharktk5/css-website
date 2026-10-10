@@ -46,9 +46,10 @@ export const EVENT_DEFAULTS = {
         hearSources: ["Instagram", "WhatsApp", "University", "Friend", "Poster", "Other"],
         partners: [
             "General Attendee / Not via a Partner",
-            "Community Partner 1",
-            "Community Partner 2",
-            "Community Partner 3",
+            "AI Community Peshawar",
+            "Code Voyagers",
+            "Faseel Community",
+            "Farabi Science Society UAP",
         ],
         interests: [
             "Web & App Development",
@@ -77,6 +78,13 @@ function clean(value) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_RE = /^[0-9+\-\s()]{7,20}$/;
+const CNIC_RE = /^\d{5}-?\d{7}-?\d{1}$/;
+
+function normalizeCnic(value) {
+    const digits = clean(value).replace(/[^0-9]/g, "");
+    if (digits.length !== 13) return clean(value);
+    return `${digits.slice(0, 5)}-${digits.slice(5, 12)}-${digits.slice(12)}`;
+}
 
 export function validateRegistrationInput(body, options) {
     const errors = [];
@@ -84,6 +92,7 @@ export function validateRegistrationInput(body, options) {
         name: clean(body?.name),
         email: clean(body?.email).toLowerCase(),
         phone: clean(body?.phone),
+        cnic: normalizeCnic(body?.cnic),
         institution: clean(body?.institution),
         department: clean(body?.department),
         semester: clean(body?.semester),
@@ -103,6 +112,9 @@ export function validateRegistrationInput(body, options) {
     }
     if (!value.phone || !PHONE_RE.test(value.phone)) {
         errors.push("Please enter a valid WhatsApp number.");
+    }
+    if (!value.cnic || !CNIC_RE.test(value.cnic)) {
+        errors.push("Please enter a valid CNIC (e.g. 12345-1234567-1).");
     }
     if (!value.institution || value.institution.length > 150) {
         errors.push("Please enter your university/institution.");

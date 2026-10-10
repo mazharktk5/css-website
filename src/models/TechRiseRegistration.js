@@ -6,6 +6,7 @@ const TechRiseRegistrationSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     phone: { type: String, default: "", trim: true },
+    cnic: { type: String, required: true, unique: true, trim: true },
     institution: { type: String, default: "", trim: true },
     department: { type: String, default: "", trim: true },
     semester: { type: String, default: "", trim: true },
@@ -21,7 +22,7 @@ const TechRiseRegistrationSchema = new mongoose.Schema({
     checkedInMethod: { type: String, default: "" },
 }, { timestamps: true });
 
-TechRiseRegistrationSchema.index({ name: "text", email: "text", regId: "text", phone: "text" });
+TechRiseRegistrationSchema.index({ name: "text", email: "text", regId: "text", phone: "text", cnic: "text" });
 
 export default mongoose.models.TechRiseRegistration ||
     mongoose.model("TechRiseRegistration", TechRiseRegistrationSchema);

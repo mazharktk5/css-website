@@ -19,7 +19,7 @@ export async function GET(request) {
         if (status === "pending") query.checkedIn = false;
         if (q) {
             const rx = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
-            query.$or = [{ name: rx }, { email: rx }, { regId: rx }, { phone: rx }, { communityPartner: rx }];
+            query.$or = [{ name: rx }, { email: rx }, { regId: rx }, { phone: rx }, { cnic: rx }, { communityPartner: rx }];
         }
 
         const rows = await TechRiseRegistration.find(query)

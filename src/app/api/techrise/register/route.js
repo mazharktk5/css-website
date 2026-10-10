@@ -51,6 +51,14 @@ export async function POST(request) {
             );
         }
 
+        const existingCnic = await TechRiseRegistration.findOne({ cnic: value.cnic }).select("regId").lean();
+        if (existingCnic) {
+            return NextResponse.json(
+                { error: "This CNIC is already registered.", regId: existingCnic.regId, duplicate: true },
+                { status: 409 }
+            );
+        }
+
         if (config.seatCap > 0) {
             const count = await TechRiseRegistration.countDocuments();
             if (count >= config.seatCap) {
@@ -79,6 +87,13 @@ export async function POST(request) {
                     const dup = await TechRiseRegistration.findOne({ email: value.email }).select("regId").lean();
                     return NextResponse.json(
                         { error: "This email is already registered.", regId: dup?.regId, duplicate: true },
+                        { status: 409 }
+                    );
+                }
+                if (dupField === "cnic") {
+                    const dup = await TechRiseRegistration.findOne({ cnic: value.cnic }).select("regId").lean();
+                    return NextResponse.json(
+                        { error: "This CNIC is already registered.", regId: dup?.regId, duplicate: true },
                         { status: 409 }
                     );
                 }

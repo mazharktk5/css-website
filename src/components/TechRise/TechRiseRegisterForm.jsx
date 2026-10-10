@@ -8,12 +8,14 @@ import { ArrowLeft, ArrowRight, Loader2, AlertCircle, CheckCircle2, Users } from
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const PHONE_RE = /^[0-9+\-\s()]{7,20}$/;
+const CNIC_RE = /^\d{5}-?\d{7}-?\d{1}$/;
 
 function validate(form) {
     const errors = {};
     if (form.name.trim().length < 3 || form.name.trim().length > 100) errors.name = "Enter your full name (3-100 characters).";
     if (!EMAIL_RE.test(form.email.trim())) errors.email = "Enter a valid email address.";
     if (!PHONE_RE.test(form.phone.trim())) errors.phone = "Enter a valid WhatsApp number.";
+    if (!CNIC_RE.test(form.cnic.trim())) errors.cnic = "Enter a valid CNIC (e.g. 12345-1234567-1).";
     if (!form.institution.trim() || form.institution.trim().length > 150) errors.institution = "Enter your university / institution.";
     if (!form.department) errors.department = "Select your department / program.";
     if (!form.semester) errors.semester = "Select your semester.";
@@ -48,7 +50,7 @@ export default function TechRiseRegisterForm() {
     const router = useRouter();
     const [config, setConfig] = useState(null);
     const [form, setForm] = useState({
-        name: "", email: "", phone: "", institution: "University of Peshawar",
+        name: "", email: "", phone: "", cnic: "", institution: "University of Peshawar",
         department: "", semester: "", region: "", communityPartner: "", interests: "",
         consent: false, honeypot: "",
     });
@@ -173,8 +175,8 @@ export default function TechRiseRegisterForm() {
                         {serverError && (
                             <div
                                 className={`rounded-xl px-4 py-3 text-sm border flex items-start gap-2 ${duplicate
-                                        ? "bg-amber-50 border-amber-200 text-amber-700"
-                                        : "bg-red-50 border-red-200 text-red-600"
+                                    ? "bg-amber-50 border-amber-200 text-amber-700"
+                                    : "bg-red-50 border-red-200 text-red-600"
                                     }`}
                             >
                                 <AlertCircle size={16} className="mt-0.5 shrink-0" />
@@ -202,6 +204,12 @@ export default function TechRiseRegisterForm() {
                                 <input
                                     type="tel" value={form.phone} onChange={set("phone")}
                                     placeholder="03XX-XXXXXXX" className={inputCls} autoComplete="tel"
+                                />
+                            </Field>
+                            <Field label="CNIC" required error={errors.cnic}>
+                                <input
+                                    type="text" value={form.cnic} onChange={set("cnic")}
+                                    placeholder="12345-1234567-1" className={inputCls} autoComplete="off"
                                 />
                             </Field>
                             <Field label="University / Institution" required error={errors.institution}>
@@ -243,7 +251,7 @@ export default function TechRiseRegisterForm() {
                                 label="Referred By / Community Partner"
                                 required
                                 error={errors.communityPartner}
-                                hint="Replace demo communities with confirmed partners. This will help track verified attendance for partner recognition."
+                                hint="This helps us track verified attendance for partner recognition."
                             >
                                 <select value={form.communityPartner} onChange={set("communityPartner")} className={selectCls}>
                                     <option value="">Select community or referral source</option>
