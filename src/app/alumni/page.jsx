@@ -97,7 +97,7 @@ const alumniData = [
                 chapter: "2025-2026"
             },
             {
-                name: "M Uzair",
+                name: "Asim Ullah Amjid",
                 role: "Ex-External PR Head",
                 image: "/images/team/asim.jpeg",
                 chapter: "2025-2026"
