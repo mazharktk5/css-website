@@ -283,7 +283,7 @@ export default function TicketView({ token }) {
                     </div>
 
                     {/* Group CTA — get every confirmed registrant into the community loop */}
-                    <div className="flex justify-center mt-7">
+                    <div className="flex flex-col items-center mt-7">
                         <a
                             href={WHATSAPP_GROUP_URL}
                             target="_blank"
@@ -292,6 +292,7 @@ export default function TicketView({ token }) {
                         >
                             <FaWhatsapp size={19} /> Join our WhatsApp Group
                         </a>
+                        <p className="text-slate-400 text-xs mt-2">Join for updates about the event.</p>
                     </div>
 
                     {/* HERO: shareable "I'm Attending" card — this drives sign-ups, so it leads */}

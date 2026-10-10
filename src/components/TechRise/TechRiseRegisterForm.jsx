@@ -176,6 +176,7 @@ export default function TechRiseRegisterForm() {
                         >
                             <FaWhatsapp size={18} /> Join our WhatsApp Group
                         </a>
+                        <p className="text-slate-400 text-xs mt-2">Join for updates about the event.</p>
                     </div>
 
                     <form
