@@ -66,7 +66,9 @@ export const EVENT_DEFAULTS = {
             "Farabi Science Society UAP",
             "SheTech",
             "Core Computing Society UoP",
-            "Anti-norcotics Society UAP"
+            "Anti-norcotics Society UAP",
+            "TechKhwa",
+            "GDGOC UoP"
         ],
         interests: [
             "Web & App Development",
