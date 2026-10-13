@@ -68,7 +68,9 @@ export const EVENT_DEFAULTS = {
             "Core Computing Society UoP",
             "Anti-norcotics Society UAP",
             "TechKhwa",
-            "GDGOC UoP"
+            "GDGOC UoP",
+            "EEST",
+            "Tech4Edges"
         ],
         interests: [
             "Web & App Development",
