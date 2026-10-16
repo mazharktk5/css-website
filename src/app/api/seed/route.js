@@ -72,7 +72,7 @@ export async function POST() {
         if (teamCount === 0) {
             const teamData = [
                 { name: "Dr Shah Khusro", role: "Patron-in-Chief", subRole: "Chairman, Dept. of CS", image: "/images/team/chairman.jpg", section: "executive", order: 1 },
-                { name: "Dr Waheed ur Rehman", role: "Chief Organizer", subRole: "Coordinator, Dept. of CS", image: "/images/team/coordinator.jpg", section: "executive", order: 2 },
+                { name: "Dr Waheed ur Rehman", role: "Patron", subRole: "Coordinator, Dept. of CS", image: "/images/team/coordinator.jpg", section: "executive", order: 2 },
                 { name: "Mazhar Ahmad", role: "President", image: "/images/developers/mazhar_ahmad.jpg", section: "cabinet", order: 1 },
                 { name: "Muhammad Haris", role: "Vice President", image: "/images/team/haris.jpeg", section: "cabinet", order: 2 },
                 { name: "Safia Zulfiqar", role: "Female Vice President", image: "/images/developers/safia.jpg", section: "cabinet", order: 3 },

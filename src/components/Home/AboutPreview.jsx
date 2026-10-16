@@ -11,7 +11,7 @@ const leaders = [
     },
     {
         name: "Dr Waheed ur Rehman",
-        role: "Chief Organizer",
+        role: "Patron",
         img: "/images/team/coordinator.jpeg",
         message:
             "The society bridges academic learning with practical experience through workshops, hackathons, and collaborative technology initiatives."

@@ -5,7 +5,7 @@ import FadeIn from "@/components/FadeIn";
 const foundersData = [
     {
         name: "Dr. Waheed ur Rehman",
-        role: "Cheif organizer & Co-Founder",
+        role: "Patron",
         image: "/images/team/coordinator.jpeg",
     },
     {
