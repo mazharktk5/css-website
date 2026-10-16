@@ -1,0 +1,16 @@
+
+> css-website@0.1.0 dev
+> next dev --turbopack
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.110.175.34:3000
+- Environments: .env
+✓ Ready in 5.6s
+
+○ Compiling / ...
+ GET / 200 in 14.9s (next.js: 14.4s, application-code: 505ms)
+ GET / 200 in 3.8s (next.js: 20ms, application-code: 3.8s)
+ POST /api/seed 200 in 1937ms (next.js: 228ms, application-code: 1709ms)
+ POST /api/auth/login 200 in 335ms (next.js: 74ms, application-code: 262ms)
+ PUT /api/techrise/config 200 in 243ms (next.js: 82ms, application-code: 161ms)

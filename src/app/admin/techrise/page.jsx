@@ -6,7 +6,7 @@ import AdminLayout from "@/components/Admin/AdminLayout";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import {
     Search, Download, RefreshCw, Loader2, CheckCircle2, Clock, Users, Handshake,
-    QrCode, Trash2, UserCheck, UserX, Trophy, Eye, UserRound, X as XIcon,
+    QrCode, Trash2, UserCheck, UserX, Trophy, Eye, UserRound, X as XIcon, Lock, Unlock,
 } from "lucide-react";
 import * as XLSX from "xlsx";
 
@@ -35,8 +35,41 @@ export default function AdminTechRisePage() {
     const [detailsTarget, setDetailsTarget] = useState(null);
     const [exporting, setExporting] = useState(false);
     const [error, setError] = useState("");
+    const [config, setConfig] = useState(null);
+    const [configSaving, setConfigSaving] = useState(false);
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
+
+    const fetchConfig = useCallback(async () => {
+        try {
+            const res = await fetch("/api/techrise/config");
+            const data = await res.json();
+            if (res.ok) setConfig(data);
+        } catch {
+            // ignore — toggle stays disabled until config loads
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchConfig();
+    }, [fetchConfig]);
+
+    async function toggleRegistrationOpen() {
+        if (!config || configSaving) return;
+        const nextOpen = !(config.registrationOpen !== false);
+        setConfigSaving(true);
+        try {
+            const res = await fetch("/api/techrise/config", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                body: JSON.stringify({ registrationOpen: nextOpen }),
+            });
+            const data = await res.json();
+            if (res.ok) setConfig(data);
+        } finally {
+            setConfigSaving(false);
+        }
+    }
 
     const fetchData = useCallback(async () => {
         setLoading(true);
@@ -155,6 +188,24 @@ export default function AdminTechRisePage() {
                             className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm font-bold px-5 py-3 rounded-xl shadow-lg shadow-blue-500/20 hover:opacity-90 transition disabled:opacity-50"
                         >
                             {exporting ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />} Export Excel
+                        </button>
+                        <button
+                            onClick={toggleRegistrationOpen}
+                            disabled={!config || configSaving}
+                            title={config?.registrationOpen === false ? "Reopen registration" : "Close registration"}
+                            className={`inline-flex items-center gap-2 text-sm font-bold px-5 py-3 rounded-xl shadow-lg transition disabled:opacity-50 ${config?.registrationOpen === false
+                                ? "bg-gradient-to-r from-rose-600 to-red-600 shadow-red-500/20 text-white"
+                                : "bg-gradient-to-r from-emerald-600 to-teal-600 shadow-emerald-500/20 text-white"
+                                }`}
+                        >
+                            {configSaving ? (
+                                <Loader2 size={16} className="animate-spin" />
+                            ) : config?.registrationOpen === false ? (
+                                <Lock size={16} />
+                            ) : (
+                                <Unlock size={16} />
+                            )}
+                            {config?.registrationOpen === false ? "Registration Closed" : "Registration Open"}
                         </button>
                     </div>
                 </div>
