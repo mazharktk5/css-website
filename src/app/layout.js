@@ -1,4 +1,4 @@
-import { Kalam, Poppins } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import ClientLayout from "./ClientLayout";
@@ -10,20 +10,6 @@ const poppins = Poppins({
   subsets: ["latin"],
   display: 'swap',
   weight: ["400", "500", "600", "700"],
-});
-
-const kalamDisplay = Kalam({
-  variable: "--font-display",
-  subsets: ["latin"],
-  display: 'swap',
-  weight: "700",
-});
-
-const kalamAccent = Kalam({
-  variable: "--font-accent",
-  subsets: ["latin"],
-  display: 'swap',
-  weight: "700",
 });
 
 
@@ -67,7 +53,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body
-        className={`${poppins.variable} ${kalamDisplay.variable} ${kalamAccent.variable} antialiased`}
+        className={`${poppins.variable} antialiased`}
       >
         <ClientLayout>
           {children}

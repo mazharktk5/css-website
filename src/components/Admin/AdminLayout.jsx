@@ -17,13 +17,11 @@ import {
     MessageSquare,
     FileCheck,
     Flag,
-    QrCode,
 } from "lucide-react";
 
 const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Events", href: "/admin/events", icon: CalendarDays },
-    { name: "TechRise", href: "/admin/techrise", icon: QrCode },
     { name: "Registrations", href: "/admin/registrations", icon: Bell },
     { name: "Blog", href: "/admin/blog", icon: MessageSquare },
     { name: "Gallery", href: "/admin/gallery", icon: Image },
