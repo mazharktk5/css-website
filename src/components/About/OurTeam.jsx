@@ -2,8 +2,15 @@
 import { useEffect, useState } from "react";
 import FadeIn from "@/components/FadeIn";
 import Image from "next/image";
+import { Linkedin, Instagram, Github } from "lucide-react";
 
 function MemberCard({ member }) {
+    const socials = [
+        { href: member.linkedin, Icon: Linkedin },
+        { href: member.instagram, Icon: Instagram },
+        { href: member.github, Icon: Github },
+    ].filter((s) => s.href);
+
     return (
         <FadeIn>
             <div
@@ -18,7 +25,7 @@ function MemberCard({ member }) {
                 />
 
                 {/* Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" />
 
                 {/* Content */}
                 <div className="absolute inset-0 p-6 flex flex-col justify-end">
@@ -31,9 +38,32 @@ function MemberCard({ member }) {
                     </p>
 
                     {member.subRole && (
-                        <p className="text-xs text-white/70 mt-2 leading-relaxed">
+                        <p className="text-xs text-white/70 mt-1 leading-relaxed">
                             {member.subRole}
                         </p>
+                    )}
+
+                    {member.description && (
+                        <p className="text-xs text-white/80 mt-2 leading-relaxed line-clamp-2">
+                            {member.description}
+                        </p>
+                    )}
+
+                    {socials.length > 0 && (
+                        <div className="flex items-center gap-3 mt-3">
+                            {socials.map(({ href, Icon }, i) => (
+                                <a
+                                    key={i}
+                                    href={href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-white/70 hover:text-blue-300 transition-colors"
+                                    aria-label="Social profile"
+                                >
+                                    <Icon className="w-4 h-4" />
+                                </a>
+                            ))}
+                        </div>
                     )}
                 </div>
             </div>

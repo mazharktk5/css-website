@@ -7,6 +7,10 @@ const TeamMemberSchema = new mongoose.Schema({
     image: { type: String, default: "" },
     section: { type: String, enum: ["executive", "cabinet", "clubs"], required: true },
     order: { type: Number, default: 0 },
+    description: { type: String, default: "" },
+    linkedin: { type: String, default: "" },
+    instagram: { type: String, default: "" },
+    github: { type: String, default: "" },
 }, { timestamps: true });
 
 export default mongoose.models.TeamMember || mongoose.model("TeamMember", TeamMemberSchema);

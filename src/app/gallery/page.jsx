@@ -1,17 +1,20 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Zap, LayoutGrid, Calendar } from 'lucide-react';
+import { Zap, LayoutGrid, Calendar, X } from 'lucide-react';
 import ImageLightbox from '@/components/Gallery/ImageLightbox';
+import FeaturedEventsCarousel from '@/components/Gallery/FeaturedEventsCarousel';
 import { groupBySession } from '@/lib/chapters';
 
 const Gallery = () => {
     const [galleryData, setGalleryData] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [selectedEvent, setSelectedEvent] = useState(null);
     const [loading, setLoading] = useState(true);
     const [lightbox, setLightbox] = useState({ isOpen: false, index: 0 });
+    const gridRef = useRef(null);
 
     useEffect(() => {
         const fetchGalleryData = async () => {
@@ -30,10 +33,10 @@ const Gallery = () => {
     }, []);
 
     const categories = useMemo(() => ['All', ...new Set(galleryData.map(i => i.category))], [galleryData]);
-    const filteredImages = useMemo(
-        () => selectedCategory === 'All' ? galleryData : galleryData.filter(i => i.category === selectedCategory),
-        [galleryData, selectedCategory]
-    );
+    const filteredImages = useMemo(() => {
+        if (selectedEvent) return galleryData.filter(i => i.eventName === selectedEvent);
+        return selectedCategory === 'All' ? galleryData : galleryData.filter(i => i.category === selectedCategory);
+    }, [galleryData, selectedCategory, selectedEvent]);
 
     // Images added before the event-date field existed fall back to their upload date.
     const imagesByChapter = useMemo(
@@ -128,13 +131,23 @@ const Gallery = () => {
                 </div>
             </header>
 
+            {/* Featured recent events carousel */}
+            <FeaturedEventsCarousel
+                items={galleryData}
+                onViewPhotos={(name) => {
+                    setSelectedEvent(name);
+                    setSelectedCategory('All');
+                    setTimeout(() => gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+                }}
+            />
+
             {/* Categories */}
-            <div className="sticky top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 py-6">
+            <div className="sticky top-20 z-30 bg-white/90 backdrop-blur-md border-b border-slate-100 py-6 mt-10">
                 <div className="max-w-7xl mx-auto px-6 flex flex-wrap items-center gap-2">
                     {categories.map(cat => (
                         <button
                             key={cat}
-                            onClick={() => setSelectedCategory(cat)}
+                            onClick={() => { setSelectedCategory(cat); setSelectedEvent(null); }}
                             className={`px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wide transition-all
                 ${selectedCategory === cat ? 'bg-[#1e3a8a] text-white shadow-lg' : 'text-slate-500 hover:text-[#1e3a8a] hover:bg-blue-50'}`}
                         >
@@ -145,7 +158,18 @@ const Gallery = () => {
             </div>
 
             {/* Gallery by Chapter */}
-            <main className="max-w-7xl mx-auto px-6 mt-10">
+            <main ref={gridRef} className="max-w-7xl mx-auto px-6 mt-10 scroll-mt-24">
+                {selectedEvent && (
+                    <div className="flex justify-center mb-10">
+                        <button
+                            onClick={() => setSelectedEvent(null)}
+                            className="flex items-center gap-2 bg-[#1e3a8a] text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wide shadow-lg hover:bg-[#172e6b] transition-colors"
+                        >
+                            Showing: {selectedEvent}
+                            <X className="w-3.5 h-3.5" />
+                        </button>
+                    </div>
+                )}
                 <AnimatePresence mode="popLayout">
                     {imagesByChapter.length > 0 ? (
                         <div>

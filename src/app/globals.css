@@ -89,3 +89,56 @@ body {
     transform: scale(1);
   }
 }
+
+/* Lazy certificate entrance */
+@keyframes certLazyIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-cert-lazy {
+  animation: certLazyIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cert-lazy {
+    animation: none;
+  }
+}
+
+/* Gentle loading state */
+@keyframes slowSpin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-slow-spin {
+  animation: slowSpin 1.8s linear infinite;
+}
+
+@keyframes softIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-soft-in {
+  animation: softIn 1s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-slow-spin,
+  .animate-soft-in {
+    animation: none;
+  }
+}
+
+/* Featured events carousel progress */
+@keyframes progressFill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}

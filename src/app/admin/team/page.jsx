@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "@/components/Admin/AdminLayout";
 import Image from "next/image";
-import { Plus, Pencil, Trash2, X, Save, User } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Save, User, ChevronDown } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import ImageUpload from "@/components/Admin/ImageUpload";
 
-const emptyMember = { name: "", role: "", subRole: "", image: "", section: "cabinet", order: 0 };
+const emptyMember = { name: "", role: "", subRole: "", image: "", section: "cabinet", order: 0, description: "" };
 
 export default function AdminTeam() {
     const [members, setMembers] = useState([]);
@@ -17,6 +17,7 @@ export default function AdminTeam() {
     const [form, setForm] = useState(emptyMember);
     const [saving, setSaving] = useState(false);
     const [deleteModal, setDeleteModal] = useState({ open: false, id: null });
+    const [showOptional, setShowOptional] = useState(false);
 
     const token = typeof window !== "undefined" ? localStorage.getItem("admin_token") : "";
 
@@ -31,8 +32,8 @@ export default function AdminTeam() {
 
     useEffect(() => { fetchMembers(); }, []);
 
-    const openAdd = () => { setEditing(null); setForm(emptyMember); setModalOpen(true); };
-    const openEdit = (m) => { setEditing(m._id); setForm({ name: m.name, role: m.role, subRole: m.subRole || "", image: m.image, section: m.section, order: m.order || 0 }); setModalOpen(true); };
+    const openAdd = () => { setEditing(null); setForm(emptyMember); setShowOptional(false); setModalOpen(true); };
+    const openEdit = (m) => { setEditing(m._id); setForm({ name: m.name, role: m.role, subRole: m.subRole || "", image: m.image, section: m.section, order: m.order || 0, description: m.description || "" }); setShowOptional(Boolean(m.subRole || m.description)); setModalOpen(true); };
 
     const handleSave = async () => {
         setSaving(true);
@@ -121,33 +122,48 @@ export default function AdminTeam() {
             {/* Modal */}
             {modalOpen && (
                 <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-                    <div className="bg-[#111827] border border-white/[0.08] rounded-2xl w-full max-w-lg shadow-2xl">
-                        <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.06]">
-                            <h3 className="text-lg font-black text-white">{editing ? "Edit Member" : "Add Member"}</h3>
-                            <button onClick={() => setModalOpen(false)} className="p-2 hover:bg-white/[0.05] rounded-lg text-gray-400"><X className="w-5 h-5" /></button>
-                        </div>
-                        <div className="p-6 space-y-5">
-                            <TInput label="Full Name" icon={<User className="w-4 h-4" />} value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
-                            <TInput label="Role / Title" value={form.role} onChange={(v) => setForm({ ...form, role: v })} placeholder="e.g. President, AI Lead" />
-                            <TInput label="Sub Role (optional)" value={form.subRole} onChange={(v) => setForm({ ...form, subRole: v })} placeholder="e.g. Chairman, Dept. of CS" />
-                            <ImageUpload label="Member Photo" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
-                            <div className="grid grid-cols-2 gap-5">
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Section</label>
-                                    <select
-                                        value={form.section}
-                                        onChange={(e) => setForm({ ...form, section: e.target.value })}
-                                        className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all text-sm appearance-none"
-                                    >
-                                        <option value="executive" className="bg-gray-800">Executive Board</option>
-                                        <option value="cabinet" className="bg-gray-800">Cabinet</option>
-                                        <option value="clubs" className="bg-gray-800">Club Leads</option>
-                                    </select>
-                                </div>
-                                <TInput label="Order" type="number" value={form.order} onChange={(v) => setForm({ ...form, order: v })} />
+                        <div className="bg-[#111827] border border-white/[0.08] rounded-2xl w-full max-w-md max-h-[85vh] flex flex-col shadow-2xl">
+                            <div className="flex items-center justify-between px-5 py-4 border-b border-white/[0.06] shrink-0">
+                                <h3 className="text-lg font-black text-white">{editing ? "Edit Member" : "Add Member"}</h3>
+                                <button onClick={() => setModalOpen(false)} className="p-2 hover:bg-white/[0.05] rounded-lg text-gray-400"><X className="w-5 h-5" /></button>
                             </div>
-                        </div>
-                        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-white/[0.06]">
+                            <div className="p-5 space-y-4 overflow-y-auto flex-1">
+                                <TInput label="Full Name" icon={<User className="w-4 h-4" />} value={form.name} onChange={(v) => setForm({ ...form, name: v })} />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <TInput label="Role / Title" value={form.role} onChange={(v) => setForm({ ...form, role: v })} placeholder="e.g. President" />
+                                    <div className="space-y-2">
+                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-400">Section</label>
+                                        <select
+                                            value={form.section}
+                                            onChange={(e) => setForm({ ...form, section: e.target.value })}
+                                            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all text-sm appearance-none"
+                                        >
+                                            <option value="executive" className="bg-gray-800">Executive</option>
+                                            <option value="cabinet" className="bg-gray-800">Cabinet</option>
+                                            <option value="clubs" className="bg-gray-800">Club Leads</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <ImageUpload label="Member Photo" value={form.image} onChange={(url) => setForm({ ...form, image: url })} />
+
+                                <button
+                                    type="button"
+                                    onClick={() => setShowOptional(!showOptional)}
+                                    className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-gray-300 transition-colors"
+                                >
+                                    Optional details
+                                    <ChevronDown className={`w-3.5 h-3.5 transition-transform ${showOptional ? "rotate-180" : ""}`} />
+                                </button>
+
+                                {showOptional && (
+                                    <div className="space-y-4">
+                                        <TInput label="Sub Role" value={form.subRole} onChange={(v) => setForm({ ...form, subRole: v })} placeholder="e.g. Chairman, Dept. of CS" />
+                                        <TInput label="Sort Order" type="number" value={form.order} onChange={(v) => setForm({ ...form, order: v })} placeholder="Lower shows first" />
+                                        <TArea label="Description" value={form.description} onChange={(v) => setForm({ ...form, description: v })} placeholder="Short bio shown on the team card" rows={3} />
+                                    </div>
+                                )}
+                            </div>
+                            <div className="flex items-center justify-end gap-3 px-5 py-4 border-t border-white/[0.06] shrink-0">
                             <button onClick={() => setModalOpen(false)} className="px-5 py-2.5 rounded-xl text-sm font-semibold text-gray-400 hover:text-white hover:bg-white/[0.05] transition-all">Cancel</button>
                             <button
                                 onClick={handleSave}
@@ -183,6 +199,17 @@ function TInput({ label, value, onChange, type = "text", placeholder = "", icon 
                     className={`w-full bg-white/[0.05] border border-white/[0.08] rounded-xl ${icon ? "pl-11" : "pl-4"} pr-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all text-sm`}
                 />
             </div>
+        </div>
+    );
+}
+
+function TArea({ label, value, onChange, placeholder = "", rows = 3 }) {
+    return (
+        <div className="space-y-2">
+            <label className="text-xs font-bold uppercase tracking-widest text-gray-400">{label}</label>
+            <textarea rows={rows} value={value || ""} onChange={(e) => onChange(e.target.value)} placeholder={placeholder}
+                className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all text-sm resize-none"
+            />
         </div>
     );
 }

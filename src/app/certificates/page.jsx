@@ -1,12 +1,12 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { Search, Download, Award, Loader2, ArrowRight, Trophy } from "lucide-react";
 import CertificateCanvas from "@/components/Certificates/CertificateCanvas";
 import KahootCertificateCanvas from "@/components/Certificates/KahootCertificateCanvas";
 
-function CertificateResultCard({ cert }) {
+function CertificateResultCard({ cert, style }) {
     const [previewDataUrl, setPreviewDataUrl] = useState(null);
 
     const handleDownload = () => {
@@ -23,12 +23,9 @@ function CertificateResultCard({ cert }) {
     const isKahoot = cert.type === "kahoot";
 
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="group relative bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-500"
+        <div
+            style={style}
+            className="group relative bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-2xl transition-all duration-500 animate-cert-lazy"
         >
             {/* Visual Preview Area */}
             <div className="relative aspect-[16/11] bg-slate-100 overflow-hidden border-b border-slate-100">
@@ -95,7 +92,7 @@ function CertificateResultCard({ cert }) {
                     </button>
                 </div>
             </div>
-        </motion.div>
+        </div>
     );
 }
 
@@ -104,6 +101,7 @@ export default function CertificateSearch() {
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState(null);
     const [activeTab, setActiveTab] = useState("session"); // "session" | "kahoot"
+    const resultsRef = useRef(null);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -111,6 +109,9 @@ export default function CertificateSearch() {
 
         setLoading(true);
         setResults(null);
+        setTimeout(() => {
+            resultsRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 150);
         try {
             const res = await fetch(`/api/certificates?email=${email.toLowerCase()}`);
             const data = await res.json();
@@ -126,7 +127,7 @@ export default function CertificateSearch() {
     };
 
     return (
-        <main className="min-h-screen bg-slate-50 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] font-sans pb-40 overflow-x-hidden">
+        <main className="min-h-screen bg-slate-50 selection:bg-[#1e3a8a]/10 selection:text-[#1e3a8a] font-sans pb-24 overflow-x-hidden">
             {/* HERO SECTION - Matching Gallery/Alumni Theme */}
             <header className="relative pt-40 pb-20 bg-[#1e3a8a]/10 overflow-hidden">
                 <div className="absolute inset-0 opacity-[0.04] bg-[radial-gradient(circle,_#000_1px,_transparent_1px)] bg-[size:40px_40px]" />
@@ -171,7 +172,7 @@ export default function CertificateSearch() {
                                     disabled={loading}
                                     className="absolute right-2 top-1/2 -translate-y-1/2 bg-[#1e3a8a] text-white p-4 rounded-full hover:bg-[#1e40af] transition-all shadow-lg active:scale-95 disabled:opacity-50"
                                 >
-                                    {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <ArrowRight className="w-5 h-5" />}
+                                    {loading ? <Loader2 className="w-5 h-5 animate-slow-spin" /> : <ArrowRight className="w-5 h-5" />}
                                 </button>
                             </div>
                         </form>
@@ -219,10 +220,12 @@ export default function CertificateSearch() {
                 </div>
             </header>
 
-            {/* RESULTS SECTION */}
-            <section className="py-24 px-6 min-h-[400px]">
-                <div className="max-w-7xl mx-auto">
-                    <AnimatePresence mode="wait">
+            {/* RESULTS SECTION — height animates open only after a search */}
+            <section ref={resultsRef} className="px-6 scroll-mt-24">
+                <div className={`grid transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] ${loading || results !== null ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}>
+                    <div className="overflow-hidden">
+                        <div className="max-w-7xl mx-auto py-16">
+                            <AnimatePresence mode="wait">
                         {loading ? (
                             <motion.div
                                 key="loading"
@@ -231,8 +234,8 @@ export default function CertificateSearch() {
                                 exit={{ opacity: 0 }}
                                 className="flex flex-col items-center justify-center py-20 gap-6"
                             >
-                                <div className="w-16 h-16 border-4 border-blue-100 border-t-[#1e3a8a] rounded-full animate-spin" />
-                                <p className="text-slate-500 font-bold tracking-[0.2em] uppercase text-xs animate-pulse">Scanning Archive...</p>
+                                <div className="w-11 h-11 border-2 border-blue-100 border-t-[#1e3a8a]/70 rounded-full animate-slow-spin" />
+                                <p className="text-slate-400 font-medium tracking-[0.25em] uppercase text-[11px] animate-soft-in">Scanning archive…</p>
                             </motion.div>
                         ) : results === null ? null : results.length === 0 ? (
                             <motion.div
@@ -300,13 +303,15 @@ export default function CertificateSearch() {
                                                 ? cert.type === "kahoot"
                                                 : !cert.type || cert.type === "session"
                                         )
-                                        .map((cert) => (
-                                            <CertificateResultCard key={cert._id} cert={cert} />
+                                        .map((cert, i) => (
+                                            <CertificateResultCard key={cert._id} cert={cert} style={{ animationDelay: `${i * 0.18}s` }} />
                                         ))}
                                 </div>
                             </>
                         )}
                     </AnimatePresence>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>

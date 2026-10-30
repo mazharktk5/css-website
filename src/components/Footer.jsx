@@ -118,7 +118,12 @@ export default function Footer() {
                             </div>
                             <div className="flex items-center gap-3">
                                 <Mail size={18} className="text-blue-300 shrink-0" />
-                                <span className="font-medium text-white">computing.society@uop.edu.pk</span>
+                                <a
+                                    href="mailto:computing.society@uop.edu.pk"
+                                    className="font-medium text-white hover:text-blue-300 transition-colors underline decoration-blue-300/40 underline-offset-4 hover:decoration-blue-300"
+                                >
+                                    computing.society@uop.edu.pk
+                                </a>
                             </div>
                         </div>
                     </div>
