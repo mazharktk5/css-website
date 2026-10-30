@@ -85,31 +85,49 @@ export async function POST(request) {
         }
 
         // Prepare bulk operations for Upsert
-        const ops = records.map(reg => ({
-            updateOne: {
-                // Include type in the filter so session + kahoot certs for the
-                // same event name don't collide.
-                filter: {
-                    email: reg.email.toLowerCase(),
-                    eventName: reg.eventName,
-                    type: reg.type || "session"
-                },
-                update: {
-                    $set: {
-                        fullName: reg.fullName,
-                        description: reg.description || "",
-                        leftSignatureName: "Muhammad Ilyas",
-                        rightSignatureName: reg.rightSignatureName || "",
-                        rightSignatureRole: reg.rightSignatureRole || "Club Lead",
-                        type: reg.type || "session",
-                        position: reg.position ?? null,
-                        sessionDate: reg.sessionDate ? new Date(reg.sessionDate) : null,
-                        issueDate: reg.issueDate || new Date()
-                    }
-                },
-                upsert: true
-            }
-        }));
+        const ops = records.map(reg => {
+            const update = {
+                fullName: reg.fullName,
+                description: reg.description || "",
+                rightSignatureName: reg.rightSignatureName || "",
+                rightSignatureRole: reg.rightSignatureRole || "Club Lead",
+                type: reg.type || "session",
+                position: reg.position ?? null,
+                sessionDate: reg.sessionDate ? new Date(reg.sessionDate) : null,
+                issueDate: reg.issueDate || new Date()
+            };
+            // Persist uploaded signature overrides; only overwrite when a
+            // new one is provided so re-imports don't wipe them.
+            if (reg.leadSignatureUrl) update.leadSignatureUrl = reg.leadSignatureUrl;
+            if (reg.leftSignatureName) update.leftSignatureName = reg.leftSignatureName;
+            if (reg.presidentSignatureUrl) update.presidentSignatureUrl = reg.presidentSignatureUrl;
+
+            // Stamp ONLY brand-new records with the current president so
+            // certificates issued under previous presidents keep theirs.
+            const onInsert = {
+                leftSignatureName: "Mazhar Ahmad",
+                presidentSignatureUrl: "/images/signature/president_mazhar.jpeg",
+            };
+            // MongoDB rejects the same path in $set and $setOnInsert.
+            for (const key of Object.keys(update)) delete onInsert[key];
+
+            return {
+                updateOne: {
+                    // Include type in the filter so session + kahoot certs for the
+                    // same event name don't collide.
+                    filter: {
+                        email: reg.email.toLowerCase(),
+                        eventName: reg.eventName,
+                        type: reg.type || "session"
+                    },
+                    update: {
+                        $set: update,
+                        ...(Object.keys(onInsert).length > 0 ? { $setOnInsert: onInsert } : {})
+                    },
+                    upsert: true
+                }
+            };
+        });
 
         const result = await CertificateRecord.bulkWrite(ops);
 

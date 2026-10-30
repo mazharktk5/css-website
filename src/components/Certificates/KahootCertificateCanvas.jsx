@@ -7,6 +7,8 @@ export default function KahootCertificateCanvas({
     position,       // 1, 2, or 3
     sessionName,    // e.g. "Turn Your Skills Into Income"
     sessionDate,    // ISO date string or Date
+    leftSignatureName,     // President's printed-name fallback
+    presidentSignatureUrl, // Per-record president signature — stamped on new certs
     isPreview = false,
     onReady
 }) {
@@ -83,7 +85,7 @@ export default function KahootCertificateCanvas({
             const [templateImg, rawChiefImg, rawPresImg] = await Promise.all([
                 loadImg("/images/certificates/kahoot-template.jpeg"),
                 loadImg("/images/signature/cheif-organizer.jpeg"),
-                loadImg("/images/signature/president_signature.jpeg"),
+                loadImg(presidentSignatureUrl || "/images/signature/president_signature.jpeg"),
             ]);
 
             if (!templateImg) return;
@@ -247,7 +249,7 @@ export default function KahootCertificateCanvas({
                 ctx.font = "400 90px 'Mrs Saint Delafield', cursive";
                 ctx.fillStyle = "#1e40af";
                 ctx.textAlign = "center";
-                ctx.fillText("Muhammad Ilyas", PRES_X, SIG_LINE);
+                ctx.fillText(leftSignatureName || "Muhammad Ilyas", PRES_X, SIG_LINE);
             }
 
             if (onReady && !hasCalledReady.current) {
@@ -257,7 +259,7 @@ export default function KahootCertificateCanvas({
         };
 
         render();
-    }, [fullName, position, sessionName, sessionDate, onReady]);
+    }, [fullName, position, sessionName, sessionDate, leftSignatureName, presidentSignatureUrl, onReady]);
 
     return (
         <canvas

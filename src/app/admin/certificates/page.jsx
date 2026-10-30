@@ -399,7 +399,7 @@ export default function AdminCertificates() {
                         <div className="space-y-2">
                             <label className="text-xs font-bold uppercase tracking-widest text-gray-500 opacity-40">President (Fixed)</label>
                             <div className="w-full bg-white/[0.02] border border-white/5 rounded-xl px-4 py-2.5 text-sm text-gray-600 font-medium">
-                                Muhammad Ilyas
+                                Mazhar Ahmad
                             </div>
                         </div>
 

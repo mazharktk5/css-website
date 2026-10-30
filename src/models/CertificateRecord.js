@@ -5,10 +5,13 @@ const CertificateRecordSchema = new mongoose.Schema({
     email: { type: String, required: true },
     eventName: { type: String, required: true },
     description: { type: String, default: "" },
-    leftSignatureName: { type: String, default: "Muhammad Ilyas" },
+    leftSignatureName: { type: String, default: "Mazhar Ahmad" },
     rightSignatureName: { type: String },
     rightSignatureRole: { type: String, default: "Club Lead" },
     leadSignatureUrl: { type: String },
+    // President (left) signature image — stamped on new records so old
+    // certificates keep showing the president they were issued under.
+    presidentSignatureUrl: { type: String },
     // Kahoot-specific fields
     type: { type: String, enum: ["session", "kahoot"], default: "session" },
     position: { type: Number },       // 1, 2, or 3 (kahoot winners only)

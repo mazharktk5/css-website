@@ -9,6 +9,7 @@ export default function CertificateCanvas({
     rightSignatureName,
     rightSignatureRole,
     leadSignatureUrl, // New: Dynamic signature image
+    presidentSignatureUrl, // Per-record president (left) signature — stamped on new certs
     isPreview = false, // New: Whether to show the canvas or keep it hidden
     onReady
 }) {
@@ -89,17 +90,19 @@ export default function CertificateCanvas({
             // matchedFile stays null if no keyword matches (will fall through to dynamic upload or cursive text)
 
             // Load signatures in parallel
-            // 1. President (Fixed)
-            // 2. Smart Match (e.g., se_club_lead.jpeg)
-            // 3. Dynamic Upload (fallback if provided)
+            // 1. President (record override for new certs > legacy default file)
+            // 2. Dynamic Upload (record-specific override — wins when present)
+            // 3. Smart Match (e.g., se_club_lead.jpeg — legacy fallback)
             const [rawPresImg, rawSmartMatchImg, rawDynamicImg] = await Promise.all([
-                loadImg("/images/signature/president_signature.jpeg"),
+                loadImg(presidentSignatureUrl || "/images/signature/president_signature.jpeg"),
                 matchedFile ? loadImg(`/images/signature/${matchedFile}`) : Promise.resolve(null),
                 leadSignatureUrl ? loadImg(leadSignatureUrl) : Promise.resolve(null)
             ]);
 
-            // Final Lead Signature Selection: Smart Match > Dynamic Upload
-            const rawLeadImg = rawSmartMatchImg || rawDynamicImg;
+            // Final Lead Signature Selection: Dynamic Upload > Smart Match
+            // Records with an uploaded signature (new certs) show that image;
+            // legacy records without one keep the keyword-matched file (old lead).
+            const rawLeadImg = rawDynamicImg || rawSmartMatchImg;
 
             // Remove background from signatures
             const presImg = removeBg(rawPresImg);
@@ -200,7 +203,7 @@ export default function CertificateCanvas({
                 await document.fonts.load("400 110px 'Mrs Saint Delafield'");
                 ctx.font = "400 110px 'Mrs Saint Delafield', cursive";
                 ctx.fillStyle = "#1e40af";
-                ctx.fillText("Muhammad Ilyas", canvas.width * 0.28, canvas.height * 0.81);
+                ctx.fillText(leftSignatureName || "Muhammad Ilyas", canvas.width * 0.28, canvas.height * 0.81);
             }
 
             // --- Right Signature (Club Lead - Dynamic Image) ---
@@ -235,7 +238,7 @@ export default function CertificateCanvas({
                 onReady(canvas.toDataURL("image/png"));
             }
         };
-    }, [fullName, description, leftSignatureName, rightSignatureName, rightSignatureRole, leadSignatureUrl, onReady]);
+    }, [fullName, description, leftSignatureName, rightSignatureName, rightSignatureRole, leadSignatureUrl, presidentSignatureUrl, onReady]);
 
     return (
         <canvas

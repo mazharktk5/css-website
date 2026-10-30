@@ -37,6 +37,8 @@ function CertificateResultCard({ cert, style }) {
                                 position={cert.position}
                                 sessionName={cert.eventName}
                                 sessionDate={cert.sessionDate}
+                                leftSignatureName={cert.leftSignatureName}
+                                presidentSignatureUrl={cert.presidentSignatureUrl}
                                 isPreview={true}
                                 onReady={(url) => setPreviewDataUrl(url)}
                             />
