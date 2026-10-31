@@ -1,9 +1,7 @@
-"use client";
-import { useEffect, useState } from "react";
 import Image from "next/image";
 import { AnimatedLeader } from "./AboutClient";
 
-const fallbackLeaders = [
+const leaders = [
     {
         name: "Dr Shah Khusro",
         role: "Patron-in-Chief",
@@ -42,37 +40,6 @@ const fallbackLeaders = [
 ];
 
 export default function AboutSection() {
-    const [leaders, setLeaders] = useState(fallbackLeaders);
-
-    useEffect(() => {
-        const fetchLeaders = async () => {
-            try {
-                const res = await fetch("/api/team");
-                const data = await res.json();
-                if (!Array.isArray(data) || data.length === 0) return;
-
-                const executive = data
-                    .filter((m) => m.section === "executive")
-                    .sort((a, b) => (a.order || 0) - (b.order || 0));
-                const cabinet = data
-                    .filter((m) => m.section === "cabinet")
-                    .sort((a, b) => (a.order || 0) - (b.order || 0))
-                    .slice(0, 3);
-
-                const fetched = [...executive, ...cabinet].map((m) => ({
-                    name: m.name,
-                    role: [m.role, m.subRole].filter(Boolean).join(" — "),
-                    img: m.image || "/images/team/placeholder.jpg",
-                    message: m.description || ""
-                }));
-
-                if (fetched.length > 0) setLeaders(fetched);
-            } catch { /* keep fallback */ }
-        };
-
-        fetchLeaders();
-    }, []);
-
     return (
         <section className="py-20 bg-white">
             <div className="max-w-7xl mx-auto px-6 lg:px-12">
@@ -120,11 +87,9 @@ export default function AboutSection() {
                                     {leader.name}
                                 </h3>
 
-                                {leader.message && (
-                                    <p className="text-lg text-slate-600 leading-relaxed">
-                                        {leader.message}
-                                    </p>
-                                )}
+                                <p className="text-lg text-slate-600 leading-relaxed">
+                                    {leader.message}
+                                </p>
                             </div>
                         </AnimatedLeader>
                     ))}
