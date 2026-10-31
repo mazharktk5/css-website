@@ -81,10 +81,11 @@ export default function CertificateCanvas({
             } else if (
                 roleLower.includes("chief") ||
                 roleLower.includes("organizer") ||
+                roleLower.includes("patron") ||
                 roleLower.includes("general") ||
                 roleLower === "css"
             ) {
-                // General CSS event — use Chief Organizer signature
+                // General CSS event — use Patron (Chief Organizer) signature
                 matchedFile = "cheif-organizer.jpeg";
             }
             // matchedFile stays null if no keyword matches (will fall through to dynamic upload or cursive text)

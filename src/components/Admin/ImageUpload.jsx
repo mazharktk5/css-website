@@ -35,7 +35,14 @@ export default function ImageUpload({ value, onChange, label = "Image" }) {
                 body: formData,
             });
 
-            const data = await res.json();
+            if (res.status === 401) {
+                localStorage.removeItem("admin_token");
+                setError("Session expired. Redirecting to login…");
+                setTimeout(() => { window.location.href = "/admin/login"; }, 1200);
+                return;
+            }
+
+            const data = await res.json().catch(() => ({}));
 
             if (!res.ok) {
                 throw new Error(data.error || "Failed to upload");

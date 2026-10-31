@@ -2,9 +2,10 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { Search, Download, Award, Loader2, ArrowRight, Trophy } from "lucide-react";
+import { Search, Download, Award, Loader2, ArrowRight, Trophy, Sparkles } from "lucide-react";
 import CertificateCanvas from "@/components/Certificates/CertificateCanvas";
 import KahootCertificateCanvas from "@/components/Certificates/KahootCertificateCanvas";
+import CustomCertificateCanvas from "@/components/Certificates/CustomCertificateCanvas";
 
 function CertificateResultCard({ cert, style }) {
     const [previewDataUrl, setPreviewDataUrl] = useState(null);
@@ -21,6 +22,8 @@ function CertificateResultCard({ cert, style }) {
     };
 
     const isKahoot = cert.type === "kahoot";
+    const isCustom = cert.type === "custom";
+    const hasSnapshot = isCustom && cert.templateSnapshot?.backgroundUrl;
 
     return (
         <div
@@ -42,6 +45,12 @@ function CertificateResultCard({ cert, style }) {
                                 isPreview={true}
                                 onReady={(url) => setPreviewDataUrl(url)}
                             />
+                        ) : hasSnapshot ? (
+                            <CustomCertificateCanvas
+                                {...cert}
+                                isPreview={true}
+                                onReady={(url) => setPreviewDataUrl(url)}
+                            />
                         ) : (
                             <CertificateCanvas
                                 {...cert}
@@ -60,7 +69,7 @@ function CertificateResultCard({ cert, style }) {
                             <Trophy className="w-3 h-3" /> Kahoot Winner
                         </span>
                     ) : (
-                        <span className="text-[10px] font-bold text-[#1e3a8a] bg-blue-50 px-3 py-1.5 rounded-full border border-blue-100 shadow-sm uppercase tracking-widest">
+                        <span className="text-[10px] font-bold text-[#1e3a8a] bg-blue-50 px-3 py-1.5 rounded-full border border-blue-200 shadow-sm uppercase tracking-widest">
                             Verified
                         </span>
                     )}
@@ -102,7 +111,6 @@ export default function CertificateSearch() {
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
     const [results, setResults] = useState(null);
-    const [activeTab, setActiveTab] = useState("session"); // "session" | "kahoot"
     const resultsRef = useRef(null);
 
     const handleSearch = async (e) => {
@@ -118,9 +126,6 @@ export default function CertificateSearch() {
             const res = await fetch(`/api/certificates?email=${email.toLowerCase()}`);
             const data = await res.json();
             const arr = Array.isArray(data) ? data : [];
-            // Default to "kahoot" tab if the user has no session certs
-            const hasSession = arr.some(c => !c.type || c.type === "session");
-            setActiveTab(hasSession ? "session" : "kahoot");
             setResults(arr);
         } catch {
             setResults([]);
@@ -258,56 +263,10 @@ export default function CertificateSearch() {
                             </motion.div>
                         ) : (
                             <>
-                                {/* ── Type Toggle (shown only when both types exist) ── */}
-                                {(() => {
-                                    const hasSession = results.some(c => !c.type || c.type === "session");
-                                    const hasKahoot = results.some(c => c.type === "kahoot");
-                                    if (!hasSession || !hasKahoot) return null;
-                                    return (
-                                        <motion.div
-                                            initial={{ opacity: 0, y: 10 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            className="flex justify-center mb-12"
-                                        >
-                                            <div className="inline-flex bg-slate-100 rounded-full p-1.5 gap-1 shadow-inner">
-                                                <button
-                                                    onClick={() => setActiveTab("session")}
-                                                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-widest transition-all ${
-                                                        activeTab === "session"
-                                                            ? "bg-[#1e3a8a] text-white shadow-lg shadow-blue-600/20"
-                                                            : "text-slate-500 hover:text-slate-700"
-                                                    }`}
-                                                >
-                                                    <Award className="w-4 h-4" />
-                                                    Session Certificates
-                                                </button>
-                                                <button
-                                                    onClick={() => setActiveTab("kahoot")}
-                                                    className={`flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-bold uppercase tracking-widest transition-all ${
-                                                        activeTab === "kahoot"
-                                                            ? "bg-yellow-500 text-black shadow-lg shadow-yellow-500/20"
-                                                            : "text-slate-500 hover:text-slate-700"
-                                                    }`}
-                                                >
-                                                    <Trophy className="w-4 h-4" />
-                                                    Kahoot Winners
-                                                </button>
-                                            </div>
-                                        </motion.div>
-                                    );
-                                })()}
-
-                                {/* ── Filtered Results Grid ── */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                                    {results
-                                        .filter(cert =>
-                                            activeTab === "kahoot"
-                                                ? cert.type === "kahoot"
-                                                : !cert.type || cert.type === "session"
-                                        )
-                                        .map((cert, i) => (
-                                            <CertificateResultCard key={cert._id} cert={cert} style={{ animationDelay: `${i * 0.18}s` }} />
-                                        ))}
+                                    {results.map((cert, i) => (
+                                        <CertificateResultCard key={cert._id} cert={cert} style={{ animationDelay: `${i * 0.18}s` }} />
+                                    ))}
                                 </div>
                             </>
                         )}

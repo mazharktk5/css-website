@@ -5,6 +5,7 @@ import AdminLayout from "@/components/Admin/AdminLayout";
 import { Upload, Trash2, Search, FileText, Download, CheckCircle, XCircle, AlertCircle, Trophy, Pencil, X } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import ImageUpload from "@/components/Admin/ImageUpload";
+import TemplateManager from "@/components/Admin/certificates/TemplateManager";
 
 export default function AdminCertificates() {
     const [batches, setBatches] = useState([]);
@@ -71,7 +72,7 @@ export default function AdminCertificates() {
 
     const [eventTitle, setEventTitle] = useState("");
     const [description, setDescription] = useState("");
-    const [roleLead, setRoleLead] = useState("SE Club Lead");
+    const [roleLead, setRoleLead] = useState("");
     const [rightSignature, setRightSignature] = useState("");
     const [leadSignatureUrl, setLeadSignatureUrl] = useState("");
 
@@ -79,8 +80,8 @@ export default function AdminCertificates() {
         const file = e.target.files[0];
         if (!file) return;
 
-        if (!eventTitle || !description || !roleLead) {
-            setStatus({ type: "error", message: "Please fill in required details (Title, Description, and Role) before uploading." });
+        if (!eventTitle || !description) {
+            setStatus({ type: "error", message: "Please fill in required details (Title and Description) before uploading." });
             return;
         }
 
@@ -346,10 +347,10 @@ export default function AdminCertificates() {
                         </div>
 
                         <div className="flex items-center gap-3">
-                            <label className={`flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20 text-sm cursor-pointer ${(!eventTitle || !description || !roleLead) ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                            <label className={`flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/20 text-sm cursor-pointer ${(!eventTitle || !description) ? 'opacity-50 cursor-not-allowed' : ''}`}>
                                 <Upload className="w-4 h-4" />
                                 {importing ? "Importing..." : "Upload CSV"}
-                                <input type="file" accept=".csv" onChange={handleFileUpload} className="hidden" disabled={importing || !eventTitle || !description || !roleLead} />
+                                <input type="file" accept=".csv" onChange={handleFileUpload} className="hidden" disabled={importing || !eventTitle || !description} />
                             </label>
                         </div>
                     </div>
@@ -377,7 +378,7 @@ export default function AdminCertificates() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Signatory Name (Lead / Chief Organizer)</label>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Signatory Name (Lead / Patron)</label>
                             <input
                                 type="text"
                                 placeholder="e.g. Mazhar Ahmad  (or leave blank for CSS event)"
@@ -387,10 +388,10 @@ export default function AdminCertificates() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Role Label (determines which signature appears)</label>
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Role Label (optional — signature match)</label>
                             <input
                                 type="text"
-                                placeholder="e.g. SE Club Lead / AI Club Lead / Chief Organizer"
+                                placeholder="Leave empty → President left, Patron right"
                                 value={roleLead}
                                 onChange={(e) => setRoleLead(e.target.value)}
                                 className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all font-medium"
@@ -410,7 +411,7 @@ export default function AdminCertificates() {
                                 onChange={setLeadSignatureUrl}
                             />
                             <p className="text-[10px] text-blue-400 mt-2 italic px-2">
-                                * Auto-match rules: &quot;<span className="text-green-400 font-semibold">SE Club Lead</span>&quot; → SE signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">AI Club Lead</span>&quot; → AI signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">Trainer</span>&quot; / &quot;<span className="text-green-400 font-semibold">Speaker</span>&quot; → Trainer signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">Chief Organizer</span>&quot; (or &quot;General&quot;) → Chief Organizer signature. Upload an image here only to override.
+                                * Leave Role empty for the default pair: President left + Patron (Dr Waheed) right. Otherwise auto-match: &quot;<span className="text-green-400 font-semibold">SE Club Lead</span>&quot; → SE signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">AI Club Lead</span>&quot; → AI signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">Trainer</span>&quot; / &quot;<span className="text-green-400 font-semibold">Speaker</span>&quot; → Trainer signature &nbsp;|&nbsp; &quot;<span className="text-green-400 font-semibold">Patron</span>&quot; → Patron signature. Upload an image here only to override.
                             </p>
                         </div>
                         <p className="md:col-span-2 lg:col-span-3 text-[10px] text-gray-500 italic">
@@ -826,6 +827,9 @@ export default function AdminCertificates() {
                             </form>
                         </div>
                     )}
+
+                    {/* ── SPECIAL EVENT / COLLABORATION TEMPLATES ────────────── */}
+                    <TemplateManager />
 
                 </div>
             </div>

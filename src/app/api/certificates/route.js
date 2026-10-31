@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import CertificateRecord from "@/models/CertificateRecord";
+import CertificateTemplate from "@/models/CertificateTemplate";
 import { verifyAuth, unauthorized } from "@/lib/auth";
 
 // Public: Find certificates by email
@@ -35,6 +36,8 @@ export async function GET(request) {
                 matchStage = { $match: { $or: [{ type: "session" }, { type: { $exists: false } }, { type: null }] } };
             } else if (adminType === "kahoot") {
                 matchStage = { $match: { type: "kahoot" } };
+            } else if (adminType === "custom") {
+                matchStage = { $match: { type: "custom" } };
             } else {
                 matchStage = { $match: {} };
             }
@@ -45,6 +48,7 @@ export async function GET(request) {
                     $group: {
                         _id: { $ifNull: ["$eventName", "UNNAMED_EVENT"] },
                         type: { $first: { $ifNull: ["$type", "session"] } },
+                        templateKey: { $first: "$templateKey" },
                         description: { $first: "$description" },
                         rightSignatureName: { $first: "$rightSignatureName" },
                         rightSignatureRole: { $first: "$rightSignatureRole" },
@@ -84,13 +88,50 @@ export async function POST(request) {
             return NextResponse.json({ error: "Invalid records format" }, { status: 400 });
         }
 
+        // Resolve templates for special / collaboration certificates.
+        // The layout is snapshotted onto each record so later template edits
+        // (or deletion) never change certificates that were already issued.
+        const normalizeKey = (v) => String(v || "").toLowerCase().trim();
+        const customRecords = records.filter(r => r.type === "custom");
+        if (customRecords.some(r => !normalizeKey(r.templateKey))) {
+            return NextResponse.json(
+                { error: "templateKey is required for custom certificates" },
+                { status: 400 }
+            );
+        }
+        const templateMap = {};
+        if (customRecords.length > 0) {
+            const keys = [...new Set(customRecords.map(r => normalizeKey(r.templateKey)))];
+            const templates = await CertificateTemplate.find({ key: { $in: keys } });
+templates.forEach(t => {
+                const o = t.toObject();
+                templateMap[o.key] = {
+                    key: o.key,
+                    name: o.name,
+                    backgroundUrl: o.backgroundUrl,
+                    layout: o.layout,
+                };
+            });
+            const missing = keys.filter(k => !templateMap[k]);
+            if (missing.length > 0) {
+                return NextResponse.json(
+                    { error: `Unknown template key(s): ${missing.join(", ")}` },
+                    { status: 400 }
+                );
+            }
+        }
+
         // Prepare bulk operations for Upsert
         const ops = records.map(reg => {
+            // No specific lead → default signature pair: President stays
+            // stamped left; blank role resolves to Patron (Dr Waheed ur
+            // Rehman) on the right via the smart-match keyword.
+            const hasRole = !!String(reg.rightSignatureRole || "").trim();
             const update = {
                 fullName: reg.fullName,
                 description: reg.description || "",
-                rightSignatureName: reg.rightSignatureName || "",
-                rightSignatureRole: reg.rightSignatureRole || "Club Lead",
+                rightSignatureName: reg.rightSignatureName || (hasRole ? "" : "Dr Waheed ur Rehman"),
+                rightSignatureRole: hasRole ? reg.rightSignatureRole.trim() : "Patron",
                 type: reg.type || "session",
                 position: reg.position ?? null,
                 sessionDate: reg.sessionDate ? new Date(reg.sessionDate) : null,
@@ -101,6 +142,15 @@ export async function POST(request) {
             if (reg.leadSignatureUrl) update.leadSignatureUrl = reg.leadSignatureUrl;
             if (reg.leftSignatureName) update.leftSignatureName = reg.leftSignatureName;
             if (reg.presidentSignatureUrl) update.presidentSignatureUrl = reg.presidentSignatureUrl;
+
+            // Custom certs: store the key + a fresh layout snapshot.
+            // Re-importing a batch refreshes its snapshot; batches that are
+            // never re-imported stay frozen at their original layout.
+            if (reg.type === "custom") {
+                const key = normalizeKey(reg.templateKey);
+                update.templateKey = key;
+                update.templateSnapshot = templateMap[key];
+            }
 
             // Stamp ONLY brand-new records with the current president so
             // certificates issued under previous presidents keep theirs.
@@ -138,6 +188,47 @@ export async function POST(request) {
     } catch (error) {
         console.error("CERTIFICATE_IMPORT_ERROR:", error);
         return NextResponse.json({ error: "Failed to import records", details: error.message }, { status: 500 });
+    }
+}
+
+// Admin: Batch-edit issued certificates (description / signatory fields).
+// Event name + template fields stay fixed — eventName is the batch identity.
+export async function PATCH(request) {
+    const user = verifyAuth(request);
+    if (!user) return unauthorized();
+
+    try {
+        await dbConnect();
+        const { eventName, type = "custom", updates } = await request.json();
+
+        if (!eventName || typeof eventName !== "string") {
+            return NextResponse.json({ error: "eventName is required" }, { status: 400 });
+        }
+
+        const allowed = ["description", "rightSignatureName", "rightSignatureRole", "leadSignatureUrl"];
+        const $set = {};
+        for (const k of allowed) {
+            if (k in (updates || {})) $set[k] = String(updates[k] ?? "");
+        }
+        // Blank role → default Patron pair (same resolution as import).
+        if ("rightSignatureRole" in $set && !$set.rightSignatureRole.trim()) {
+            $set.rightSignatureRole = "Patron";
+            if ("rightSignatureName" in $set && !$set.rightSignatureName.trim()) {
+                $set.rightSignatureName = "Dr Waheed ur Rehman";
+            }
+        }
+        if (Object.keys($set).length === 0) {
+            return NextResponse.json({ error: "No editable fields provided" }, { status: 400 });
+        }
+
+        const result = await CertificateRecord.updateMany(
+            { eventName, type },
+            { $set }
+        );
+        return NextResponse.json({ message: "Batch updated", modifiedCount: result.modifiedCount });
+    } catch (error) {
+        console.error("CERTIFICATE_BATCH_EDIT_ERROR:", error);
+        return NextResponse.json({ error: "Failed to update batch", details: error.message }, { status: 500 });
     }
 }
 
