@@ -60,7 +60,7 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
             ...L,
             signatures: [
                 ...(L.signatures || []),
-                { x: 0.5, y: 0.8, width: 0.18, source: "president", imageUrl: "", label: "" },
+                { x: 0.72, y: 0.83, width: 0.18, source: "upload", imageUrl: "", label: "" },
             ],
         });
     };
@@ -68,6 +68,20 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
     const removeSlot = (index) => {
         const signatures = (L.signatures || []).filter((_, i) => i !== index);
         onChange({ ...L, signatures });
+    };
+
+    // Role label: use the saved layout position when set, otherwise
+    // auto-place under the right-side signature (lead slot or upload on
+    // the right half) until the user drags it somewhere.
+    const autoRoleSlot = (L.signatures || []).find(
+        (s) => s && (s.source === "lead" || (s.source === "upload" && s.x > 0.5))
+    );
+    const roleL = {
+        enabled: true,
+        x: autoRoleSlot ? autoRoleSlot.x : 0.72,
+        y: autoRoleSlot ? Math.min(autoRoleSlot.y + 0.014, 0.97) : 0.85,
+        size: 0.018,
+        ...(L.roleLabel || {}),
     };
 
     // ── Drag handling (pointer capture → fraction coords) ────────────────
@@ -81,7 +95,7 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
         // Grab offset: keep the element under the cursor (no jump on
         // pointerdown) regardless of anchor (bottom/top anchored).
         const target =
-            type === "slot" ? L.signatures[index] : L[type] || {};
+            type === "slot" ? L.signatures[index] : type === "roleLabel" ? roleL : (L[type] || {});
         dragRef.current = { type, index, dx: px - (target.x ?? 0.5), dy: py - (target.y ?? 0.5) };
         e.currentTarget.setPointerCapture(e.pointerId);
     };
@@ -94,6 +108,7 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
         const y = clamp01((e.clientY - rect.top) / rect.height - d.dy);
         if (d.type === "name") patch("name", { x, y });
         else if (d.type === "description") patch("description", { x, y });
+        else if (d.type === "roleLabel") patch("roleLabel", { x, y });
         else patchSlot(d.index, { x, y });
     };
 
@@ -184,6 +199,29 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
                             </div>
                         )}
 
+                        {/* Role label (draggable) — e.g. Patron under the right signature */}
+                        {roleL.enabled !== false && (
+                            <div
+                                {...dragHandlers("roleLabel")}
+                                className="absolute cursor-move rounded hover:outline hover:outline-2 hover:outline-blue-500/70 outline-offset-2"
+                                style={{
+                                    left: `${roleL.x * 100}%`,
+                                    top: `${roleL.y * 100}%`,
+                                    transform: "translate(-50%, -50%)",
+                                    fontSize: `${roleL.size * boxW}px`,
+                                    fontWeight: 700,
+                                    color: "#0f172a",
+                                    fontFamily: "sans-serif",
+                                    whiteSpace: "nowrap",
+                                    lineHeight: 1.1,
+                                    zIndex: 20,
+                                }}
+                                title="Drag to position the role label (shows the role or Patron)"
+                            >
+                                Patron
+                            </div>
+                        )}
+
                         {/* Signature slots (draggable) */}
                         {(L.signatures || []).map((slot, i) => (
                             <div
@@ -229,8 +267,8 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
                         description={L.description?.enabled === false ? "" : SAMPLE.description}
                         leftSignatureName="Mazhar Ahmad"
                         presidentSignatureUrl="/images/signature/president_mazhar.jpeg"
-                        rightSignatureName="Preview Lead"
-                        rightSignatureRole="SE Club Lead"
+                        rightSignatureName="Dr Waheed ur Rehman"
+                        rightSignatureRole="Patron"
                         leadSignatureUrl=""
                         templateSnapshot={{ backgroundUrl, layout: L }}
                         isPreview={true}
@@ -325,6 +363,55 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
                         />
                         <span className="w-10 text-right text-xs text-gray-400">{((L.description?.lineHeight ?? 0.038) * 100).toFixed(1)}%</span>
                     </label>
+                    <label className="flex items-center gap-3 text-sm text-gray-300">
+                        <span className="w-24 text-xs uppercase tracking-wider text-gray-500 flex items-center gap-2">
+                            <input
+                                type="checkbox"
+                                checked={roleL.enabled !== false}
+                                onChange={(e) => patch("roleLabel", { enabled: e.target.checked })}
+                                className="accent-blue-500"
+                            />
+                            Role
+                        </span>
+                        <input
+                            type="range" min="0.008" max="0.03" step="0.001"
+                            value={roleL.size}
+                            onChange={(e) => patch("roleLabel", { size: Number(e.target.value) })}
+                            disabled={roleL.enabled === false}
+                            className="flex-1 accent-blue-500 disabled:opacity-40"
+                        />
+                        <span className="w-10 text-right text-xs text-gray-400">{(roleL.size * 100).toFixed(1)}%</span>
+                    </label>
+                    <label className="flex items-center gap-3 text-sm text-gray-300">
+                        <span className="w-24 text-xs uppercase tracking-wider text-gray-500">Role pos</span>
+                        <span className="flex items-center gap-1 text-xs text-gray-400">
+                            X
+                            <input
+                                type="number" min="0" max="99.5" step="0.5"
+                                value={Number((roleL.x * 100).toFixed(1))}
+                                disabled={roleL.enabled === false}
+                                onChange={(e) => {
+                                    if (e.target.value === "") return;
+                                    patch("roleLabel", { x: Math.min(0.995, Math.max(0.005, Number(e.target.value) / 100)) });
+                                }}
+                                className="w-16 bg-white/[0.05] border border-white/[0.08] rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-40"
+                            />
+                        </span>
+                        <span className="flex items-center gap-1 text-xs text-gray-400">
+                            Y
+                            <input
+                                type="number" min="0" max="99.5" step="0.5"
+                                value={Number((roleL.y * 100).toFixed(1))}
+                                disabled={roleL.enabled === false}
+                                onChange={(e) => {
+                                    if (e.target.value === "") return;
+                                    patch("roleLabel", { y: Math.min(0.995, Math.max(0.005, Number(e.target.value) / 100)) });
+                                }}
+                                className="w-16 bg-white/[0.05] border border-white/[0.08] rounded-lg px-2 py-1.5 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 disabled:opacity-40"
+                            />
+                        </span>
+                        <span className="text-xs text-gray-500">% of image</span>
+                    </label>
                 </div>
 
                 {/* Signature slots */}
@@ -370,9 +457,9 @@ export default function TemplateDragEditor({ backgroundUrl, layout, onChange }) 
                                     onChange={(e) => patchSlot(i, { source: e.target.value })}
                                     className="w-full bg-white/[0.05] border border-white/[0.08] rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                                 >
-                                    <option value="president">President (current, auto versioned)</option>
-                                    <option value="lead">Lead / Organizer signature</option>
-                                    <option value="upload">Uploaded fixed image</option>
+                                    <option value="upload">Upload signature image (direct)</option>
+                                    <option value="lead">Lead / Organizer (auto-matched by role)</option>
+                                    <option value="president">President (auto versioned)</option>
                                     <option value="none">None (label is baked into art)</option>
                                 </select>
 

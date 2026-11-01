@@ -277,6 +277,38 @@ export default function CustomCertificateCanvas({
                 }
             }
 
+            // ── Role label (Patron / entered role) ─────────────────────────
+            // Position comes from the drag editor (layout.roleLabel). Older
+            // templates without one auto-place under the right-side signature.
+            // Center-anchored to match the editor's translate(-50%, -50%).
+            if (layout.roleLabel?.enabled !== false) {
+                const autoRight = sigSlots.find(
+                    (s) => s && (s.source === "lead" || (s.source === "upload" && s.x > 0.5))
+                );
+                const roleCfg = layout.roleLabel || {};
+                const labelPx = Math.round((roleCfg.size ?? 0.018) * W);
+                let rx, ry;
+                if (roleCfg.x != null && roleCfg.y != null) {
+                    rx = roleCfg.x;
+                    ry = roleCfg.y;
+                } else if (autoRight) {
+                    // Default-cert geometry: label CENTER sits 0.014H below
+                    // the signature bottom (matches CertificateCanvas's
+                    // 0.832 → 0.846 placement). Same formula as the editor.
+                    rx = autoRight.x;
+                    ry = Math.min(autoRight.y + 0.014, 0.97);
+                } else {
+                    rx = 0.72;
+                    ry = 0.85;
+                }
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                ctx.font = `bold ${labelPx}px sans-serif`;
+                ctx.fillStyle = "#0f172a";
+                ctx.fillText(rightSignatureRole || "Patron", rx * W, ry * H);
+                ctx.textBaseline = "alphabetic";
+            }
+
             if (onReady && !hasCalledReady.current) {
                 hasCalledReady.current = true;
                 onReady(canvas.toDataURL("image/png"));

@@ -15,16 +15,6 @@ const defaultLayout = () => ({
     signatures: [],
 });
 
-// Signature presets — blank role is NOT allowed here; "default" resolves to
-// President (left, stamped on insert) + Patron / Dr Waheed (right, smart-match).
-const SIGN_PRESETS = {
-    default: { role: "Patron", name: "Dr Waheed ur Rehman", label: "Default — President left · Patron right" },
-    se: { role: "SE Club Lead", name: "", label: "SE Club Lead" },
-    ai: { role: "AI Club Lead", name: "", label: "AI Club Lead" },
-    trainer: { role: "Trainer", name: "", label: "Trainer / Speaker" },
-    custom: { role: "", name: "", label: "Custom signatory…" },
-};
-
 const slugify = (s) =>
     String(s || "").toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 
@@ -65,8 +55,7 @@ export default function TemplateManager() {
     // import panel
     const [importFor, setImportFor] = useState(null); // template object
     const [imp, setImp] = useState({
-        eventName: "", description: "", preset: "default",
-        rightSignatureName: "", rightSignatureRole: "", leadSignatureUrl: "",
+        eventName: "", description: "", rightSignatureRole: "", leadSignatureUrl: "",
     });
     const [pasteRows, setPasteRows] = useState("");
     const [importing, setImporting] = useState(false);
@@ -163,7 +152,7 @@ export default function TemplateManager() {
             // One-flow issuance: jump straight into certificate creation
             // after creating a template (edits keep the list view).
             if (isNew && data?.key) {
-                setImp(s => ({ ...s, eventName: "", description: "", preset: "default", rightSignatureName: "", rightSignatureRole: "", leadSignatureUrl: "" }));
+                setImp(s => ({ ...s, eventName: "", description: "", rightSignatureRole: "", leadSignatureUrl: "" }));
                 setPasteRows("");
                 setImportStatus(null);
                 setImportFor(data);
@@ -193,19 +182,17 @@ export default function TemplateManager() {
     };
 
     // ── Certificate issuance for a template ─────────────────────────────────
+    // Same rule as the normal certificate flow: blank role → "Patron"
+    // (Dr Waheed ur Rehman, auto-matched signature); any entered role is
+    // used as-is. Signature image at this stage is optional — templates
+    // usually already carry a baked-in signature slot.
     const resolveSig = () => {
-        if (imp.preset === "custom") {
-            return { role: imp.rightSignatureRole.trim(), name: imp.rightSignatureName.trim() };
-        }
-        const p = SIGN_PRESETS[imp.preset] || SIGN_PRESETS.default;
-        return { role: p.role, name: p.name };
+        const role = imp.rightSignatureRole.trim() || "Patron";
+        return { role, name: role === "Patron" ? "Dr Waheed ur Rehman" : "" };
     };
 
     const validateIssue = () => {
         if (!imp.eventName.trim()) return "Event Name is required.";
-        if (imp.preset === "custom" && !imp.rightSignatureRole.trim()) {
-            return "Custom preset needs a role label (signature match).";
-        }
         return null;
     };
 
@@ -219,7 +206,7 @@ export default function TemplateManager() {
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to import records");
         setImportStatus({ type: "success", message: `${records.length} certificates created with the "${importFor.name}" template!` });
-        setImp({ eventName: "", description: "", preset: "default", rightSignatureName: "", rightSignatureRole: "", leadSignatureUrl: "" });
+        setImp({ eventName: "", description: "", rightSignatureRole: "", leadSignatureUrl: "" });
         setPasteRows("");
         fetchAll();
     };
@@ -231,7 +218,7 @@ export default function TemplateManager() {
         description: imp.description.trim(),
         rightSignatureName: sig.name,
         rightSignatureRole: sig.role,
-        leadSignatureUrl: imp.preset === "custom" ? imp.leadSignatureUrl : "",
+        leadSignatureUrl: imp.leadSignatureUrl,
         type: "custom",
         templateKey: importFor.key,
     });
@@ -484,29 +471,15 @@ export default function TemplateManager() {
                         <div className="grid lg:grid-cols-2 gap-6">
                             {/* ── Fields ── */}
                             <div className="space-y-4">
-                                <div className="grid sm:grid-cols-2 gap-4">
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Event Name (card title) *</label>
-                                        <input
-                                            type="text"
-                                            placeholder="e.g. TechRise 2026"
-                                            value={imp.eventName}
-                                            onChange={(e) => setImp(s => ({ ...s, eventName: e.target.value }))}
-                                            className={inputCls}
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Signatures</label>
-                                        <select
-                                            value={imp.preset}
-                                            onChange={(e) => setImp(s => ({ ...s, preset: e.target.value }))}
-                                            className={inputCls}
-                                        >
-                                            {Object.entries(SIGN_PRESETS).map(([k, p]) => (
-                                                <option key={k} value={k}>{p.label}</option>
-                                            ))}
-                                        </select>
-                                    </div>
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Event Name (card title) *</label>
+                                    <input
+                                        type="text"
+                                        placeholder="e.g. TechRise 2026"
+                                        value={imp.eventName}
+                                        onChange={(e) => setImp(s => ({ ...s, eventName: e.target.value }))}
+                                        className={inputCls}
+                                    />
                                 </div>
 
                                 <div className="space-y-2">
@@ -520,42 +493,25 @@ export default function TemplateManager() {
                                     />
                                 </div>
 
-                                {imp.preset === "custom" ? (
-                                    <div className="grid sm:grid-cols-2 gap-4">
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Signatory Name</label>
-                                            <input
-                                                type="text"
-                                                placeholder="e.g. Mazhar Ahmad"
-                                                value={imp.rightSignatureName}
-                                                onChange={(e) => setImp(s => ({ ...s, rightSignatureName: e.target.value }))}
-                                                className={inputCls}
-                                            />
-                                        </div>
-                                        <div className="space-y-2">
-                                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Role Label (signature match) *</label>
-                                            <input
-                                                type="text"
-                                                placeholder="e.g. SE Club Lead"
-                                                value={imp.rightSignatureRole}
-                                                onChange={(e) => setImp(s => ({ ...s, rightSignatureRole: e.target.value }))}
-                                                className={inputCls}
-                                            />
-                                        </div>
-                                        <div className="sm:col-span-2">
-                                            <ImageUpload
-                                                label="Lead Signature Override (optional)"
-                                                value={imp.leadSignatureUrl}
-                                                onChange={(url) => setImp(s => ({ ...s, leadSignatureUrl: url }))}
-                                            />
-                                        </div>
-                                    </div>
-                                ) : (
+                                <div className="space-y-2">
+                                    <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Right Signature Role (optional)</label>
+                                    <input
+                                        type="text"
+                                        placeholder="Patron (default)"
+                                        value={imp.rightSignatureRole}
+                                        onChange={(e) => setImp(s => ({ ...s, rightSignatureRole: e.target.value }))}
+                                        className={inputCls}
+                                    />
                                     <p className="text-[10px] text-blue-400 italic">
-                                        Right signature: <span className="text-green-400 font-semibold">{sig.role}</span>
-                                        {sig.name ? ` (${sig.name})` : ""} — auto-matched. President (Mazhar Ahmad) is stamped on the left automatically.
+                                        Shown under the right signature. Leave empty → <span className="text-green-400 font-semibold">Patron</span>. President (Mazhar Ahmad) is stamped on the left automatically.
                                     </p>
-                                )}
+                                </div>
+
+                                <ImageUpload
+                                    label="Lead Signature Override (optional — skip if the template already has a signature)"
+                                    value={imp.leadSignatureUrl}
+                                    onChange={(url) => setImp(s => ({ ...s, leadSignatureUrl: url }))}
+                                />
                             </div>
 
                             {/* ── Live preview (what will be issued) ── */}
@@ -568,7 +524,7 @@ export default function TemplateManager() {
                                         leftSignatureName="Mazhar Ahmad"
                                         rightSignatureName={sig.name}
                                         rightSignatureRole={sig.role}
-                                        leadSignatureUrl={imp.preset === "custom" ? imp.leadSignatureUrl : ""}
+                                        leadSignatureUrl={imp.leadSignatureUrl}
                                         presidentSignatureUrl="/images/signature/president_mazhar.jpeg"
                                         templateSnapshot={{ backgroundUrl: importFor.backgroundUrl, layout: importFor.layout }}
                                         isPreview={true}

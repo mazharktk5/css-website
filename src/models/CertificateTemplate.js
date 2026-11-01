@@ -39,6 +39,16 @@ const CertificateTemplateSchema = new mongoose.Schema({
             size: { type: Number, default: 0.022 },
         },
         signatures: { type: [SignatureSlotSchema], default: [] },
+        // Draggable role caption under the right signature (e.g. "Patron").
+        // MUST be declared in the schema: mongoose strict mode silently
+        // strips unknown layout keys on save (same trap as backgroundUrl).
+        roleLabel: {
+            enabled: { type: Boolean, default: true },
+            // null → canvas auto-places relative to the right slot
+            x: { type: Number, default: null },
+            y: { type: Number, default: null },
+            size: { type: Number, default: 0.018 }, // fraction of canvas width
+        },
     },
 }, { timestamps: true });
 
