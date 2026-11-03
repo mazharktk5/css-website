@@ -83,11 +83,12 @@ export default function AdminRegistrations() {
             const s = String(v ?? "");
             return /[",\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
         };
-        const header = ["Name", "Email", "Program", "University", "Department", "Event", "Registered At"];
+        const header = ["Name", "Email", "Program", "Semester", "University", "Department", "Event", "Registered At"];
         const rows = regs.map((r) => [
             r.name,
             r.email,
             r.program,
+            r.semester,
             r.university,
             r.department,
             r.event?.title || "General",
@@ -323,7 +324,9 @@ export default function AdminRegistrations() {
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <p className="text-gray-300">{r.program}</p>
-                                                        <p className="text-gray-500 text-xs mt-0.5">{r.department}</p>
+                                                        <p className="text-gray-500 text-xs mt-0.5">
+                                                            {r.department}{r.semester ? ` · Sem ${r.semester}` : ""}
+                                                        </p>
                                                     </td>
                                                     <td className="px-6 py-4 text-gray-400">{r.university}</td>
                                                     <td className="px-6 py-4">

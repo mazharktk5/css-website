@@ -5,6 +5,7 @@ import Event from "@/models/Event";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const OBJECT_ID_RE = /^[a-f\d]{24}$/i;
+const SEMESTERS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
 // POST /api/register — PUBLIC. Stores one registration from the built-in form.
 export async function POST(request) {
@@ -18,6 +19,7 @@ export async function POST(request) {
         const name = String(body.name || "").trim();
         const email = String(body.email || "").trim().toLowerCase();
         const program = String(body.program || "").trim();
+        const semester = String(body.semester || "").trim();
         const university = String(body.university || "").trim();
         const department = String(body.department || "").trim();
 
@@ -27,6 +29,8 @@ export async function POST(request) {
             return NextResponse.json({ error: "Please enter a valid email address." }, { status: 400 });
         if (!program || program.length > 120)
             return NextResponse.json({ error: "Please enter your program." }, { status: 400 });
+        if (!SEMESTERS.includes(semester))
+            return NextResponse.json({ error: "Please select your semester." }, { status: 400 });
         if (!university || university.length > 160)
             return NextResponse.json({ error: "Please enter your university." }, { status: 400 });
         if (!department || department.length > 160)
@@ -48,7 +52,7 @@ export async function POST(request) {
         try {
             await Registration.create({
                 event: { id: eventId, title: eventTitle },
-                name, email, program, university, department,
+                name, email, program, semester, university, department,
             });
         } catch (err) {
             if (err?.code === 11000) {

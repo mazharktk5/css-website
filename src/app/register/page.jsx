@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle2, ClipboardList, Loader2, AlertCircle, User, Mail, GraduationCap, Building2, Layers, ShieldCheck, ChevronDown } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ClipboardList, Loader2, AlertCircle, User, Mail, GraduationCap, Building2, Layers, ShieldCheck, ChevronDown, Hash } from "lucide-react";
 
 const emptyForm = {
     name: "",
@@ -13,6 +13,7 @@ const emptyForm = {
     departmentOther: "",
     program: "",
     programOther: "",
+    semester: "",
     website: "", // honeypot — humans never see or fill this
 };
 
@@ -25,6 +26,7 @@ const PROGRAM_OPTIONS = [
     "BS Software Engineering",
     "Other",
 ];
+const SEMESTER_OPTIONS = ["1", "2", "3", "4", "5", "6", "7", "8"];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -64,6 +66,7 @@ export default function RegisterPage() {
         else if (form.department === "Other" && !form.departmentOther.trim()) errs.departmentOther = "Please type your department.";
         if (!form.program) errs.program = "Please select your program.";
         else if (form.program === "Other" && !form.programOther.trim()) errs.programOther = "Please type your program.";
+        if (!form.semester) errs.semester = "Please select your semester.";
         return errs;
     };
 
@@ -89,6 +92,7 @@ export default function RegisterPage() {
                     university,
                     department,
                     program,
+                    semester: form.semester,
                     eventId,
                 }),
             });
@@ -183,7 +187,7 @@ export default function RegisterPage() {
                                 <div className="animate-reg-fade-up mt-6 text-left bg-slate-50 border border-slate-100 rounded-2xl p-1.5" style={{ animationDelay: "0.5s" }}>
                                     <SummaryRow label="Name" value={form.name} />
                                     <SummaryRow label="Email" value={form.email} />
-                                    <SummaryRow label="Program" value={form.program} />
+                                    <SummaryRow label="Program" value={`${form.program}${form.semester ? ` · Semester ${form.semester}` : ""}`} />
                                     <SummaryRow label="University" value={form.university} />
                                     <SummaryRow label="Department" value={form.department} last />
                                 </div>
@@ -254,6 +258,12 @@ export default function RegisterPage() {
                                                     className={`mt-2 w-full rounded-xl border bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 ${errors.programOther ? "border-red-300 focus:ring-red-100" : "border-slate-200 focus:border-[#1e3a8a]/40 focus:ring-blue-100"}`}
                                                 />
                                             )}
+                                        />
+                                        <SelectField
+                                            id="reg-semester" label="Semester" icon={Hash}
+                                            value={form.semester} onChange={set("semester")}
+                                            options={SEMESTER_OPTIONS} placeholder="Select semester"
+                                            error={errors.semester} delay="0.3s"
                                         />
                                     </div>
 

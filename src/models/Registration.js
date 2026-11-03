@@ -12,6 +12,7 @@ const RegistrationSchema = new mongoose.Schema({
     name: { type: String, required: true, trim: true, maxlength: 120 },
     email: { type: String, required: true, trim: true, lowercase: true, maxlength: 200 },
     program: { type: String, required: true, trim: true, maxlength: 120 },
+    semester: { type: String, required: true, trim: true, maxlength: 8 },
     university: { type: String, required: true, trim: true, maxlength: 160 },
     department: { type: String, required: true, trim: true, maxlength: 160 },
 }, { timestamps: true });
