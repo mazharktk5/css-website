@@ -142,3 +142,51 @@ body {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }
 }
+
+/* Registration form (/register) — card entrance, success check + pulse ring */
+@keyframes regCardIn {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-reg-card {
+  animation: regCardIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes regCheckDraw {
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-reg-check {
+  stroke-dasharray: 64;
+  stroke-dashoffset: 64;
+  animation: regCheckDraw 0.45s 0.2s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@keyframes regRingPump {
+  0% { transform: scale(0.7); opacity: 0.9; }
+  100% { transform: scale(1.75); opacity: 0; }
+}
+
+.animate-reg-ring {
+  animation: regRingPump 0.85s 0.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes regFadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-reg-fade-up {
+  animation: regFadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-reg-card,
+  .animate-reg-check,
+  .animate-reg-ring,
+  .animate-reg-fade-up {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

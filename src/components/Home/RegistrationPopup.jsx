@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ExternalLink, Calendar, Bell } from "lucide-react";
+import { ExternalLink, Calendar, Bell, ArrowRight } from "lucide-react";
 
 export default function RegistrationPopup() {
     const [announcement, setAnnouncement] = useState(null);
@@ -26,6 +26,13 @@ export default function RegistrationPopup() {
     }, []);
 
     if (!announcement || !isVisible) return null;
+
+    // Google Form link wins if set; otherwise open the built-in form
+    // (tagged with the linked event when one is chosen in the admin).
+    const isExternal = !!announcement.googleFormLink;
+    const registerHref = isExternal
+        ? announcement.googleFormLink
+        : `/register${announcement.linkedEvent ? `?event=${announcement.linkedEvent}` : ""}`;
 
     return (
         <div className="fixed bottom-4 inset-x-4 sm:inset-x-auto sm:bottom-6 sm:right-6 z-[999] p-0 pointer-events-none animate-in slide-in-from-bottom-10 sm:slide-in-from-right-10 fade-in duration-500">
@@ -66,13 +73,17 @@ export default function RegistrationPopup() {
 
                     <div className="space-y-3">
                         <a
-                            href={announcement.googleFormLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            href={registerHref}
+                            target={isExternal ? "_blank" : undefined}
+                            rel={isExternal ? "noopener noreferrer" : undefined}
                             className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 bg-white text-black font-black text-sm rounded-xl hover:bg-blue-50 transition-all shadow-xl shadow-white/5 group"
                         >
                             Register Now
-                            <ExternalLink className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            {isExternal ? (
+                                <ExternalLink className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+                            ) : (
+                                <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                            )}
                         </a>
                     </div>
                 </div>
