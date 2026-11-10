@@ -41,7 +41,13 @@ export default function AdminRegistrations() {
     useEffect(() => {
         fetch("/api/events")
             .then((r) => (r.ok ? r.json() : []))
-            .then((data) => setEvents(Array.isArray(data) ? data : []))
+            .then((data) => {
+                const list = Array.isArray(data) ? data : [];
+                setEvents(list);
+                // Default the registrations view to the latest event's rows
+                // (API returns events sorted newest-date first)
+                if (list.length > 0) setEventFilter((cur) => (cur === "all" ? list[0]._id : cur));
+            })
             .catch(() => { /* ignore */ });
     }, []);
 
@@ -265,7 +271,7 @@ export default function AdminRegistrations() {
                                 value={eventFilter}
                                 onChange={(e) => setEventFilter(e.target.value)}
                                 aria-label="Filter by event"
-                                className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 min-w-[180px]"
+                                className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 w-52 shrink-0"
                             >
                                 <option value="all">All events</option>
                                 {events.map((ev) => (
