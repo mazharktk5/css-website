@@ -5,7 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Calendar, Clock, MapPin, Users, ArrowLeft, Tag, ChevronRight, ClipboardList } from "lucide-react";
+import { Calendar, Clock, MapPin, Users, ArrowLeft, Tag, ChevronRight } from "lucide-react";
 
 export default function EventDetailPage() {
     const { id } = useParams();
@@ -223,14 +223,6 @@ export default function EventDetailPage() {
                                 </div>
                             )}
                         </div>
-
-                        <Link
-                            href={`/register?event=${event._id}`}
-                            className="w-full mt-4 inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-emerald-600 text-white rounded-xl text-sm font-bold hover:bg-emerald-700 transition shadow-lg shadow-emerald-600/20"
-                        >
-                            <ClipboardList className="w-4 h-4" />
-                            Register for this Event
-                        </Link>
 
                         <button
                             onClick={() => router.back()}

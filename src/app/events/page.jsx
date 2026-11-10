@@ -19,7 +19,9 @@ const Events = () => {
             try {
                 const res = await fetch(`/api/events`);
                 const data = await res.json();
-                setAllEvents(data || []);
+                // Archive only: hide today's and future events (dates are YYYY-MM-DD)
+                const today = new Date().toISOString().slice(0, 10);
+                setAllEvents((data || []).filter((e) => !e.date || e.date < today));
             } catch (err) {
                 console.error("Failed to fetch events:", err);
             } finally {

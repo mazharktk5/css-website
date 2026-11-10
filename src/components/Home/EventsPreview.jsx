@@ -8,7 +8,9 @@ const EventsPreview = async () => {
     let previewEvents = [];
     try {
         await dbConnect();
-        const allEvents = await Event.find({}).sort({ date: -1 }).limit(3).lean();
+        // Archive only: past events (dates are YYYY-MM-DD, string-comparable)
+        const today = new Date().toISOString().slice(0, 10);
+        const allEvents = await Event.find({ date: { $lt: today } }).sort({ date: -1 }).limit(3).lean();
         previewEvents = JSON.parse(JSON.stringify(allEvents));
     } catch (error) {
         console.error("Failed to fetch events for preview:", error);
