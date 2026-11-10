@@ -15,9 +15,9 @@ export function EventCard({ event, index }) {
   };
 
   return (
-    <FadeIn delay={index * 100}>
-      <Link href={`/events/${event._id}`}>
-        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition">
+    <FadeIn delay={index * 100} className="h-full">
+      <Link href={`/events/${event._id}`} className="block h-full">
+        <div className="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-lg transition flex flex-col h-full">
           <div className="relative h-48">
             <Image
               src={event.image || "/images/gallery/placeholder.jpg"}
@@ -28,7 +28,7 @@ export function EventCard({ event, index }) {
             />
           </div>
 
-          <div className="p-6">
+          <div className="p-6 flex flex-col h-[276px]">
             <div className="flex items-center justify-between mb-4 text-sm text-slate-500">
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-[#1e3a8a]" />
@@ -39,15 +39,15 @@ export function EventCard({ event, index }) {
               </span>
             </div>
 
-            <h3 className="text-xl font-semibold text-slate-900 mb-3 line-clamp-2">
+            <h3 className="text-xl font-semibold text-slate-900 mb-3 line-clamp-2 h-[56px]">
               {event.title}
             </h3>
 
-            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6">
+            <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6 h-[68px]">
               {event.description}
             </p>
 
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-sm mt-auto pt-2 border-t border-slate-100">
               <div className="flex items-center gap-2 text-slate-500">
                 <Users className="w-4 h-4" />
                 {event.participants || "Participants"}

@@ -159,6 +159,24 @@ export default function EventDetailPage() {
                                 </div>
                             </div>
                         )}
+
+                        {event.participants && /\d/.test(event.participants) && (
+                            <div className="mt-10 pt-8 border-t border-slate-100">
+                                <h2 className="text-lg font-bold text-slate-900 mb-4">Attendance</h2>
+                                <div className="flex items-end gap-5">
+                                    <p className="text-5xl font-black text-[#1e3a8a] leading-none">
+                                        {(event.participants.match(/\d+\+?/) || [""])[0]}
+                                    </p>
+                                    <p className="text-sm text-slate-500 pb-1">
+                                        {(() => {
+                                            const rest = event.participants.replace(/\d+\+?/, "").trim().toLowerCase();
+                                            if (!rest || rest === "audience") return "people attended this event";
+                                            return event.participants.replace(/\d+\+?/, "").trim();
+                                        })()}
+                                    </p>
+                                </div>
+                            </div>
+                        )}
                     </motion.div>
 
                     {/* Sidebar */}

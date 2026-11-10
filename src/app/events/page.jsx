@@ -159,12 +159,12 @@ const Events = () => {
                                     </div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
                                         {items.map((event, idx) => (
-                                            <Link key={event._id || idx} href={`/events/${event._id}`}>
+                                            <Link key={event._id || idx} href={`/events/${event._id}`} className="block h-full">
                                                 <motion.div
                                                     initial={{ opacity: 0 }}
                                                     animate={{ opacity: 1 }}
                                                     transition={{ duration: 0.3, delay: idx * 0.05 }}
-                                                    className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col"
+                                                    className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col h-full"
                                                 >
                                                     <div className="relative h-48 w-full">
                                                         <Image
@@ -178,13 +178,13 @@ const Events = () => {
                                                             {event.category}
                                                         </span>
                                                     </div>
-                                                    <div className="p-4 flex flex-col flex-grow">
+                                                    <div className="p-4 flex flex-col h-[216px]">
                                                         <div className="flex items-center gap-2 mb-2 text-[#1e3a8a] text-[10px] font-bold uppercase">
                                                             <Calendar className="w-3.5 h-3.5" /> {formatDate(event.date)}
                                                         </div>
-                                                        <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2">{event.title}</h3>
-                                                        <p className="text-slate-500 text-[11px] font-medium line-clamp-3 flex-grow">{event.description}</p>
-                                                        <div className="flex items-center justify-between mt-4 pt-2 border-t border-slate-100">
+                                                        <h3 className="text-lg font-bold text-slate-900 mb-2 line-clamp-2 h-[56px]">{event.title}</h3>
+                                                        <p className="text-slate-500 text-[11px] font-medium line-clamp-3 h-[50px]">{event.description}</p>
+                                                        <div className="flex items-center justify-between mt-auto pt-2 border-t border-slate-100">
                                                             <div className="flex items-center gap-2 text-[10px] font-bold uppercase text-slate-400">
                                                                 <Users className="w-4 h-4 text-[#1e3a8a]" /> {event.participants || "ARCHIVED"}
                                                             </div>
