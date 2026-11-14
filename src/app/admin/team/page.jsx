@@ -7,7 +7,7 @@ import { Plus, Pencil, Trash2, X, Save, User, ChevronDown } from "lucide-react";
 import ConfirmModal from "@/components/Admin/ConfirmModal";
 import ImageUpload from "@/components/Admin/ImageUpload";
 
-const emptyMember = { name: "", role: "", subRole: "", image: "", section: "cabinet", order: 0, description: "" };
+const emptyMember = { name: "", role: "", subRole: "", image: "", section: "core", order: 0, description: "" };
 
 export default function AdminTeam() {
     const [members, setMembers] = useState([]);
@@ -60,8 +60,8 @@ export default function AdminTeam() {
         fetchMembers();
     };
 
-    const sections = ["executive", "cabinet", "clubs"];
-    const sectionLabels = { executive: "Executive Board", cabinet: "Cabinet", clubs: "Club Leads" };
+    const sections = ["executive", "core", "clubs", "programs"];
+    const sectionLabels = { executive: "Executive Team", core: "Core Team", clubs: "Club Leads", programs: "Program Leads" };
 
     return (
         <AdminLayout>
@@ -138,9 +138,10 @@ export default function AdminTeam() {
                                             onChange={(e) => setForm({ ...form, section: e.target.value })}
                                             className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all text-sm appearance-none"
                                         >
-                                            <option value="executive" className="bg-gray-800">Executive</option>
-                                            <option value="cabinet" className="bg-gray-800">Cabinet</option>
+                                            <option value="executive" className="bg-gray-800">Executive Team</option>
+                                            <option value="core" className="bg-gray-800">Core Team</option>
                                             <option value="clubs" className="bg-gray-800">Club Leads</option>
+                                            <option value="programs" className="bg-gray-800">Program Leads</option>
                                         </select>
                                     </div>
                                 </div>

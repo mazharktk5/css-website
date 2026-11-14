@@ -72,8 +72,10 @@ function MemberCard({ member }) {
 }
 
 function GridSection({ title, members }) {
+    if (!members || members.length === 0) return null;
+
     return (
-        <div className="mt-24">
+        <div className="mt-24 first:mt-0">
             <div className="flex items-center gap-6 mb-12">
                 <h3 className="text-xl font-semibold text-slate-800">
                     {title}
@@ -91,8 +93,10 @@ function GridSection({ title, members }) {
     );
 }
 
+const EMPTY = { executive: [], core: [], clubs: [], programs: [] };
+
 export default function OurTeam() {
-    const [team, setTeam] = useState({ executive: [], cabinet: [], clubs: [] });
+    const [team, setTeam] = useState(EMPTY);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -104,11 +108,12 @@ export default function OurTeam() {
 
                 setTeam({
                     executive: members.filter(m => m.section === "executive"),
-                    cabinet: members.filter(m => m.section === "cabinet"),
+                    core: members.filter(m => m.section === "core"),
                     clubs: members.filter(m => m.section === "clubs"),
+                    programs: members.filter(m => m.section === "programs"),
                 });
             } catch {
-                setTeam({ executive: [], cabinet: [], clubs: [] });
+                setTeam(EMPTY);
             }
 
             setLoading(false);
@@ -148,20 +153,11 @@ export default function OurTeam() {
                         />
                     </div>
                 ) : (
-                    <div className="space-y-24">
-
-                        {team.executive.length > 0 && (
-                            <GridSection title="Executive Team" members={team.executive} />
-                        )}
-
-                        {team.cabinet.length > 0 && (
-                            <GridSection title="Core Team" members={team.cabinet} />
-                        )}
-
-                        {team.clubs.length > 0 && (
-                            <GridSection title="Club Leads" members={team.clubs} />
-                        )}
-
+                    <div>
+                        <GridSection title="Executive Team" members={team.executive} />
+                        <GridSection title="Core Team" members={team.core} />
+                        <GridSection title="Club Leads" members={team.clubs} />
+                        <GridSection title="Program Leads" members={team.programs} />
                     </div>
                 )}
 

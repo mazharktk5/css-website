@@ -70,21 +70,32 @@ export async function POST() {
         // --- Seed Team Members ---
         const teamCount = await TeamMember.countDocuments();
         if (teamCount === 0) {
+            const PH = "/images/team/placeholder.jpg";
             const teamData = [
-                { name: "Dr Shah Khusro", role: "Patron-in-Chief", subRole: "Chairman, Dept. of CS", image: "/images/team/chairman.jpg", section: "executive", order: 1 },
-                { name: "Dr Waheed ur Rehman", role: "Patron", subRole: "Coordinator, Dept. of CS", image: "/images/team/coordinator.jpg", section: "executive", order: 2 },
-                { name: "Mazhar Ahmad", role: "President", image: "/images/developers/mazhar_ahmad.jpg", section: "cabinet", order: 1 },
-                { name: "Muhammad Haris", role: "Vice President", image: "/images/team/haris.jpeg", section: "cabinet", order: 2 },
-                { name: "Safia Zulfiqar", role: "Female Vice President", image: "/images/developers/safia.jpg", section: "cabinet", order: 3 },
-                { name: "Mati Ullah Bangash", role: "Chief Secretary", image: "/images/team/chief-secretary.jpg", section: "cabinet", order: 4 },
-                { name: "Abubakar Dayan", role: "Media Secretary", image: "/images/team/app-lead.jpg", section: "cabinet", order: 6 },
-                { name: "Hashir Ahmad", role: "Cyber Security Lead", image: "/images/team/information-secretary.jpg", section: "clubs", order: 2 },
-                { name: "Junaid Ahmad", role: "AI & DS Lead", image: "/images/team/app-lead.jpg", section: "clubs", order: 3 },
-                { name: "Amna Amir", role: "Content & Graphics Head", image: "/images/team/graphic-head.jpg", section: "clubs", order: 4 },
-                { name: "Bilal Shahid", role: "Management Head", image: "/images/team/management-head.jpg", section: "clubs", order: 5 },
-                { name: "M Uzair", role: "External PR Head", image: "/images/team/pr-lead.jpg", section: "clubs", order: 6 },
-                { name: "Yahya Jan", role: "Literary Club Head", image: "/images/team/app-lead.jpg", section: "clubs", order: 7 },
-                { name: "M Ali", role: "Creative Club Head", image: "/images/team/creative-head.jpg", section: "clubs", order: 8 },
+                { name: "Dr Shah Khusro", role: "Patron-in-Chief", image: "/images/team/chairman.jpg", section: "executive", order: 1 },
+                { name: "Dr Waheed ur Rehman", role: "Patron", image: "/images/team/coordinator.jpeg", section: "executive", order: 2 },
+                { name: "Mazhar Ahmad", role: "President", image: "/images/developers/mazhar_ahmad.jpg", section: "core", order: 1 },
+                { name: "Muhammad Haris", role: "Vice President", image: "/images/team/haris.jpeg", section: "core", order: 2 },
+                { name: "Safia Zulfiqar", role: "Female Vice President", image: "/images/developers/safia.jpg", section: "core", order: 3 },
+                { name: "Muhammad Moiz Hassan", role: "AI & DS Lead", image: "/images/team/moiz_hassan.jpg", section: "clubs", order: 1 },
+                { name: "Shama Yasrab", role: "AI & DS Co-lead", image: PH, section: "clubs", order: 2 },
+                { name: "Qazi Farhan Ahmad", role: "Software Engineering Club Lead", image: "/images/team/qazi_farhan_lead.jpg", section: "clubs", order: 3 },
+                { name: "MUHAMMAD MOIZ", role: "Software Engineering Club Co-lead", image: PH, section: "clubs", order: 4 },
+                { name: "Malaika Nasir", role: "Cyber Security Club Lead", image: "/images/team/malaika.jpg", section: "clubs", order: 5 },
+                { name: "Shawaiz Khalil", role: "Cyber Security Club Co-lead", image: "/images/team/shawaiz.jpg", section: "clubs", order: 6 },
+                { name: "Asmir Imran", role: "Content & Graphics Head", image: "/images/team/asmir.jpg", section: "clubs", order: 7 },
+                { name: "Muhammad Uzair", role: "Media Head", image: PH, section: "clubs", order: 8 },
+                { name: "Asim Ullah Amjad", role: "Management Head", image: "/images/team/asim.jpg", section: "clubs", order: 9 },
+                { name: "Taimur Hayat", role: "Male Coordinator", image: "/images/team/taimur.jpg", section: "clubs", order: 10 },
+                { name: "Sharla Wazir", role: "Female Coordinator", image: "/images/team/sharla.png", section: "clubs", order: 11 },
+                { name: "Hayat Ahmad", role: "Artificial Intelligence Lead", image: PH, section: "programs", order: 1 },
+                { name: "Kashif Ullah", role: "Data Science Lead", image: "/images/team/kashif.png", section: "programs", order: 2 },
+                { name: "Faiz Ahmad", role: "Data Science Co-lead", image: "/images/team/faiz.jpg", section: "programs", order: 3 },
+                { name: "Muhammad Musa", role: "Software Engineering Lead", image: "/images/team/musa_program.jpg", section: "programs", order: 4 },
+                { name: "Rowaid Khan", role: "Software Engineering Co-lead", image: PH, section: "programs", order: 5 },
+                { name: "Hashir Ahmad", role: "Cyber Security Lead", image: "/images/team/hashir.jpg", section: "programs", order: 6 },
+                { name: "MUHAMMAD SHABAN", role: "Cyber Security Co-lead", image: "/images/team/shaban.jpg", section: "programs", order: 7 },
+                { name: "Musa bukhari", role: "Computer Science Co-lead", image: PH, section: "programs", order: 8 },
             ];
             await TeamMember.insertMany(teamData);
         }

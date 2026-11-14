@@ -5,7 +5,7 @@ const TeamMemberSchema = new mongoose.Schema({
     role: { type: String, required: true },
     subRole: { type: String, default: "" },
     image: { type: String, default: "" },
-    section: { type: String, enum: ["executive", "cabinet", "clubs"], required: true },
+    section: { type: String, enum: ["executive", "core", "clubs", "programs"], required: true },
     order: { type: Number, default: 0 },
     description: { type: String, default: "" },
     linkedin: { type: String, default: "" },
